@@ -1,0 +1,21 @@
+@import "tailwindcss";
+@config "../tailwind.config.js";
+
+section{
+    overflow: hidden;
+}
+html{
+    scroll-behavior: smooth;
+}
+
+::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #edf4fc;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: linear-gradient(to right, #289c28, #289c28);
+    border: 2px solid transparent;
+  }
