@@ -1,7 +1,7 @@
 import { RxCross2 } from "react-icons/rx";
 import { Link } from "react-router-dom";
 import { FiSearch } from "react-icons/fi";
-const ShopingCart = ({ setIsOpen }) => {
+const Cart = ({ setIsOpen }) => {
   return (
     <div className="absolute w-full top-0 left-0 bg-[rgba(0,0,0,0.17)] flex transition-all duration-500 h-screen">
       <div
@@ -30,16 +30,32 @@ const ShopingCart = ({ setIsOpen }) => {
             </button>
           </div>
           <ul className="flex flex-col items-start space-y-4 mt-8 text-primary font-Lato font-medium text-lg">
-            <Link to="/" onClick={() => setIsOpen(true)} className="hover:text-brand duration-100">
+            <Link
+              to="/"
+              onClick={() => setIsOpen(true)}
+              className="hover:text-brand duration-100"
+            >
               Home
             </Link>
-            <Link to="/" onClick={() => setIsOpen(true)} className="hover:text-brand duration-100">
+            <Link
+              to="/"
+              onClick={() => setIsOpen(true)}
+              className="hover:text-brand duration-100"
+            >
               Shop
             </Link>
-            <Link to="/" onClick={() => setIsOpen(true)} className="hover:text-brand duration-100">
+            <Link
+              to="/"
+              onClick={() => setIsOpen(true)}
+              className="hover:text-brand duration-100"
+            >
               Blog
             </Link>
-            <Link to="/" onClick={() => setIsOpen(true)} className="hover:text-brand duration-100">
+            <Link
+              to="/"
+              onClick={() => setIsOpen(true)}
+              className="hover:text-brand duration-100"
+            >
               Contact
             </Link>
           </ul>
@@ -49,4 +65,4 @@ const ShopingCart = ({ setIsOpen }) => {
   );
 };
 
-export default ShopingCart;
+export default Cart;

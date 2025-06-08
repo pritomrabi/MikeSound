@@ -4,9 +4,11 @@ import { PiShoppingCartSimpleLight } from "react-icons/pi";
 import { IoSearchOutline } from "react-icons/io5";
 import { useState } from "react";
 import { FiAlignRight } from "react-icons/fi";
-import ShopingCart from "./ShopingCart";
+import Cart from "./Cart";
+import ShoppingCart from "./ShoppingCart";
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(true);
+  const [shop, setShop] = useState(false);
   return (
     <section className="bg-[#fdfeff] p-6 shadow-2xl">
       <div className="container mx-auto flex">
@@ -29,13 +31,19 @@ const Navbar = () => {
             </Link>
           </div>
           <div className="flex items-center space-x-4">
-            <Link className="text-base text-primary font-medium  font-Lato hover:underline hover:text-secandari duration-100">
+            <Link
+              to="/registration"
+              className="text-base text-primary font-medium  font-Lato hover:underline hover:text-secandari duration-100"
+            >
               Login/Register
             </Link>
             <IoSearchOutline className="text-2xl text-primary cursor-pointer hover:text-secandari duration-100 " />
 
             <FaRegHeart className="text-xl text-primary cursor-pointer hover:text-secandari duration-100 " />
-            <div className="relative inline-block">
+            <div
+              onClick={() => setShop(true)}
+              className="relative inline-block"
+            >
               <PiShoppingCartSimpleLight className="text-xl text-primary cursor-pointer hover:text-secandari duration-100 " />
               <span className="bg-brand text-white text-[8px] rounded-full w-3 h-3 absolute -top-1 -left-1 text-center flex items-center justify-center ">
                 0
@@ -47,14 +55,14 @@ const Navbar = () => {
                 className="text-xl text-primary cursor-pointer hover:text-secandari duration-100 block md:hidden"
               />
             ) : (
-              <ShopingCart setIsOpen={setIsOpen} />
+              <Cart setIsOpen={setIsOpen} />
             )}
           </div>
         </div>
       </div>
+      {shop && <ShoppingCart setShop={setShop} />}
     </section>
   );
 };
-
 
 export default Navbar;
