@@ -6,11 +6,15 @@ import { useState } from "react";
 import { FiAlignRight } from "react-icons/fi";
 import Cart from "./Cart";
 import ShoppingCart from "./ShoppingCart";
+import Search from "./Search";
+import { RxCross2 } from "react-icons/rx";
+
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(true);
   const [shop, setShop] = useState(false);
+  const [search, setSearch] = useState(false);
   return (
-    <section className="bg-[#fdfeff] p-6 shadow-2xl">
+    <section className="bg-[#fdfeff] p-6 shadow-2xl w-full">
       <div className="container mx-auto flex">
         <div className="flex items-center justify-between w-full">
           <Link to="/" className="text-2xl font-bold text-primary font-Lato">
@@ -37,9 +41,19 @@ const Navbar = () => {
             >
               Login/Register
             </Link>
-            <IoSearchOutline className="text-2xl text-primary cursor-pointer hover:text-secandari duration-100 " />
+            {search ? (
+              <RxCross2
+                className="text-2xl text-primary cursor-pointer hover:text-secandari duration-100 md:block hidden"
+              />
+            ) : (
+              <IoSearchOutline
+                onClick={() => setSearch(true)}
+                className="text-2xl text-primary cursor-pointer hover:text-secandari duration-100 md:block hidden"
+              />
+            )}
 
             <FaRegHeart className="text-xl text-primary cursor-pointer hover:text-secandari duration-100 " />
+
             <div
               onClick={() => setShop(true)}
               className="relative inline-block"
@@ -60,6 +74,7 @@ const Navbar = () => {
           </div>
         </div>
       </div>
+      {search && <Search setSearch={setSearch} />}
       {shop && <ShoppingCart setShop={setShop} />}
     </section>
   );
