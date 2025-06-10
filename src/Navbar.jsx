@@ -4,10 +4,10 @@ import { PiShoppingCartSimpleLight } from "react-icons/pi";
 import { IoSearchOutline } from "react-icons/io5";
 import { useState } from "react";
 import { FiAlignRight } from "react-icons/fi";
-import Cart from "./Cart";
-import ShoppingCart from "./ShoppingCart";
-import Search from "./Search";
 import { RxCross2 } from "react-icons/rx";
+import Search from "./Utilities/Search";
+import ShoppingCart from "./Utilities/ShoppingCart";
+import Cart from "./Utilities/Cart";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(true);
