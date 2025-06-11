@@ -50,9 +50,9 @@ const HomeCategories = () => {
 
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 auto-rows-[250px]">
           {categories.map((cat, index) => (
-            <a
+            <Link
               key={index}
-              href={cat.link}
+              to={cat.link}
               className={`relative overflow-hidden rounded-md group ${
                 cat.colSpan || ""
               }`}
@@ -65,10 +65,10 @@ const HomeCategories = () => {
               <p className="absolute left-4 bottom-6 text-lg font-Opensans font-semibold text-primary bg-opacity-60 px-3 py-1 rounded-sm backdrop-blur-sm">
                 {cat.title}
               </p>
-              <Link className="absolute left-7 bottom-2 text-secandari text-sm ">
+              <p className="absolute left-7 bottom-2 text-secandari text-sm ">
                 {cat.total}
-              </Link>
-            </a>
+              </p>
+            </Link>
           ))}
         </div>
       </div>
