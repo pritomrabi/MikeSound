@@ -14,23 +14,23 @@ const Navbar = () => {
   const [shop, setShop] = useState(false);
   const [search, setSearch] = useState(false);
   return (
-    <section className="bg-[#fdfeff] p-6 shadow-2xl w-full">
+    <section className="bg-[#fdfeff] p-6 shadow w-full fixed top-0 z-40">
       <div className="container mx-auto flex">
         <div className="flex items-center justify-between w-full">
-          <Link to="/" className="text-2xl font-bold text-primary font-Lato">
+          <Link to="/" className="text-2xl font-bold text-brand font-Lato">
             Fashion Flat
           </Link>
           <div className=" items-center space-x-6 text-base font-Lato text-primary font-medium hidden md:block">
             <Link to="/" className="hover:text-brand duration-100">
               Home
             </Link>
-            <Link to="/" className="hover:text-brand duration-100">
+            <Link to="/shop" className="hover:text-brand duration-100">
               Shop
             </Link>
-            <Link to="/" className="hover:text-brand duration-100">
+            <Link to="/blog" className="hover:text-brand duration-100">
               Blog
             </Link>
-            <Link to="/" className="hover:text-brand duration-100">
+            <Link to="/contact" className="hover:text-brand duration-100">
               Contact
             </Link>
           </div>
@@ -42,17 +42,16 @@ const Navbar = () => {
               Login/Register
             </Link>
             {search ? (
-              <RxCross2
-                className="text-2xl text-primary cursor-pointer hover:text-secandari duration-100 md:block hidden"
-              />
+              <RxCross2 className="text-2xl text-primary cursor-pointer hover:text-secandari duration-100 md:block hidden" />
             ) : (
               <IoSearchOutline
                 onClick={() => setSearch(true)}
                 className="text-2xl text-primary cursor-pointer hover:text-secandari duration-100 md:block hidden"
               />
             )}
-
-            <FaRegHeart className="text-xl text-primary cursor-pointer hover:text-secandari duration-100 " />
+            <Link to="/wishlist">
+              <FaRegHeart className="text-xl text-primary cursor-pointer hover:text-secandari duration-100 " />
+            </Link>
 
             <div
               onClick={() => setShop(true)}

@@ -3,9 +3,11 @@ import Heading from "../../Utilities/Heading";
 import { AiOutlineShoppingCart } from "react-icons/ai";
 import { LuSearch } from "react-icons/lu";
 import { FaRegHeart } from "react-icons/fa";
+import ProductQuickView from "./ProductQuickView";
 
 const HomeProducts = () => {
   const [selectedCollection, setSelectedCollection] = useState("man"); // 'man' or 'woman'
+  const [quickcart, setQuickcart] = useState(false);
 
   const handleCollectionClick = (collection) => {
     setSelectedCollection(collection);
@@ -46,7 +48,7 @@ const HomeProducts = () => {
                 </div>
 
                 <div className=" text-center space-y-1 p-3">
-                  <div className="flex justify-center gap-2 text-xs text-secandari font-medium font-Lato">
+                  <div className="flex justify-center gap-2 text-xs text-primary font-medium font-Lato">
                     {/* Optional sizes */}
                     <span>XS</span>
                     <span>S</span>
@@ -78,7 +80,7 @@ const HomeProducts = () => {
                   {/* Search */}
                   <div className="relative group/icon">
                     <button className="text-xl text-primary hover:text-secandari duration-200 cursor-pointer">
-                      <LuSearch />
+                      <LuSearch onClick={() => setQuickcart(true)} />
                     </button>
                     <span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 rounded bg-black text-white text-xs opacity-0 group-hover/icon:opacity-100 transition whitespace-nowrap font-Lato font-normal">
                       Search
@@ -98,7 +100,7 @@ const HomeProducts = () => {
               </div>
             </div>
           )}
-
+          {quickcart && <ProductQuickView setQuickcart={setQuickcart} />}
           {selectedCollection === "woman" && (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
               <div className="group relative rounded-md shadow-sm  transition overflow-hidden">

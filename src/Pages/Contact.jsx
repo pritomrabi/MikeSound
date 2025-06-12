@@ -1,9 +1,10 @@
 import React from 'react'
+import Banner from '../Utilities/Banner'
 
 const Contact = () => {
   return (
-    <div>
-      
+    <div className='pt-20'>
+      <Banner para="This is the contact page" />
     </div>
   )
 }

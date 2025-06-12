@@ -16,7 +16,7 @@ html {
   background: #edf4fc;
 }
 ::-webkit-scrollbar-thumb {
-  background: linear-gradient(to right, #289c28, #289c28);
+  background: linear-gradient(to right, #bea163, #bea163);
   border: 2px solid transparent;
 }
 

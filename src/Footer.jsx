@@ -8,7 +8,7 @@ const Footer = () => {
         <div className="lg:col-span-3 md:col-span-6 col-span-12">
           <Link
             to="/"
-            className="block mb-4 text-2xl font-bold text-primary font-Lato"
+            className="block mb-4 text-2xl font-bold text-brand font-Lato"
           >
             Fashion Flat
           </Link>
