@@ -5,7 +5,7 @@ import Empty from "../Components/Wishlist/Empty";
 const Wishlist = () => {
   return (
     <div className="pt-20">
-      <Banner para="This is the wishlist page" />
+      <Banner para="This is the wishlist page" buton="Shop Now" />
       <Empty />
     </div>
   );

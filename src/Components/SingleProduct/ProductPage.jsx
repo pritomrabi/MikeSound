@@ -7,35 +7,28 @@ import {
 } from "react-icons/fa";
 import { PiMinusThin } from "react-icons/pi";
 import { HiOutlinePlusSmall } from "react-icons/hi2";
-import { IoClose } from "react-icons/io5";
 
-const ProductQuickView = ({ setQuickcart }) => {
+const ProductPage = () => {
   const [quantity, setQuantity] = useState(1);
   const [selectedSize, setSelectedSize] = useState("XS");
   const sizes = ["XS", "XL", "XXL"];
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  const images = ["home.jpg", "home.jpg", "home.jpg", "home.jpg"];
-
+  const images = ["home.jpg", "home.jpg", "home.jpg"];
   return (
-    <div className="fixed top-0 inset-0 bg-[rgba(0,0,0,0.2)] bg-opacity-40 z-50 h-full w-full overflow-auto px-4 py-6 flex items-start justify-center">
-      <div className="bg-white w-full max-w-full md:max-w-3xl lg:max-w-5xl rounded-lg shadow-lg flex flex-col md:flex-row mt-5">
-        {/* Left: Image Slider */}
-        <button className="absolute top-4 right-4 text-white  cursor-pointer transition duration-200 block  md:hidden">
-          <IoClose onClick={() => setQuickcart(false)} size={25} />
-        </button>
-        <div className="w-full md:w-1/2 p-4 flex flex-col items-center">
-          <img
-            src={images[currentImageIndex]}
-            alt={`Product Image ${currentImageIndex + 1}`}
-            className="max-h-[400px] w-full object-cover rounded mb-4"
-          />
-          <div className="flex gap-2 overflow-x-auto">
+    <div className="container mx-auto px-4 py-8">
+      {/* Breadcrumb */}
+
+      {/* Main Content */}
+      <div className="flex flex-col lg:flex-row gap-8">
+        {/* Left Image Section */}
+        <div className="w-full gap-3 md:w-1/2 p-4 flex items-center">
+          <div className=" gap-2 space-y-2 overflow-x-auto">
             {images.map((img, index) => (
               <img
                 key={index}
                 src={img}
                 onClick={() => setCurrentImageIndex(index)}
-                className={`min-w-[60px] h-16 object-cover border-2 rounded cursor-pointer ${
+                className={`w-[150px] h-40 object-cover border-2  cursor-pointer ${
                   index === currentImageIndex
                     ? "border-yellow-600"
                     : "border-gray-400 hover:border-secandari transition duration-200"
@@ -44,14 +37,16 @@ const ProductQuickView = ({ setQuickcart }) => {
               />
             ))}
           </div>
+          <img
+            src={images[currentImageIndex]}
+            alt={`Product Image ${currentImageIndex + 1}`}
+            className="max-h-[550px] w-full object-cover rounded mb-4"
+          />
         </div>
 
-        {/* Right: Product Details */}
+        {/* Product Details */}
         <div className="w-full md:w-1/2 p-6 relative">
-          <button className="absolute top-4 right-4 text-secandari hover:text-primary cursor-pointer transition duration-200 hidden md:block">
-            <IoClose onClick={() => setQuickcart(false)} size={25} />
-          </button>
-
+          <p className="text-sm text-black mb-4">Home / Shop / dress slug</p>
           <h2 className="text-2xl text-primary font-Lato font-medium mb-2 pt-4">
             Wini Dress Top Layer
           </h2>
@@ -76,11 +71,11 @@ const ProductQuickView = ({ setQuickcart }) => {
                   key={size}
                   onClick={() => setSelectedSize(size)}
                   className={`px-2.5 py-1.5 text-[10px] text-primary font-Nunito-font rounded font-medium cursor-pointer
-                  ${
-                    selectedSize === size
-                      ? "bg-yellow-600 text-white border-yellow-600"
-                      : "border-gray-300 text-gray-700 bg-gray-100"
-                  }`}
+                          ${
+                            selectedSize === size
+                              ? "bg-yellow-600 text-white border-yellow-600"
+                              : "border-gray-300 text-gray-700 bg-gray-100"
+                          }`}
                 >
                   {size}
                 </button>
@@ -129,8 +124,55 @@ const ProductQuickView = ({ setQuickcart }) => {
           </div>
         </div>
       </div>
+
+      {/* Tabs */}
+      <div className="mt-5 border-t border-secandari pt-4">
+        <h2 className="text-lg font-semibold mb-4">DESCRIPTION</h2>
+        <p className="text-gray-700 mb-6 leading-relaxed">
+          IMPERDIET HEMENAEOS MATTIS — Cras convallis convallis tortor, non
+          iaculis nulla pharetra eu. Maecenas convallis justo vitae pulvinar
+          gravida. Duis vehicula, urna at elementum sagittis, nulla diam sodales
+          orci, non ornare lacus arcu ac nisl.
+        </p>
+
+        {/* Feature Icons */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mt-8 text-center text-sm text-gray-700">
+          <div>
+            <img
+              src="/icons/return.svg"
+              className="mx-auto mb-2"
+              alt="Safe Returns"
+            />
+            <p>Safe & Fast Returns</p>
+          </div>
+          <div>
+            <img
+              src="/icons/shipping.svg"
+              className="mx-auto mb-2"
+              alt="Secure Shipping"
+            />
+            <p>Ultra Secure Payment</p>
+          </div>
+          <div>
+            <img
+              src="/icons/ticket.svg"
+              className="mx-auto mb-2"
+              alt="Ticket Support"
+            />
+            <p>Lifetime Support</p>
+          </div>
+          <div>
+            <img
+              src="/icons/refund.svg"
+              className="mx-auto mb-2"
+              alt="Refund"
+            />
+            <p>No-Risk Refund Policy</p>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
 
-export default ProductQuickView;
+export default ProductPage;

@@ -16,6 +16,7 @@ import Login from "./Auth/Login";
 import Forgot from "./Auth/Forgot";
 import OTP from "./Auth/OTP";
 import Wishlist from "./Pages/Wishlist";
+import SingleProduct from "./Pages/SingleProduct";
 
 function App() {
   const router = createBrowserRouter(
@@ -26,7 +27,8 @@ function App() {
           <Route path="contact" element={<Contact />} />
           <Route path="blog" element={<Blog />} />
           <Route path="shop" element={<Shop />} />
-          <Route path="/wishlist" element={<Wishlist/>}/>
+          <Route path="/wishlist" element={<Wishlist />} />
+          <Route path="/singleproduct" element={<SingleProduct />} />
           <Route path="*" element={<ErrorPage />} />
         </Route>
         <Route path="/registration" element={<Registration />}></Route>

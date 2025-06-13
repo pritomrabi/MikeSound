@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 
-const Banner = ({ para }) => {
+const Banner = ({ para, buton }) => {
   return (
     <section className="bg-[url('/home.jpg')] bg-cover bg-center bg-no-repeat h-[300px] flex items-center justify-center text-white text-center px-4 w-full relative">
       <div className="absolute inset-0 bg-[rgba(0,0,0,0.55)] bg-opacity-50"></div>
@@ -11,12 +11,14 @@ const Banner = ({ para }) => {
         <p className="mt-2 text-white text-sm font-normal font-Monrope">
           {para}
         </p>
-        <Link
-          to="/shop"
-          className="mt-4 inline-block bg-brand text-white text-sm font-medium font-Monrope px-6 py-2 scale-95 rounded-sm"
-        >
-          Shop Now
-        </Link>
+        {buton && (
+          <Link
+            to="/shop"
+            className="mt-4 inline-block bg-brand text-white text-sm font-medium font-Monrope px-6 py-2 scale-95 rounded-sm"
+          >
+            {buton}
+          </Link>
+        )}
       </div>
     </section>
   );
