@@ -124,53 +124,6 @@ const ProductPage = () => {
           </div>
         </div>
       </div>
-
-      {/* Tabs */}
-      <div className="mt-5 border-t border-secandari pt-4">
-        <h2 className="text-lg font-semibold mb-4">DESCRIPTION</h2>
-        <p className="text-gray-700 mb-6 leading-relaxed">
-          IMPERDIET HEMENAEOS MATTIS — Cras convallis convallis tortor, non
-          iaculis nulla pharetra eu. Maecenas convallis justo vitae pulvinar
-          gravida. Duis vehicula, urna at elementum sagittis, nulla diam sodales
-          orci, non ornare lacus arcu ac nisl.
-        </p>
-
-        {/* Feature Icons */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mt-8 text-center text-sm text-gray-700">
-          <div>
-            <img
-              src="/icons/return.svg"
-              className="mx-auto mb-2"
-              alt="Safe Returns"
-            />
-            <p>Safe & Fast Returns</p>
-          </div>
-          <div>
-            <img
-              src="/icons/shipping.svg"
-              className="mx-auto mb-2"
-              alt="Secure Shipping"
-            />
-            <p>Ultra Secure Payment</p>
-          </div>
-          <div>
-            <img
-              src="/icons/ticket.svg"
-              className="mx-auto mb-2"
-              alt="Ticket Support"
-            />
-            <p>Lifetime Support</p>
-          </div>
-          <div>
-            <img
-              src="/icons/refund.svg"
-              className="mx-auto mb-2"
-              alt="Refund"
-            />
-            <p>No-Risk Refund Policy</p>
-          </div>
-        </div>
-      </div>
     </div>
   );
 };

@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 const HomeDiscover = () => {
   const brands = [
@@ -68,12 +69,12 @@ const HomeDiscover = () => {
               quis.
             </p>
             <div className="flex font-Opensans justify-center lg:justify-start gap-4">
-              <a
-                href="#"
+              <Link
+                to="/shop"
                 className="bg-yellow-600 text-white px-6 py-3 text-sm font-medium rounded-sm shadow hover:bg-yellow-700"
               >
                 SHOP NOW
-              </a>
+              </Link>
               <a
                 href="#"
                 className="border border-gray-300 text-gray-800 px-6 py-3 text-sm font-medium rounded-sm hover:bg-gray-100"
