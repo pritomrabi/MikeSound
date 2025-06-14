@@ -1,8 +1,8 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { FaRegHeart } from "react-icons/fa";
 import { PiShoppingCartSimpleLight } from "react-icons/pi";
 import { IoSearchOutline } from "react-icons/io5";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FiAlignRight } from "react-icons/fi";
 import { RxCross2 } from "react-icons/rx";
 import Search from "./Utilities/Search";
@@ -13,6 +13,16 @@ const Navbar = () => {
   const [isOpen, setIsOpen] = useState(true);
   const [shop, setShop] = useState(false);
   const [search, setSearch] = useState(false);
+
+  const location = useLocation();
+  const disableCartPopup = ["/viewcart", "/checkout"].includes(
+    location.pathname
+  );
+
+  useEffect(() => {
+    setShop(false); 
+  }, [location.pathname]);
+
   return (
     <section className="bg-[#fdfeff] p-6 shadow w-full fixed top-0 z-40">
       <div className="container mx-auto flex">
@@ -74,7 +84,7 @@ const Navbar = () => {
         </div>
       </div>
       {search && <Search setSearch={setSearch} />}
-      {shop && <ShoppingCart setShop={setShop} />}
+      {shop && !disableCartPopup && <ShoppingCart setShop={setShop} />}
     </section>
   );
 };

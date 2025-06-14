@@ -38,21 +38,21 @@ const Cart = ({ setIsOpen }) => {
               Home
             </Link>
             <Link
-              to="/"
+              to="/shop"
               onClick={() => setIsOpen(true)}
               className="hover:text-brand duration-100"
             >
               Shop
             </Link>
             <Link
-              to="/"
+              to="/blog"
               onClick={() => setIsOpen(true)}
               className="hover:text-brand duration-100"
             >
               Blog
             </Link>
             <Link
-              to="/"
+              to="/contact"
               onClick={() => setIsOpen(true)}
               className="hover:text-brand duration-100"
             >
