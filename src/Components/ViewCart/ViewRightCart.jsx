@@ -1,20 +1,7 @@
-import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
 const ViewRightCart = () => {
-  const [showShippingCalculator, setShowShippingCalculator] = useState(false);
-  const toggleShippingCalculator = (e) => {
-    e.preventDefault(); // Prevent default link behavior
-    setShowShippingCalculator(!showShippingCalculator);
-  };
-
-  // In a real application, these would likely come from props or an API
-  const countries = [
-    { value: "BD", label: "Bangladesh" },
-    { value: "US", label: "United States" },
-    { value: "CA", label: "Canada" },
-    // Add more countries as needed
-  ];
+  
   return (
     <div className="w-[35%] px-4 py-10">
       <div className="bg-white p-6 rounded-lg border-2 border-gray-300 shadow-md mb-8">

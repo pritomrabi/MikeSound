@@ -4,7 +4,14 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import Heading from "../../Utilities/Heading";
+import { AiOutlineShoppingCart } from "react-icons/ai";
+import { LuSearch } from "react-icons/lu";
+import { FaRegHeart } from "react-icons/fa";
+import { Link } from "react-router-dom";
+import { useState } from "react";
+import ProductQuickView from "./ProductQuickView";
 const HomeLatest = () => {
+  const [quickcart, setQuickcart] = useState(false);
   const posts = [
     {
       date: "23 JUL",
@@ -80,36 +87,70 @@ const HomeLatest = () => {
           >
             {posts.map((post, index) => (
               <SwiperSlide key={index}>
-                <div className="group bg-white rounded overflow-hidden shadow-sm hover:shadow-md transition duration-300">
-                  <div className="relative overflow-hidden rounded-t">
+                <div className="group relative rounded-md shadow-sm  transition overflow-hidden">
+                  <div className="overflow-hidden rounded-md">
                     <img
-                      src={post.image}
-                      alt={post.title}
-                      className="w-full h-64 object-cover transform transition duration-500 group-hover:scale-110"
+                      src="home.jpg"
+                      alt="home"
+                      className="w-full h-80 object-cover transform transition-transform duration-500 group-hover:scale-105 cursor-pointer"
                     />
-                    <p className="absolute top-2 left-2 bg-white text-primary text-[10px] font-semibold font-Monrope px-3 py-1 shadow rounded-sm">
-                      {post.date}
+                  </div>
+
+                  <div className=" text-center space-y-1 p-3">
+                    <div className="flex justify-center gap-2 text-xs text-primary font-medium font-Lato">
+                      {/* Optional sizes */}
+                      <span>XS</span>
+                      <span>S</span>
+                      <span>XL</span>
+                    </div>
+                    <h3 className="text-sm font-medium text-primary font-Roboto ">
+                      Men's Slim Fit Shirt
+                    </h3>
+                    <p className="text-xs text-secandari font-medium font-Lato">
+                      Fashion Flat
+                    </p>
+                    <p className="text-md font-bold text-brand font-Monrope">
+                      $99.00
                     </p>
                   </div>
-                  <div className="p-4">
-                    <p className="text-sm font-semibold font-Lato uppercase text-brand mb-2">
-                      {post.category.join(", ")}
-                    </p>
-                    <h3 className="text-lg text-primary font-Roboto font-semibold mb-1">{post.title}</h3>
-                    <div className="text-sm text-secandari font-Lato font-medium mb-2">
-                      Posted by {post.author}
+
+                  {/* Hover icons (stay inside structure) */}
+                  <div className="absolute bottom-32 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition flex gap-4 bg-white py-2.5 px-5 rounded shadow z-10">
+                    {/* Add to Cart */}
+                    <Link to="/singleproduct" className="relative group/icon">
+                      <button className="text-xl text-primary hover:text-secandari duration-200 cursor-pointer">
+                        <AiOutlineShoppingCart />
+                      </button>
+                      <span className="absolute  bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 rounded bg-black text-white text-xs opacity-0 group-hover/icon:opacity-100 transition whitespace-nowrap font-Lato font-normal">
+                        Add to cart
+                      </span>
+                    </Link>
+
+                    {/* Search */}
+                    <div className="relative group/icon">
+                      <button className="text-xl text-primary hover:text-secandari duration-200 cursor-pointer">
+                        <LuSearch onClick={() => setQuickcart(true)} />
+                      </button>
+                      <span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 rounded bg-black text-white text-xs opacity-0 group-hover/icon:opacity-100 transition whitespace-nowrap font-Lato font-normal">
+                        Search
+                      </span>
                     </div>
-                    <p className="text-xs text-secandari font-Lato font-normal mb-3">
-                      {post.description}
-                    </p>
-                    <button className="text-brand font-semibold font-Lato text-sm  hover:underline">
-                      CONTINUE READING
-                    </button>
+
+                    {/* Wishlist */}
+                    <Link to="/wishlist" className="relative group/icon">
+                      <button className="text-xl text-primary hover:text-secandari duration-200 cursor-pointer">
+                        <FaRegHeart />
+                      </button>
+                      <span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 rounded bg-black text-white text-xs opacity-0 group-hover/icon:opacity-100 transition whitespace-nowrap font-Lato font-normal">
+                        Wishlist
+                      </span>
+                    </Link>
                   </div>
                 </div>
               </SwiperSlide>
             ))}
           </Swiper>
+          {quickcart && <ProductQuickView setQuickcart={setQuickcart} />}
         </div>
       </div>
     </section>

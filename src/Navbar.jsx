@@ -37,9 +37,6 @@ const Navbar = () => {
             <Link to="/shop" className="hover:text-brand duration-100">
               Shop
             </Link>
-            <Link to="/blog" className="hover:text-brand duration-100">
-              Blog
-            </Link>
             <Link to="/contact" className="hover:text-brand duration-100">
               Contact
             </Link>

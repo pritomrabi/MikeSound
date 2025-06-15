@@ -8,7 +8,6 @@ import "./App.css";
 import Layout from "./Layout";
 import Home from "./Pages/Home";
 import Contact from "./Pages/Contact";
-import Blog from "./Pages/Blog";
 import Shop from "./Pages/Shop";
 import ErrorPage from "./Pages/ErrorPage";
 import Registration from "./Auth/Registration";
@@ -27,7 +26,6 @@ function App() {
         <Route path="/" element={<Layout />} errorElement={<ErrorPage />}>
           <Route index element={<Home />} />
           <Route path="contact" element={<Contact />} />
-          <Route path="blog" element={<Blog />} />
           <Route path="shop" element={<Shop />} />
           <Route path="/wishlist" element={<Wishlist />} />
           <Route path="/singleproduct" element={<SingleProduct />} />

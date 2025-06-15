@@ -45,13 +45,6 @@ const Cart = ({ setIsOpen }) => {
               Shop
             </Link>
             <Link
-              to="/blog"
-              onClick={() => setIsOpen(true)}
-              className="hover:text-brand duration-100"
-            >
-              Blog
-            </Link>
-            <Link
               to="/contact"
               onClick={() => setIsOpen(true)}
               className="hover:text-brand duration-100"
