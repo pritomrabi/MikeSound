@@ -16,7 +16,7 @@ const ViewLeftCart = () => {
       <form className="w-full px-4 py-10">
         {/* Cart Table */}
         <div className="overflow-x-auto">
-          <table className="w-full text-lg text-primary font-medium font-Roboto text-left">
+          <table className="w-full text-lg text-primary-default dark:text-primary-dark font-medium font-Roboto text-left">
             <thead className="border-b border-gray-300">
               <tr>
                 <th className="p-2"></th>
@@ -29,7 +29,7 @@ const ViewLeftCart = () => {
             </thead>
             <tbody>
               <tr className="border-b pb-4 border-gray-300">
-                <td className="p-2 text-primary hover:text-secandari duration-300 cursor-pointer text-xl">
+                <td className="p-2 text-primary-default dark:text-primary-dark hover:text-secandari duration-300 cursor-pointer text-xl">
                   ×
                 </td>
                 <td className="p-2">
@@ -40,11 +40,11 @@ const ViewLeftCart = () => {
                   />
                 </td>
                 <td className="p-2">
-                  <p className="text-primary text-sm font-Lato font-medium">
+                  <p className="text-primary-default dark:text-primary-dark text-sm font-Lato font-medium">
                     Wkinny Fit Suit - XXL
                   </p>
                 </td>
-                <td className="p-2 text-primary text-sm font-Monrope font-medium">
+                <td className="p-2 text-primary-default dark:text-primary-dark text-sm font-Monrope font-medium">
                   $599.00
                 </td>
                 <td>
@@ -55,7 +55,7 @@ const ViewLeftCart = () => {
                     >
                       <PiMinusThin size={10} />
                     </button>
-                    <div className="px-2 py-1 font-medium font-Monrope text-secandari text-sm">
+                    <div className="px-2 py-1 font-medium font-Monrope text-secandari-default text-sm">
                       {quantity}
                     </div>
                     <button
@@ -86,7 +86,7 @@ const ViewLeftCart = () => {
             />
             <button
               type="submit"
-              className="bg-brand cursor-pointer text-white px-4 py-2 rounded "
+              className="bg-brand cursor-pointer text-white  px-4 py-2 rounded "
             >
               Apply Coupon
             </button>

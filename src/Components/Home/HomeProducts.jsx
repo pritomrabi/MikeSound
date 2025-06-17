@@ -49,16 +49,16 @@ const HomeProducts = () => {
                 </div>
 
                 <div className=" text-center space-y-1 p-3">
-                  <div className="flex justify-center gap-2 text-xs text-primary font-medium font-Lato">
+                  <div className="flex justify-center gap-2 text-xs text-primary-default dark:text-primary-dark font-medium font-Lato">
                     {/* Optional sizes */}
                     <span>XS</span>
                     <span>S</span>
                     <span>XL</span>
                   </div>
-                  <h3 className="text-sm font-medium text-primary font-Roboto ">
+                  <h3 className="text-sm font-medium text-primary-default dark:text-primary-dark font-Roboto ">
                     Men's Slim Fit Shirt
                   </h3>
-                  <p className="text-xs text-secandari font-medium font-Lato">
+                  <p className="text-xs text-secandari-default dark:text-secandari-dark  font-medium font-Lato">
                     Fashion Flat
                   </p>
                   <p className="text-md font-bold text-brand font-Monrope">

@@ -57,8 +57,8 @@ const CheckoutRight = () => {
 
   return (
     <div className="w-[50%] px-4 py-10">
-      <div className="bg-white p-6 rounded border-2 border-gray-300 shadow-md mb-8">
-        <h2 className="text-2xl text-center font-semibold text-primary font-Roboto mb-4">
+      <div className="bg-[#fdfeff] dark:bg-[#1a1a1a] p-6 rounded border-2 border-gray-300 shadow-md mb-8">
+        <h2 className="text-2xl text-center font-semibold text-primary-default dark:text-primary-dark font-Roboto mb-4">
           YOUR ORDER
         </h2>
 
@@ -66,10 +66,10 @@ const CheckoutRight = () => {
           <table className="w-full text-left border-collapse">
             <tbody>
               <tr className="border-b-2 border-gray-300">
-                <th className="py-2 font-medium text-primary text-base font-Roboto ">
+                <th className="py-2 font-medium text-primary-default dark:text-primary-dark text-base font-Roboto ">
                   PRODUCT
                 </th>
-                <td className="py-2 text-right font-medium text-primary text-base font-Roboto">
+                <td className="py-2 text-right font-medium text-primary-default dark:text-primary-dark text-base font-Roboto">
                   SUBTOTAL
                 </td>
               </tr>
@@ -84,7 +84,7 @@ const CheckoutRight = () => {
               />
             </div>
             <div className="flex flex-col w-full ">
-              <p className="text-primary text-sm font-Lato font-medium pb-2">
+              <p className="text-primary-default dark:tex-primary-dark text-sm font-Lato font-medium pb-2">
                 Wkinny Fit Suit - XXL
               </p>
               <div className="flex w-20 border rounded border-gray-300">
@@ -94,7 +94,7 @@ const CheckoutRight = () => {
                 >
                   <PiMinusThin size={10} />
                 </button>
-                <div className="px-2 py-1 font-medium font-Monrope text-secandari text-sm">
+                <div className="px-2 py-1 font-medium font-Monrope text-secandari-default dark:text-secandari-dark text-sm">
                   {quantity}
                 </div>
                 <button
@@ -112,7 +112,7 @@ const CheckoutRight = () => {
           <table className="w-full text-left border-collapse">
             <tbody>
               <tr className="border-b border-gray-300">
-                <th className="py-2 font-normal text-primary text-base font-Roboto">
+                <th className="py-2 font-normal text-primary-default dark:text-primary-dark text-base font-Roboto">
                   Subtotal
                 </th>
                 <td
@@ -127,7 +127,7 @@ const CheckoutRight = () => {
               </tr>
 
               <tr className="border-b border-gray-200  justify-end">
-                <td className="py-2 font-normal text-primary text-base font-Roboto">
+                <td className="py-2 font-normal text-primary-default dark:text-primary-dark text-base font-Roboto">
                   Shipping
                 </td>
                 <td className="py-5 text-end" data-title="Shipping">
@@ -135,7 +135,7 @@ const CheckoutRight = () => {
                     <li>
                       <label
                         htmlFor=""
-                        className="text-primary font-Lato font-medium text-base pr-2"
+                        className="text-primary-default dark:text-primary-dark font-Lato font-medium text-base pr-2"
                       >
                         Flat rate:{" "}
                         <span className="font-semibold text-brand">$20.00</span>
@@ -172,7 +172,7 @@ const CheckoutRight = () => {
               </tr>
 
               <tr className="border-t-2 border-gray-300">
-                <th className="py-4 font-semibold text-lg text-primary font-Roboto">
+                <th className="py-4 font-semibold text-lg text-primary-default dark:text-primary-dark font-Roboto">
                   Total
                 </th>
                 <td
@@ -196,7 +196,7 @@ const CheckoutRight = () => {
           {paymentOptions.map((method) => (
             <li
               key={method.id}
-              className="p-0.5 font-Lato font-normal text-sm text-secandari"
+              className="p-0.5 font-Lato font-normal text-sm text-secandari-default dark:text-secandari-dark"
             >
               <label className="flex items-start space-x-3">
                 <input
@@ -208,12 +208,12 @@ const CheckoutRight = () => {
                   onChange={() => setSelectedMethod(method.id)}
                   className="mt-1"
                 />
-                <span className="text-base text-primary  font-medium">
+                <span className="text-base text-primary-default dark:text-primary-dark  font-medium">
                   {method.label}
                 </span>
               </label>
               {selectedMethod === method.id && (
-                <div className="mt-3 text-sm text-gray-600">
+                <div className="mt-3 text-sm text-primary-default dark:text-primary-dark">
                   {method.description}
                 </div>
               )}
@@ -221,7 +221,7 @@ const CheckoutRight = () => {
           ))}
         </ul>
 
-        <div className="mt-6 text-sm text-primary font-Lato font-normal">
+        <div className="mt-6 text-sm text-primary-default dark:text-primary-dark font-Lato font-normal">
           <p>
             Your personal data will be used to process your order, support your
             experience throughout this website, and for other purposes described
@@ -240,7 +240,7 @@ const CheckoutRight = () => {
 
         {/* Terms and Conditions */}
         <div className="mt-4">
-          <label className="flex items-start text-sm text-primary font-Lato font-normal space-x-2">
+          <label className="flex items-start text-sm text-primary-default dark:text-primary-dark font-Lato font-normal space-x-2">
             <input
               type="checkbox"
               className="mt-1"

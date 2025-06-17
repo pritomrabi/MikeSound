@@ -11,14 +11,14 @@ const ShoppingCart = ({ setShop }) => {
         onClick={() => setShop(false)}
         className="fixed right-0 lg:w-[55%] xl:w-[65%] md:w-[35%] sm:w-[40%] w-[5%] cursor-pointer h-full z-40 "
       ></div>
-      <div className="fixed right-0  bg-white xl:w-[35%] lg:w-[45%] md:w-[65%] sm:w-[60%] w-[85%] h-[98%] items-center top-1 bottom-2  shadow-md rounded-l-2xl px-1 sm:px-4 md:px-8 py-4 z-50">
+      <div className="fixed right-0 bg-white dark:bg-[#1a1a1a] xl:w-[35%] lg:w-[45%] md:w-[65%] sm:w-[60%] w-[85%] h-[98%] items-center top-1 bottom-2  shadow-md rounded-l-2xl px-1 sm:px-4 md:px-8 py-4 z-50">
         <p
           onClick={() => setShop(false)}
           className=" absolute -left-5 border-[4px] text-white bg-brand duration-100 p-2 w-fit rounded-full drop-shadow-sm cursor-pointer"
         >
           <RxCross2 className=" text-lg" />
         </p>
-        <h2 className="text-xl font-medium text-center text-primary font-Roboto border-b border-secandari pb-4">
+        <h2 className="text-xl font-medium text-center text-primary-default dark:text-primary-dark font-Roboto border-b border-secandari pb-4 uppercase">
           Shopping Cart
         </h2>
         <div className="py-10 h-full">
@@ -31,7 +31,7 @@ const ShoppingCart = ({ setShop }) => {
                   className="w-20 h-20 object-cover rounded-md"
                 />
                 <div className="flex-1">
-                  <p className="text-base font-Lato font-medium  text-primary duration-200 pb-1">
+                  <p className="text-base font-Lato font-medium  text-primary-default dark:text-primary-dark duration-200 pb-1">
                     hello world
                   </p>
                   <div className="flex flex-col sm:flex-row sm:items-center gap-4 border-gray-300">
@@ -52,7 +52,7 @@ const ShoppingCart = ({ setShop }) => {
                         <HiOutlinePlusSmall size={10} />
                       </button>
                     </div>
-                    <p className="text-sm text-primary font-normal font-Monrope">
+                    <p className="text-sm text-primary-default dark:text-primary-dark font-normal font-Monrope">
                       10 X
                       <span className="font-semibold text-secandari px-1">
                         {" "}
@@ -61,7 +61,7 @@ const ShoppingCart = ({ setShop }) => {
                     </p>
                   </div>
                 </div>
-                <button className="text-primary border-primary rounded-full p-1 border cursor-pointer duration-200 hover:text-secandari hover:border-secandari">
+                <button className="text-primary-default dark:text-primary-dark border-primary-default dark:border-primary-dark rounded-full p-1 border cursor-pointer duration-200 hover:text-secandari hover:border-secandari">
                   <RxCross2 className="text-[10px] " />
                 </button>
               </li>
@@ -69,7 +69,7 @@ const ShoppingCart = ({ setShop }) => {
           </div>
           <div className="items-end ">
             <div className="flex justify-between px-5 mt-6 border-y border-secandari">
-              <p className="py-4 font-semibold text-xl text-primary font-NunitoFont">
+              <p className="py-4 font-semibold text-xl text-primary-default dark:text-primary-dark font-NunitoFont">
                 Subtotal :
               </p>
               <span className="text-brand font-medium font-Monrope text-lg pt-4">
@@ -80,7 +80,7 @@ const ShoppingCart = ({ setShop }) => {
               <Link
                 to="/viewcart"
                 onClick={() => setShop(false)}
-                className=" sm:px-8 px-4 py-2 rounded-md font-NunitoFont font-medium sm:text-lg text-base text-primary border border-primary hover:text-secandari hover:border-secandari duration-400"
+                className=" sm:px-8 px-4 py-2 rounded-md font-NunitoFont font-medium sm:text-lg text-base text-primary-default dark:text-primary-dark border border-primary-default dark:border-primary-dark hover:text-secandari hover:border-secandari duration-400"
               >
                 View Cart
               </Link>

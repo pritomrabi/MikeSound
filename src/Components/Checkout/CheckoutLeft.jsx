@@ -12,7 +12,7 @@ const CheckoutLeft = () => {
               type="text"
               name="name"
               placeholder="Full Name"
-              className=" w-full px-3 py-2 border border-gray-300 rounded shadow-xs outline-none "
+              className=" text-secandari-default dark:text-secandari-dark w-full px-3 py-2 border border-gray-300 rounded shadow-xs outline-none "
             />
           </div>
         </div>

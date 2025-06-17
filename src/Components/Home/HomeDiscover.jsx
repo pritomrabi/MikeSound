@@ -90,7 +90,7 @@ const HomeDiscover = () => {
               <a
                 key={idx}
                 href={brand.href}
-                className="bg-white flex items-center justify-center p-6  transition"
+                className="bg-[#fdfeff] dark:bg-[#1a1a1a] flex items-center justify-center p-6  transition"
               >
                 <img
                   src={brand.img}

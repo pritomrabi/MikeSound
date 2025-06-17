@@ -1,5 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 export default {
+  darkMode: "class",
   content: [
     "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
@@ -11,8 +12,14 @@ export default {
     },
     extend: {
       colors: {
-        primary: "#242424",
-        secandari: "#767676",
+        primary: {
+          DEFAULT: "#242424",
+          dark: "#f5f5f5", // Light text in dark mode
+        },
+        secandari: {
+          DEFAULT: "#767676",
+          dark: "#bab5b5", // Light gray for dark mode
+        },
         brand: "#bea163",
         Green: "#83b735",
       },

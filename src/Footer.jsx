@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 
 const Footer = () => {
   return (
-    <footer className=" bg-white text-sm pt-12 pb-6">
+    <footer className=" bg-[#fdfeff] dark:bg-[#1a1a1a] text-sm pt-12 pb-6">
       <div className="max-w-7xl mx-auto px-4 grid md:grid-cols-12 gap-6 md:gap-10">
         {/* Column 1 */}
         <div className="lg:col-span-3 md:col-span-6 col-span-12">
@@ -13,7 +13,7 @@ const Footer = () => {
             Fashion Flat
           </Link>
           <p
-            className="mb-4 text-secandari font-Popins
+            className="mb-4 text-secandari-default dark:text-secandari-dark font-Popins
           text-xs font-normal"
           >
             Condimentum adipiscing vel neque dis nam parturient orci at
@@ -27,7 +27,7 @@ const Footer = () => {
                 width={14}
                 height={14}
               />
-              <span className="text-sm text-primary font-medium font-Monrope">
+              <span className="text-sm text-primary-default dark:text-primary-dark font-medium font-Monrope">
                 Gazipur, Dhaka , Bangladesh
               </span>
             </li>
@@ -38,7 +38,7 @@ const Footer = () => {
                 width={14}
                 height={14}
               />
-              <span className="text-sm text-primary font-medium font-Monrope">
+              <span className="text-sm text-primary-default dark:text-primary-dark font-medium font-Monrope">
                 Phone: 01929712201
               </span>
             </li>
@@ -47,7 +47,7 @@ const Footer = () => {
 
         {/* Column 2 */}
         <div className="lg:col-span-3 md:col-span-6 col-span-12">
-          <h5 className="text-lg font-semibold font-Lato text-primary mb-4">
+          <h5 className="text-lg font-semibold font-Lato text-primary-default dark:text-primary-dark mb-4">
             Recent Posts
           </h5>
           <ul className="space-y-4">
@@ -78,11 +78,11 @@ const Footer = () => {
                 <div>
                   <a
                     href={post.href}
-                    className="font-medium hover:text-primary font-Popins text-sm text-primary mb-1"
+                    className="font-medium font-Popins text-sm text-primary-default dark:text-primary-dark mb-1"
                   >
                     {post.title}
                   </a>
-                  <div className="text-secandari text-xs font-Monrope font-normal ">
+                  <div className="text-secandari-default dark:text-secandari-dark text-xs font-Monrope font-normal ">
                     {post.date}
                   </div>
                   <div className="text-secandari text-xs font-Monrope font-normal">
@@ -96,7 +96,7 @@ const Footer = () => {
 
         {/* Column 3 */}
         <div className="lg:col-span-2 md:col-span-4 col-span-12">
-          <h5 className="text-lg font-semibold font-Lato text-primary mb-4">
+          <h5 className="text-lg font-semibold font-Lato text-primary-default dark:text-primary-dark mb-4">
             Our Stores
           </h5>
           <ul className="space-y-2">
@@ -111,7 +111,7 @@ const Footer = () => {
               <li key={idx}>
                 <Link
                   to="/"
-                  className="hover:underline text-sm text-primary font-Opensans font-medium hover:text-secandari duration-200"
+                  className="hover:underline text-sm text-primary-default dark:text-primary-dark font-Opensans font-medium hover:text-secandari duration-200"
                 >
                   {city}
                 </Link>
@@ -122,7 +122,7 @@ const Footer = () => {
 
         {/* Column 4 */}
         <div className="lg:col-span-2 md:col-span-4 col-span-12">
-          <h5 className="text-lg font-semibold font-Lato text-primary mb-4">
+          <h5 className="text-lg font-semibold font-Lato text-primary-default dark:text-primary-dark mb-4">
             Useful Links
           </h5>
           <ul className="space-y-2">
@@ -137,7 +137,7 @@ const Footer = () => {
               <li key={idx}>
                 <Link
                   to="#"
-                  className="hover:underline text-sm text-primary font-Opensans font-medium hover:text-secandari duration-200"
+                  className="hover:underline text-sm text-primary-default dark:text-primary-dark font-Opensans font-medium hover:text-secandari duration-200"
                 >
                   {link}
                 </Link>
@@ -148,7 +148,7 @@ const Footer = () => {
 
         {/* Column 5 */}
         <div className="lg:col-span-2 md:col-span-4 col-span-12">
-          <h5 className="text-lg font-semibold font-Lato text-primary mb-4">
+          <h5 className="text-lg font-semibold font-Lato text-primary-default dark:text-primary-dark mb-4">
             Footer Menu
           </h5>
           <ul className="space-y-2">
@@ -169,7 +169,7 @@ const Footer = () => {
                   <li key={idx}>
                     <Link
                       to="/"
-                      className="hover:underline text-sm text-primary font-Opensans font-medium hover:text-secandari duration-200"
+                      className="hover:underline text-sm text-primary-default dark:text-primary-dark font-Opensans font-medium hover:text-secandari duration-200"
                     >
                       {item}
                     </Link>

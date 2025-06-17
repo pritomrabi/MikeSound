@@ -72,7 +72,7 @@ const HomeLatest = () => {
     <section className="py-12">
       <div className="container mx-auto px-4">
         <Heading Head="Our Latest Posts" />
-        <div className="w-full px-6 py-10 bg-white">
+        <div className="w-full px-6 py-10 bg-[#fdfeff] dark:bg-black">
           <Swiper
             modules={[Navigation, Pagination]}
             className="!pb-14"
@@ -97,16 +97,16 @@ const HomeLatest = () => {
                   </div>
 
                   <div className=" text-center space-y-1 p-3">
-                    <div className="flex justify-center gap-2 text-xs text-primary font-medium font-Lato">
+                    <div className="flex justify-center gap-2 text-xs text-primary-default dark:text-primary-dark font-medium font-Lato">
                       {/* Optional sizes */}
                       <span>XS</span>
                       <span>S</span>
                       <span>XL</span>
                     </div>
-                    <h3 className="text-sm font-medium text-primary font-Roboto ">
+                    <h3 className="text-sm font-medium text-primary-default dark:text-primary-dark font-Roboto ">
                       Men's Slim Fit Shirt
                     </h3>
-                    <p className="text-xs text-secandari font-medium font-Lato">
+                    <p className="text-xs text-secandari-default dark:text-secandari-dark font-medium font-Lato">
                       Fashion Flat
                     </p>
                     <p className="text-md font-bold text-brand font-Monrope">
