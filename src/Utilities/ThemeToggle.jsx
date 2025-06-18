@@ -3,7 +3,7 @@ import { FiMoon, FiSun } from "react-icons/fi"; // Import icons
 
 const ThemeToggle = () => {
   const [darkMode, setDarkMode] = useState(
-    () => localStorage.getItem("theme") === "dark"
+    () => localStorage.getItem("dark") === "theme"
   );
 
   useEffect(() => {

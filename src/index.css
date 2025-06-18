@@ -21,7 +21,7 @@ html {
 }
 
 .swiper-pagination-bullet {
-  @apply bg-primary-default opacity-70 w-2.5 h-2.5 mx-1 rounded-full transition duration-300;
+  @apply bg-primary opacity-70 w-2.5 h-2.5 mx-1 rounded-full transition duration-300;
 }
 
 
