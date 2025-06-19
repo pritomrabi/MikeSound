@@ -1,9 +1,12 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FiAlignLeft } from "react-icons/fi";
 import { FiX } from "react-icons/fi";
-
+import { AiOutlineShoppingCart } from "react-icons/ai";
+import { LuSearch } from "react-icons/lu";
+import { FaRegHeart } from "react-icons/fa";
 import ReactPaginate from "react-paginate";
 import { Link } from "react-router-dom";
+import ProductQuickView from "../Home/ProductQuickView";
 
 const ShopPage = () => {
   const allProducts = [
@@ -87,9 +90,17 @@ const ShopPage = () => {
   const [tempPriceRange, setTempPriceRange] = useState(priceRange);
   const [isPriceChanged, setIsPriceChanged] = useState(false);
   const [category, setCategory] = useState("All");
+  const [tempCategory, setTempCategory] = useState(category);
   const [topRated, setTopRated] = useState(false);
   const [itemOffset, setItemOffset] = useState(0);
-  const itemsPerPage = 2;
+  const [quickcart, setQuickcart] = useState(false);
+  const itemsPerPage = 16;
+
+  useEffect(() => {
+    if (showSidebar) {
+      setTempCategory(category);
+    }
+  }, [showSidebar]);
 
   const toggleSidebar = () => setShowSidebar(!showSidebar);
 
@@ -152,23 +163,23 @@ const ShopPage = () => {
                   }}
                   className="w-full h-1 bg-brand rounded-full appearance-none custom-slider"
                 />
-                <div className="text-sm text-gray-600">
-                  Up to ${tempPriceRange}
+                <div className="justify-between items-center flex pt-4">
+                  <p className="text-sm text-primary font-Monrope font-normal">
+                    Price $ {tempPriceRange}
+                  </p>
+                  <button
+                    disabled={!isPriceChanged && tempCategory === category}
+                    onClick={() => {
+                      setPriceRange(tempPriceRange);
+                      setIsPriceChanged(false);
+                      setCategory(tempCategory); // 🔥 Apply selected category here
+                      setShowSidebar(false); // ✅ Close sidebar
+                    }}
+                    className="mt-2 text-xs px-5 py-1.5 rounded cursor-pointer transition bg-brand text-white "
+                  >
+                    FILTER
+                  </button>
                 </div>
-                <button
-                  disabled={!isPriceChanged}
-                  onClick={() => {
-                    setPriceRange(tempPriceRange);
-                    setIsPriceChanged(false);
-                  }}
-                  className={`mt-2 text-sm px-4 py-1 rounded transition w-full ${
-                    isPriceChanged
-                      ? "bg-gray-100 hover:bg-gray-200 text-gray-800 cursor-pointer"
-                      : "bg-gray-200 text-gray-400 cursor-not-allowed"
-                  }`}
-                >
-                  FILTER
-                </button>
               </div>
 
               {/* Category Filter */}
@@ -183,11 +194,16 @@ const ShopPage = () => {
                       id={cat}
                       name="category"
                       value={cat}
-                      checked={category === cat}
-                      onChange={() => setCategory(cat)}
+                      checked={tempCategory === cat}
+                      onChange={() => setTempCategory(cat)}
                       className="mr-2"
                     />
-                    <label htmlFor={cat}>{cat}</label>
+                    <label
+                      className="text-primary text-base font-medium font-Lato"
+                      htmlFor={cat}
+                    >
+                      {cat}
+                    </label>
                   </div>
                 ))}
               </div>
@@ -223,24 +239,71 @@ const ShopPage = () => {
               {currentItems.map((product) => (
                 <div
                   key={product.id}
-                  className="relative border rounded-md p-4 shadow-sm hover:shadow-lg transition"
+                  className="group relative rounded-md shadow-sm  transition overflow-hidden"
                 >
                   {product.discount && (
-                    <span className="absolute top-2 left-2 bg-yellow-400 text-white text-xs px-2 py-1 rounded-full">
+                    <span className="absolute top-2 left-2 bg-brand text-white text-xs w-10 h-10 rounded-full justify-center flex items-center font-Monrope font-normal">
                       -{product.discount}%
                     </span>
                   )}
-                  <img
-                    src={product.image}
-                    alt={product.title}
-                    className="w-full h-48 object-cover mb-3"
-                  />
-                  <h3 className="text-md font-medium">{product.title}</h3>
-                  <p className="text-gray-500 text-sm">{product.category}</p>
-                  <p className="text-primary font-semibold">
-                    ${product.price.toFixed(2)}
-                  </p>
-                  <p className="text-yellow-600 text-sm">⭐ {product.rating}</p>
+                  <div className="overflow-hidden rounded-md">
+                    <img
+                      src={product.image}
+                      alt={product.title}
+                      className="w-full h-80 object-cover transform transition-transform duration-500 group-hover:scale-105 cursor-pointer"
+                    />
+                  </div>
+                  <div className=" text-center space-y-1 p-3">
+                    <div className="flex justify-center gap-2 text-xs text-primary-default dark:text-primary-dark font-medium font-Lato">
+                      {/* Optional sizes */}
+                      <span>XS</span>
+                      <span>S</span>
+                      <span>XL</span>
+                    </div>
+                    <h3 className="text-sm font-medium text-primary-default dark:text-primary-dark font-Roboto ">
+                      {product.title}
+                    </h3>
+                    <p className="text-md font-bold text-brand font-Monrope">
+                      ${product.price.toFixed(2)}
+                    </p>
+                    <p className="text-yellow-600 text-sm">
+                      ⭐ {product.rating}
+                    </p>
+                  </div>
+                  <div className="absolute bottom-32 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition flex gap-4 bg-white py-2.5 px-5 rounded shadow z-10">
+                    {/* Add to Cart */}
+                    <Link to="/singleproduct" className="relative group/icon">
+                      <button className="text-xl text-primary hover:text-secandari duration-200 cursor-pointer">
+                        <AiOutlineShoppingCart />
+                      </button>
+                      <span className="absolute  bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 rounded bg-black text-white text-xs opacity-0 group-hover/icon:opacity-100 transition whitespace-nowrap font-Lato font-normal">
+                        Add to cart
+                      </span>
+                    </Link>
+
+                    {/* Search */}
+                    <div className="relative group/icon">
+                      <button className="text-xl text-primary hover:text-secandari duration-200 cursor-pointer">
+                        <LuSearch onClick={() => setQuickcart(true)} />
+                      </button>
+                      <span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 rounded bg-black text-white text-xs opacity-0 group-hover/icon:opacity-100 transition whitespace-nowrap font-Lato font-normal">
+                        Search
+                      </span>
+                    </div>
+
+                    {/* Wishlist */}
+                    <Link to="/wishlist" className="relative group/icon">
+                      <button className="text-xl text-primary hover:text-secandari duration-200 cursor-pointer">
+                        <FaRegHeart />
+                      </button>
+                      <span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 rounded bg-black text-white text-xs opacity-0 group-hover/icon:opacity-100 transition whitespace-nowrap font-Lato font-normal">
+                        Wishlist
+                      </span>
+                    </Link>
+                  </div>
+                  {quickcart && (
+                    <ProductQuickView setQuickcart={setQuickcart} />
+                  )}
                 </div>
               ))}
             </div>
