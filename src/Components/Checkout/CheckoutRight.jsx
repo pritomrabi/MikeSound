@@ -56,9 +56,9 @@ const CheckoutRight = () => {
   ];
 
   return (
-    <div className="w-[50%] px-4 py-10">
+    <div className="lg:w-[50%] w-full sm:px-4 px-0 py-10">
       <div className="bg-[#fdfeff] dark:bg-[#1a1a1a] p-6 rounded border-2 border-gray-300 shadow-md mb-8">
-        <h2 className="text-2xl text-center font-semibold text-primary-default dark:text-primary-dark font-Roboto mb-4">
+        <h2 className="sm:text-2xl text-xl text-center font-semibold text-primary-default dark:text-primary-dark font-Roboto mb-4">
           YOUR ORDER
         </h2>
 
@@ -80,25 +80,25 @@ const CheckoutRight = () => {
               <img
                 src="https://woodmart.xtemos.com/wp-content/uploads/2017/04/fashion-product-3.jpg"
                 alt="Product"
-                className="w-28 h-24 object-cover"
+                className="sm:w-28 w-24 h-20 sm:h-24 object-cover"
               />
             </div>
             <div className="flex flex-col w-full ">
               <p className="text-primary-default dark:tex-primary-dark text-sm font-Lato font-medium pb-2">
                 Wkinny Fit Suit - XXL
               </p>
-              <div className="flex w-20 border rounded border-gray-300">
+              <div className="flex sm:w-20 w-14 border rounded border-gray-300">
                 <button
-                  className="p-2 cursor-pointer"
+                  className="sm:p-2 p-1 cursor-pointer"
                   onClick={() => setQuantity(Math.max(1, quantity - 1))}
                 >
                   <PiMinusThin size={10} />
                 </button>
-                <div className="px-2 py-1 font-medium font-Monrope text-secandari-default dark:text-secandari-dark text-sm">
+                <div className="sm:px-2 px-1 py-1 font-medium font-Monrope text-secandari-default sm:text-sm text-xs">
                   {quantity}
                 </div>
                 <button
-                  className="p-2 cursor-pointer"
+                  className="sm:p-2 p-1 cursor-pointer"
                   onClick={() => setQuantity(quantity + 1)}
                 >
                   <HiOutlinePlusSmall size={10} />

@@ -28,7 +28,10 @@ const Navbar = () => {
     <section className="bg-[#fdfeff] dark:bg-[#1a1a1a] p-6 shadow w-full fixed top-0 z-40">
       <div className="container mx-auto flex">
         <div className="flex items-center justify-between w-full">
-          <Link to="/" className="text-2xl font-bold text-brand font-Lato">
+          <Link
+            to="/"
+            className="sm:text-2xl text-xl font-bold text-brand font-Lato"
+          >
             Fashion Flat
           </Link>
           <div className=" items-center space-x-6 text-base font-Lato text-primary-default dark:text-primary-dark font-medium hidden md:block">
@@ -42,11 +45,11 @@ const Navbar = () => {
               Contact
             </Link>
           </div>
-          <div className="flex items-center space-x-4">
+          <div className="flex items-center space-x-2 sm:space-x-4">
             <ThemeToggle />
             <Link
               to="/registration"
-              className="text-base text-primary-default dark:text-primary-dark font-medium  font-Lato hover:underline hover:text-secandari duration-100"
+              className="sm:text-base text-sm text-primary-default dark:text-primary-dark font-medium  font-Lato hover:underline hover:text-secandari duration-100"
             >
               Login/Register
             </Link>
@@ -59,14 +62,14 @@ const Navbar = () => {
               />
             )}
             <Link to="/wishlist">
-              <FaRegHeart className="text-xl text-primary-default dark:text-primary-dark cursor-pointer hover:text-secandari duration-100 " />
+              <FaRegHeart className="sm:text-xl text-lg text-primary-default dark:text-primary-dark cursor-pointer hover:text-secandari duration-100 " />
             </Link>
 
             <div
               onClick={() => setShop(true)}
               className="relative inline-block"
             >
-              <PiShoppingCartSimpleLight className="text-xl text-primary-default dark:text-primary-dark cursor-pointer hover:text-secandari duration-100 " />
+              <PiShoppingCartSimpleLight className="sm:text-xl text-lg text-primary-default dark:text-primary-dark cursor-pointer hover:text-secandari duration-100 " />
               <span className="bg-brand text-white text-[8px] rounded-full w-3 h-3 absolute -top-1 -left-1 text-center flex items-center justify-center ">
                 0
               </span>
@@ -74,7 +77,7 @@ const Navbar = () => {
             {isOpen ? (
               <FiAlignRight
                 onClick={() => setIsOpen(false)}
-                className="text-xl text-primary-default dark:text-primary-dark cursor-pointer hover:text-secandari duration-100 block md:hidden"
+                className="sm:text-xl text-lg text-primary-default dark:text-primary-dark cursor-pointer hover:text-secandari duration-100 block md:hidden"
               />
             ) : (
               <Cart setIsOpen={setIsOpen} />

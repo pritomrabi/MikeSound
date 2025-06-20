@@ -12,11 +12,11 @@ const ViewLeftCart = () => {
   };
 
   return (
-    <div className="w-[65%]">
-      <form className="w-full px-4 py-10">
+    <div className="lg:w-[65%] w-full">
+      <form className="w-full sm:px-4 px-0 py-10">
         {/* Cart Table */}
         <div className="overflow-x-auto">
-          <table className="w-full text-lg text-primary-default dark:text-primary-dark font-medium font-Roboto text-left">
+          <table className="w-full sm:text-lg text-sm text-primary-default dark:text-primary-dark font-medium font-Roboto text-left">
             <thead className="border-b border-gray-300">
               <tr>
                 <th className="p-2"></th>
@@ -29,44 +29,44 @@ const ViewLeftCart = () => {
             </thead>
             <tbody>
               <tr className="border-b pb-4 border-gray-300">
-                <td className="p-2 text-primary-default dark:text-primary-dark hover:text-secandari duration-300 cursor-pointer text-xl">
+                <td className="p-2 text-primary-default dark:text-primary-dark hover:text-secandari duration-300 cursor-pointer sm:text-xl text-sm">
                   ×
                 </td>
                 <td className="p-2">
                   <img
                     src="https://woodmart.xtemos.com/wp-content/uploads/2017/04/fashion-product-3.jpg"
                     alt="Product"
-                    className="w-20 h-20 object-cover"
+                    className="sm:w-20 w-20 h-12 sm:h-20 object-cover"
                   />
                 </td>
                 <td className="p-2">
-                  <p className="text-primary-default dark:text-primary-dark text-sm font-Lato font-medium">
+                  <p className="text-primary-default dark:text-primary-dark sm:text-sm text-xs font-Lato font-medium">
                     Wkinny Fit Suit - XXL
                   </p>
                 </td>
-                <td className="p-2 text-primary-default dark:text-primary-dark text-sm font-Monrope font-medium">
+                <td className="p-2 text-primary-default dark:text-primary-dark sm:text-sm text-xs font-Monrope font-medium">
                   $599.00
                 </td>
                 <td>
-                  <div className="flex w-20 border rounded border-gray-300">
+                  <div className="flex sm:w-20 w-14 border rounded border-gray-300">
                     <button
-                      className="p-2 cursor-pointer"
+                      className="sm:p-2 p-1 cursor-pointer"
                       onClick={() => setQuantity(Math.max(1, quantity - 1))}
                     >
                       <PiMinusThin size={10} />
                     </button>
-                    <div className="px-2 py-1 font-medium font-Monrope text-secandari-default text-sm">
+                    <div className="sm:px-2 px-1 py-1 font-medium font-Monrope text-secandari-default sm:text-sm text-xs">
                       {quantity}
                     </div>
                     <button
-                      className="p-2 cursor-pointer"
+                      className="sm:p-2 p-1 cursor-pointer"
                       onClick={() => setQuantity(quantity + 1)}
                     >
                       <HiOutlinePlusSmall size={10} />
                     </button>
                   </div>
                 </td>
-                <td className="p-2 text-brand text-sm font-Monrope font-medium">
+                <td className="p-2 text-brand sm:text-sm text-xs font-Monrope font-medium">
                   $ 599.00
                 </td>
               </tr>
@@ -82,11 +82,11 @@ const ViewLeftCart = () => {
               placeholder="Coupon code"
               value={coupon}
               onChange={(e) => setCoupon(e.target.value)}
-              className="border border-gray-300 px-3 py-2 rounded w-48 outline-none"
+              className="border border-gray-300 px-3 py-2 rounded w-48 outline-none font-Monrope font-medium text-sm"
             />
             <button
               type="submit"
-              className="bg-brand cursor-pointer text-white  px-4 py-2 rounded "
+              className="bg-brand cursor-pointer text-white text-base px-4 py-2 rounded "
             >
               Apply Coupon
             </button>

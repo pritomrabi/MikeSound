@@ -3,7 +3,7 @@ import CheckoutName from "../../Utilities/CheckoutName";
 
 const CheckoutLeft = () => {
   return (
-    <div className="w-[50%] font-Lato font-normal text-primary text-sm">
+    <div className="lg:w-[50%] w-full font-Lato font-normal text-primary text-sm">
       <div className=" space-y-4">
         <div>
           <CheckoutName name="Full Name" />

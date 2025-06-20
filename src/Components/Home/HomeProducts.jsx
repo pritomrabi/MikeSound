@@ -20,7 +20,7 @@ const HomeProducts = () => {
         <div className="container mx-auto p-4">
           <div className="flex justify-center mb-8">
             <button
-              className={`px-4 py-2 mr-2 cursor-pointer text-base font-Lato font-medium rounded ${
+              className={`px-4 py-2 mr-2 cursor-pointer text-sm sm:text-base font-Lato font-medium rounded ${
                 selectedCollection === "man" ? " text-brand " : " text-primary"
               }`}
               onClick={() => handleCollectionClick("man")}
@@ -28,7 +28,7 @@ const HomeProducts = () => {
               MAN COLLECTION
             </button>
             <button
-              className={`px-4 py-2 cursor-pointer text-base font-Lato font-medium rounded ${
+              className={`px-4 py-2 cursor-pointer text-sm sm:text-base font-Lato font-medium rounded ${
                 selectedCollection === "woman" ? "text-brand" : "text-primary"
               }`}
               onClick={() => handleCollectionClick("woman")}

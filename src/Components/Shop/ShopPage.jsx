@@ -138,8 +138,8 @@ const ShopPage = () => {
           <h2 className="">Show sidebar</h2>
         </div>
         {showSidebar && (
-          <div className=" fixed top-0 left-0 md:block w-64 p-4 rounded-md mr-6 z-50 h-full">
-            <div className="fixed w-[25%] h-full top-0 left-0 bg-white px-5">
+          <div className=" fixed top-0 left-0 md:block w-full p-4 rounded-md mr-6 z-50 h-full">
+            <div className="fixed w-[90%] sm:w-[80%] md:w-[50%] lg:w-[25%] h-full top-0 left-0 bg-white px-5">
               {/* Price Filter */}
               <div
                 onClick={() => setShowSidebar(false)}
@@ -226,7 +226,7 @@ const ShopPage = () => {
             </div>
             <div
               onClick={() => setShowSidebar(false)}
-              className="fixed w-[75%] top-0 right-0 bg-[rgba(0,0,0,0.1)] z-50 h-full"
+              className="fixed w-[10%] sm:w-[20%] md:w-[50%] lg:w-[25%] top-0 right-0 bg-[rgba(0,0,0,0.1)] z-50 h-full"
             ></div>
           </div>
         )}

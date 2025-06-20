@@ -3,9 +3,9 @@ import { Link } from "react-router-dom";
 const ViewRightCart = () => {
   
   return (
-    <div className="w-[35%] px-4 py-10">
+    <div className="lg:w-[35%] w-full px-4 py-10">
       <div className="bg-[#fdfeff] dark:bg-[#1a1a1a] p-6 rounded-lg border-2 border-gray-300 shadow-md mb-8">
-        <h2 className="text-2xl font-semibold text-primary-default dark:text-primary-dark font-Roboto mb-4">
+        <h2 className="sm:text-2xl text-xl font-semibold text-primary-default dark:text-primary-dark font-Roboto mb-4">
           Cart totals
         </h2>
 
