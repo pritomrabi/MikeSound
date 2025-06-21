@@ -7,6 +7,7 @@ import { FaRegHeart } from "react-icons/fa";
 import ReactPaginate from "react-paginate";
 import { Link } from "react-router-dom";
 import ProductQuickView from "../Home/ProductQuickView";
+import Filter from "../../Utilities/Filter";
 
 const ShopPage = () => {
   const allProducts = [
@@ -86,21 +87,12 @@ const ShopPage = () => {
     "Lighting",
   ];
   const [showSidebar, setShowSidebar] = useState(false);
-  const [priceRange, setPriceRange] = useState(1000);
-  const [tempPriceRange, setTempPriceRange] = useState(priceRange);
-  const [isPriceChanged, setIsPriceChanged] = useState(false);
-  const [category, setCategory] = useState("All");
-  const [tempCategory, setTempCategory] = useState(category);
   const [topRated, setTopRated] = useState(false);
   const [itemOffset, setItemOffset] = useState(0);
   const [quickcart, setQuickcart] = useState(false);
-  const itemsPerPage = 16;
-
-  useEffect(() => {
-    if (showSidebar) {
-      setTempCategory(category);
-    }
-  }, [showSidebar]);
+  const [priceRange, setPriceRange] = useState(1000);
+  const [category, setCategory] = useState("All");
+  const itemsPerPage = 4;
 
   const toggleSidebar = () => setShowSidebar(!showSidebar);
 
@@ -147,40 +139,14 @@ const ShopPage = () => {
               >
                 <FiX className="text-lg" /> close
               </div>
-              <div>
-                <h4 className="font-normal font-Roboto text-xl text-primary mb-2">
-                  Filter by Price
-                </h4>
-                <input
-                  type="range"
-                  min="0"
-                  max="1000"
-                  value={tempPriceRange}
-                  onChange={(e) => {
-                    const newValue = Number(e.target.value);
-                    setTempPriceRange(newValue);
-                    setIsPriceChanged(newValue !== priceRange);
-                  }}
-                  className="w-full h-1 bg-brand rounded-full appearance-none custom-slider"
-                />
-                <div className="justify-between items-center flex pt-4">
-                  <p className="text-sm text-primary font-Monrope font-normal">
-                    Price $ {tempPriceRange}
-                  </p>
-                  <button
-                    disabled={!isPriceChanged && tempCategory === category}
-                    onClick={() => {
-                      setPriceRange(tempPriceRange);
-                      setIsPriceChanged(false);
-                      setCategory(tempCategory); // 🔥 Apply selected category here
-                      setShowSidebar(false); // ✅ Close sidebar
-                    }}
-                    className="mt-2 text-xs px-5 py-1.5 rounded cursor-pointer transition bg-brand text-white "
-                  >
-                    FILTER
-                  </button>
-                </div>
-              </div>
+              <Filter
+                priceRange={priceRange}
+                setPriceRange={setPriceRange}
+                category={category}
+                setCategory={setCategory}
+                showSidebar={showSidebar}
+                setShowSidebar={setShowSidebar}
+              />
 
               {/* Category Filter */}
               <div className="mt-6">
@@ -194,10 +160,11 @@ const ShopPage = () => {
                       id={cat}
                       name="category"
                       value={cat}
-                      checked={tempCategory === cat}
-                      onChange={() => setTempCategory(cat)}
+                      checked={category === cat}
+                      onChange={() => setCategory(cat)}
                       className="mr-2"
                     />
+
                     <label
                       className="text-primary text-base font-medium font-Lato"
                       htmlFor={cat}
@@ -226,7 +193,7 @@ const ShopPage = () => {
             </div>
             <div
               onClick={() => setShowSidebar(false)}
-              className="fixed w-[10%] sm:w-[20%] md:w-[50%] lg:w-[25%] top-0 right-0 bg-[rgba(0,0,0,0.1)] z-50 h-full"
+              className="fixed w-[10%] sm:w-[20%] md:w-[50%] lg:w-[75%] top-0 right-0 bg-[rgba(0,0,0,0.1)] z-50 h-full"
             ></div>
           </div>
         )}
