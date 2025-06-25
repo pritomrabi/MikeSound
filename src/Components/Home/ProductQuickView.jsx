@@ -18,7 +18,7 @@ const ProductQuickView = ({ setQuickcart }) => {
 
   return (
     <div className="fixed top-0 inset-0 bg-[rgba(0,0,0,0.2)] bg-opacity-40 z-50 h-full w-full overflow-auto px-4 py-6 flex items-start justify-center">
-      <div className="bg-white w-full max-w-full md:max-w-3xl lg:max-w-5xl rounded-lg shadow-lg flex flex-col md:flex-row mt-5">
+      <div className="bg-[#fdfeff] dark:bg-[#1a1a1a] w-full max-w-full md:max-w-3xl lg:max-w-5xl rounded-lg shadow-lg flex flex-col md:flex-row mt-5">
         {/* Left: Image Slider */}
         <button className="absolute top-4 right-4 text-white  cursor-pointer transition duration-200 block  md:hidden">
           <IoClose onClick={() => setQuickcart(false)} size={25} />
@@ -48,11 +48,11 @@ const ProductQuickView = ({ setQuickcart }) => {
 
         {/* Right: Product Details */}
         <div className="w-full md:w-1/2 p-6 relative">
-          <button className="absolute top-4 right-4 text-secandari hover:text-primary cursor-pointer transition duration-200 hidden md:block">
+          <button className="absolute top-4 right-4 text-secandari hover:text-primary hover:dark:text-primary-dark cursor-pointer transition duration-200 hidden md:block">
             <IoClose onClick={() => setQuickcart(false)} size={25} />
           </button>
 
-          <h2 className="text-2xl text-primary font-Lato font-medium mb-2 pt-4">
+          <h2 className="text-2xl text-primary dark:text-primary-dark font-Lato font-medium mb-2 pt-4">
             Wini Dress Top Layer
           </h2>
           <p className="text-xl text-brand font-Monrope font-semibold ">
@@ -67,7 +67,7 @@ const ProductQuickView = ({ setQuickcart }) => {
 
           {/* Size Selection */}
           <div className="mb-4 flex gap-3 pb-2 flex-wrap items-center">
-            <p className="font-medium font-Lato text-base text-primary mb-1">
+            <p className="font-medium font-Lato text-base text-primary dark:text-primary-dark mb-1">
               Size:
             </p>
             <div className="flex gap-2 flex-wrap">
@@ -114,14 +114,20 @@ const ProductQuickView = ({ setQuickcart }) => {
 
           {/* SKU and Category */}
           <p className="text-sm text-secandari font-Lato font-medium mb-1">
-            <strong className="text-primary">SKU:</strong> N/A
+            <strong className="text-primary dark:text-primary-dark">
+              SKU:
+            </strong>{" "}
+            N/A
           </p>
           <p className="text-sm text-secandari font-Lato font-medium mb-4">
-            <strong className="text-primary">Category:</strong> Fashion Flat
+            <strong className="text-primary dark:text-primary-dark">
+              Category:
+            </strong>{" "}
+            Fashion Flat
           </p>
 
           {/* Social Share */}
-          <div className="flex gap-3 text-gray-600 text-sm">
+          <div className="flex gap-3 text-gray-600 dark:text-primary-dark text-sm">
             <FaFacebookF className="hover:text-blue-600 duration-500 cursor-pointer" />
             <FaTwitter className="hover:text-blue-400 duration-500 cursor-pointer" />
             <FaPinterest className="hover:text-red-600 duration-500 cursor-pointer" />

@@ -23,7 +23,7 @@ const RelatedProduct = () => {
     <section>
       <div className="container mx-auto px-3">
         <div className=" mx-auto px-4 py-10 ">
-          <h2 className="text-2xl font-normal text-primary font-Roboto mb-6">
+          <h2 className="text-2xl font-normal text-primary dark:text-primary-dark font-Roboto mb-6">
             Related Products
           </h2>
           <Slider {...settings}>
@@ -37,7 +37,7 @@ const RelatedProduct = () => {
               </div>
 
               <div className=" text-center space-y-1 p-3">
-                <div className="flex justify-center gap-2 text-xs text-primary font-medium font-Lato">
+                <div className="flex justify-center gap-2 text-xs text-primary dark:text-primary-dark font-medium font-Lato">
                   {/* Optional sizes */}
                   <span>XS</span>
                   <span>S</span>
