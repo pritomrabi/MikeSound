@@ -122,7 +122,7 @@ const ShopPage = () => {
             Home
           </Link>
           <h3 className="text-primary text-base font-Lato font-semibold mb-4 inline-block">
-            <span className="text-secandari pr-1">/</span> Shop
+            <span className="text-secandari  pr-1">/</span> Shop
           </h3>
         </div>
         <div className="flex text-base gap-2 cursor-pointer text-primary font-Lato font-medium items-center mb-4">
@@ -279,15 +279,19 @@ const ShopPage = () => {
             <div className="flex justify-center mt-8">
               <ReactPaginate
                 breakLabel="..."
-                nextLabel=">"
+                nextLabel={null}
                 onPageChange={handlePageClick}
                 pageRangeDisplayed={1}
                 pageCount={pageCount}
-                previousLabel="<"
-                containerClassName="flex space-x-2"
-                pageClassName="px-3 py-1 border rounded hover:bg-gray-200"
-                activeClassName="bg-gray-300"
+                previousLabel={null}
                 renderOnZeroPageCount={null}
+                // Container styling
+                containerClassName="flex justify-center items-center space-x-2 mt-4"
+                // Page button base styling
+                pageClassName="text-primary border border-gray-300 rounded-lg px-3 py-1 transition duration-200 hover:bg-gray-100 cursor-pointer"
+                // Active (current page) styling
+                activeClassName="bg-blue-500 text-white hover:text-primary border-blue-500 hover:bg-blue-600"
+                breakClassName="text-gray-500 px-2"
               />
             </div>
           </div>
