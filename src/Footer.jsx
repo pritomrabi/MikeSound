@@ -28,7 +28,7 @@ const Footer = () => {
                 height={14}
               />
               <span className="text-sm text-primary-default dark:text-primary-dark font-medium font-Monrope">
-                Gazipur, Dhaka , Bangladesh
+                 Dhaka , Bangladesh
               </span>
             </li>
             <li className="flex items-start gap-2">
@@ -39,7 +39,7 @@ const Footer = () => {
                 height={14}
               />
               <span className="text-sm text-primary-default dark:text-primary-dark font-medium font-Monrope">
-                Phone: 01929712201
+                Phone: 010-1234-5678
               </span>
             </li>
           </ul>
