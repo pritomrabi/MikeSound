@@ -15,7 +15,6 @@ import Registration from "./Auth/Registration";
 import Login from "./Auth/Login";
 import Forgot from "./Auth/Forgot";
 import OTP from "./Auth/OTP";
-import Wishlist from "./Pages/Wishlist";
 import SingleProduct from "./Pages/SingleProduct";
 import ViewCart from "./Pages/ViewCart";
 import Checkout from "./Pages/Checkout";
@@ -53,7 +52,6 @@ function App() {
           <Route index element={<Home />} />
           <Route path="contact" element={<Contact />} />
           <Route path="shop" element={<Shop />} />
-          <Route path="/wishlist" element={<Wishlist />} />
           <Route path="/singleproduct" element={<SingleProduct />} />
           <Route path="/viewcart" element={<ViewCart />} />
           <Route path="/checkout" element={<Checkout />} />

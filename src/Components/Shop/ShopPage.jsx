@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { FiAlignLeft } from "react-icons/fi";
 import { FiX } from "react-icons/fi";
 import { AiOutlineShoppingCart } from "react-icons/ai";
@@ -290,7 +290,7 @@ const ShopPage = () => {
                 // Page button base styling
                 pageClassName="text-primary border border-gray-300 rounded-lg px-3 py-1 transition duration-200 hover:bg-gray-100 cursor-pointer"
                 // Active (current page) styling
-                activeClassName="bg-blue-500 text-white hover:text-primary border-blue-500 hover:bg-blue-600"
+                activeClassName="bg-yellow-600 text-white hover:text-primary border-blue-500 hover:bg-blue-600"
                 breakClassName="text-gray-500 px-2"
               />
             </div>

@@ -49,7 +49,7 @@ const Navbar = () => {
             <ThemeToggle />
             <Link
               to="/registration"
-              className="sm:text-base text-sm text-primary-default dark:text-primary-dark font-medium  font-Lato hover:underline hover:text-secandari duration-100"
+              className="sm:text-base text-sm text-primary-default dark:text-primary-dark font-medium  font-Lato hover:underline hover:text-secandari duration-100 hidden sm:block"
             >
               Login/Register
             </Link>
@@ -61,10 +61,6 @@ const Navbar = () => {
                 className="text-2xl text-primary-default dark:text-primary-dark cursor-pointer hover:text-secandari duration-100 md:block hidden"
               />
             )}
-            <Link to="/wishlist">
-              <FaRegHeart className="sm:text-xl text-lg text-primary-default dark:text-primary-dark cursor-pointer hover:text-secandari duration-100 " />
-            </Link>
-
             <div
               onClick={() => setShop(true)}
               className="relative inline-block"
