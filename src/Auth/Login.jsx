@@ -63,29 +63,6 @@ const Login = () => {
             Login
           </button>
         </form>
-        <div className="flex justify-center space-x-4 pt-5">
-          <button
-            onClick={() => handleSocialLogin("Google")}
-            className="flex items-center gap-2 px-4 py-2 border rounded-lg text-xs font-Lato font-medium text-gray-700 hover:bg-gray-100 transition cursor-pointer"
-          >
-            <FaGoogle className="text-red-500 text-xs" />
-            Google
-          </button>
-          <button
-            onClick={() => handleSocialLogin("Facebook")}
-            className="flex items-center gap-2 px-4 py-2 border rounded-lg text-xs font-Lato font-medium text-gray-700 hover:bg-gray-100 transition cursor-pointer"
-          >
-            <FaFacebookF className="text-blue-600 text-xs" />
-            Facebook
-          </button>
-          <button
-            onClick={() => handleSocialLogin("Twitter")}
-            className="flex items-center gap-2 px-4 py-2 border rounded-lg text-xs font-Lato font-medium text-gray-700 hover:bg-gray-100 transition cursor-pointer"
-          >
-            <FaTwitter className="text-blue-400 text-xs" />
-            Twitter
-          </button>
-        </div>
         <p className="text-sm text-center font-Monrope font-normal text-gray-600 mt-4">
           Don't have an account?{" "}
           <Link to="/registration" className="text-blue-500 underline">

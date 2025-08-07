@@ -104,39 +104,6 @@ const Registration = () => {
             Register
           </button>
         </form>
-
-        {/* Divider */}
-        <div className="flex items-center my-5">
-          <div className="flex-grow h-px bg-gray-300"></div>
-          <span className="px-3 text-sm text-gray-500">or sign up with</span>
-          <div className="flex-grow h-px bg-gray-300"></div>
-        </div>
-
-        {/* Social Buttons */}
-        <div className="flex justify-center space-x-4">
-          <button
-            onClick={() => handleSocialLogin("Google")}
-            className="flex items-center gap-2 px-4 py-2 border rounded-lg text-xs font-Lato font-medium text-gray-700 hover:bg-gray-100 transition cursor-pointer"
-          >
-            <FaGoogle className="text-red-500 text-xs" />
-            Google
-          </button>
-          <button
-            onClick={() => handleSocialLogin("Facebook")}
-            className="flex items-center gap-2 px-4 py-2 border rounded-lg text-xs font-Lato font-medium text-gray-700 hover:bg-gray-100 transition cursor-pointer"
-          >
-            <FaFacebookF className="text-blue-600 text-xs" />
-            Facebook
-          </button>
-          <button
-            onClick={() => handleSocialLogin("Twitter")}
-            className="flex items-center gap-2 px-4 py-2 border rounded-lg text-xs font-Lato font-medium text-gray-700 hover:bg-gray-100 transition cursor-pointer"
-          >
-            <FaTwitter className="text-blue-400 text-xs" />
-            Twitter
-          </button>
-        </div>
-
         <p className="text-sm text-center text-gray-600 mt-6">
           Already have an account?{" "}
           <Link to="/login" className="text-blue-500 underline">

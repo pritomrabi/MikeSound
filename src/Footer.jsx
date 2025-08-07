@@ -1,213 +1,84 @@
+import { FaFacebook } from "react-icons/fa";
+import { FaWhatsapp } from "react-icons/fa";
+import { FaFacebookMessenger } from "react-icons/fa";
+import { FaPhoneAlt } from "react-icons/fa";
 import { Link } from "react-router-dom";
 
 const Footer = () => {
   return (
     <footer className=" bg-[#fdfeff] dark:bg-[#1a1a1a] text-sm pt-12 pb-6">
-      <div className="max-w-7xl mx-auto px-4 grid md:grid-cols-12 gap-6 md:gap-10">
-        {/* Column 1 */}
-        <div className="lg:col-span-3 md:col-span-6 col-span-12">
-          <Link
-            to="/"
-            className="block mb-4 text-2xl font-bold text-brand font-Lato"
-          >
-            Fashion Flat
+      <div className="container mx-auto justify-center px-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+        {/* Branding */}
+        <div>
+          <Link to="/">
+            <h4 className="text-2xl font-bold text-brand font-Monrope">
+              Tamim Vai 60$
+            </h4>
           </Link>
-          <p
-            className="mb-4 text-secandari-default dark:text-secandari-dark font-Popins
-          text-xs font-normal"
-          >
-            Condimentum adipiscing vel neque dis nam parturient orci at
-            scelerisque neque dis nam parturient.
+          <p className="text-gray-400 font-normal font-Nunito-font w-[95%] text-sm mt-2">
+            We provide the best wellness services to help you relax and rejuvenate. Our team is dedicated to offering a soothing experience tailored to your needs.
           </p>
-          <ul className="space-y-2">
-            <li className="flex items-start gap-2">
-              <img
-                src="https://woodmart.xtemos.com/wp-content/uploads/2023/09/wd-cursor-dark.svg"
-                alt="location"
-                width={14}
-                height={14}
-              />
-              <span className="text-sm text-primary-default dark:text-primary-dark font-medium font-Monrope">
-                 Dhaka , Bangladesh
-              </span>
-            </li>
-            <li className="flex items-start gap-2">
-              <img
-                src="https://woodmart.xtemos.com/wp-content/uploads/2023/09/wd-phone-dark.svg"
-                alt="phone"
-                width={14}
-                height={14}
-              />
-              <span className="text-sm text-primary-default dark:text-primary-dark font-medium font-Monrope">
-                Phone: 010-1234-5678
-              </span>
-            </li>
+        </div>
+
+        {/* Quick Links */}
+        <div>
+          <h4 className="text-2xl font-semibold font-Monrope mb-4">Quick Links</h4>
+          <ul className="text-gray-400 text-sm font-Monrope space-y-2 flex flex-col">
+            <Link className="hover:text-emerald-400" to="/services">Services</Link>
+            <Link className="hover:text-emerald-400" to="/about">About Us</Link>
+            <Link className="hover:text-emerald-400" to="/contact">Contact</Link>
+            <Link className="hover:text-emerald-400" to="/faq">FAQ</Link>
           </ul>
         </div>
 
-        {/* Column 2 */}
-        <div className="lg:col-span-3 md:col-span-6 col-span-12">
-          <h5 className="text-lg font-semibold font-Lato text-primary-default dark:text-primary-dark mb-4">
-            Recent Posts
-          </h5>
-          <ul className="space-y-4">
-            {[
-              {
-                title: "A companion for extra sleeping",
-                date: "July 23, 2016",
-                comments: "1 Comment",
-                img: "https://woodmart.xtemos.com/wp-content/uploads/2016/07/blog-12-75x65.jpg",
-                href: "#",
-              },
-              {
-                title: "Outdoor seating collection inspiration",
-                date: "July 23, 2016",
-                comments: "1 Comment",
-                img: "https://woodmart.xtemos.com/wp-content/uploads/2016/07/blog-11-75x65.jpg",
-                href: "#",
-              },
-            ].map((post, idx) => (
-              <li key={idx} className="flex gap-4">
-                <a href={post.href}>
-                  <img
-                    src={post.img}
-                    alt={post.title}
-                    className="w-[75px] h-[65px] object-cover"
-                  />
-                </a>
-                <div>
-                  <a
-                    href={post.href}
-                    className="font-medium font-Popins text-sm text-primary-default dark:text-primary-dark mb-1"
-                  >
-                    {post.title}
-                  </a>
-                  <div className="text-secandari-default dark:text-secandari-dark text-xs font-Monrope font-normal ">
-                    {post.date}
-                  </div>
-                  <div className="text-secandari text-xs font-Monrope font-normal">
-                    {post.comments}
-                  </div>
-                </div>
-              </li>
-            ))}
+        {/* Contact */}
+        <div>
+          <h4 className="text-2xl font-semibold font-Monrope mb-4">Contact</h4>
+          <ul className="text-gray-400 text-sm font-Monrope space-y-2">
+            <li>Email: <Link className="hover:text-emerald-400" to="mailto:eurosespabd@gmail.com">eurosespabd@gmail.com</Link></li>
+            <li>Phone: <Link className="hover:text-emerald-400" to="tel:+8801911552077">+880 1911-552077</Link></li>
+            <li>Location: Gulshan 2, Road 41, House 7/a, Dhaka 1212, Bangladesh.</li>
           </ul>
         </div>
 
-        {/* Column 3 */}
-        <div className="lg:col-span-2 md:col-span-4 col-span-12">
-          <h5 className="text-lg font-semibold font-Lato text-primary-default dark:text-primary-dark mb-4">
-            Our Stores
-          </h5>
-          <ul className="space-y-2">
-            {[
-              "New York",
-              "London SF",
-              "Edinburgh",
-              "Los Angeles",
-              "Chicago",
-              "Las Vegas",
-            ].map((city, idx) => (
-              <li key={idx}>
-                <Link
-                  to="/"
-                  className="hover:underline text-sm text-primary-default dark:text-primary-dark font-Opensans font-medium hover:text-secandari duration-200"
-                >
-                  {city}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        {/* Column 4 */}
-        <div className="lg:col-span-2 md:col-span-4 col-span-12">
-          <h5 className="text-lg font-semibold font-Lato text-primary-default dark:text-primary-dark mb-4">
-            Useful Links
-          </h5>
-          <ul className="space-y-2">
-            {[
-              "Privacy Policy",
-              "Returns",
-              "Terms & Conditions",
-              "Contact Us",
-              "Latest News",
-              "Our Sitemap",
-            ].map((link, idx) => (
-              <li key={idx}>
-                <Link
-                  to="#"
-                  className="hover:underline text-sm text-primary-default dark:text-primary-dark font-Opensans font-medium hover:text-secandari duration-200"
-                >
-                  {link}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        {/* Column 5 */}
-        <div className="lg:col-span-2 md:col-span-4 col-span-12">
-          <h5 className="text-lg font-semibold font-Lato text-primary-default dark:text-primary-dark mb-4">
-            Footer Menu
-          </h5>
-          <ul className="space-y-2">
-            {[
-              "Instagram profile",
-              "New Collection",
-              "Woman Dress",
-              "Contact Us",
-              "Latest News",
-              {
-                text: "Purchase Theme",
-                href: "https://xtemos.com/buy-woodmart.php",
-                italic: true,
-              },
-            ].map((item, idx) => {
-              if (typeof item === "string") {
-                return (
-                  <li key={idx}>
-                    <Link
-                      to="/"
-                      className="hover:underline text-sm text-primary-default dark:text-primary-dark font-Opensans font-medium hover:text-secandari duration-200"
-                    >
-                      {item}
-                    </Link>
-                  </li>
-                );
-              } else {
-                return (
-                  <li key={idx}>
-                    <a
-                      href={item.href}
-                      className="italic hover:underline"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      {item.text}
-                    </a>
-                  </li>
-                );
-              }
-            })}
-          </ul>
+        {/* Social Links */}
+        <div>
+          <h4 className="text-2xl font-semibold font-Monrope mb-4">Follow Us</h4>
+          <div className="flex space-x-4 text-gray-400">
+            <Link
+              href="https://www.facebook.com/share/16A3MYTHnv"
+              aria-label="Facebook"
+              className="hover:text-emerald-400"
+            >
+              <FaFacebook className="text-xl" />
+            </Link>
+            <Link
+              href="https://wa.me/+8801911552077"
+              className="hover:text-emerald-400"
+            >
+              <FaWhatsapp className="text-xl" />
+            </Link>
+            <Link
+              href="https://m.me/EuRose.Spa"
+              className="hover:text-emerald-400"
+            >
+              <FaFacebookMessenger className="text-xl" />
+            </Link>
+            <Link
+              href="tel:+8801911552077"
+              className="hover:text-emerald-400"
+            >
+              <FaPhoneAlt className="text-xl" />
+            </Link>
+          </div>
         </div>
       </div>
 
-      {/* Copyright */}
-      <div className="border-t border-secandari mt-10 pt-6">
-        <div className="max-w-7xl mx-auto px-4 flex flex-col md:flex-row justify-between items-center text-secandari text-sm font-Monrope font-normal">
-          <small>
-            © 2025 CREATED BY{" "}
-            <span className="text-red-500 font-semibold">Fashion Flat</span>.
-            PREMIUM E-COMMERCE SOLUTIONS.
-          </small>
-          <img
-            src="https://woodmartcdn-cec2.kxcdn.com/wp-content/uploads/2017/01/payments.png"
-            alt="Payments"
-            className="mt-4 md:mt-0 w-[255px] h-auto"
-          />
-        </div>
+      {/* Footer bottom */}
+      <div className="mt-8 border-t border-gray-700 pt-6 text-center">
+        <p className="text-gray-400 font-Nunito-font text-sm">
+          © 2025 Tamim Vai. All Rights Reserved.
+        </p>
       </div>
     </footer>
   );
