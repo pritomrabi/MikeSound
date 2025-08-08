@@ -16,11 +16,11 @@ const Cart = ({ setIsOpen }) => {
           <RxCross2 className=" text-lg" />
         </p>
         <div className="p-16">
-          <div className="relative w-full max-w-sm">
+          <div className="relative w-full ">
             <input
               type="text"
               placeholder="Search for products"
-              className="w-full border border-secandari  rounded-2xl py-4 pl-4 pr-10 text-sm text-gray-700 dark:text-gray-50 placeholder-gray-500 outline-none font-Lato font-normal"
+              className="w-full border border-secandari  rounded-2xl py-4 pl-4 pr-10 text-xs sm:text-sm text-gray-700 dark:text-gray-50 placeholder-gray-500 outline-none font-Lato font-normal"
             />
             <button
               type="submit"

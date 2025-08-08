@@ -1,8 +1,24 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Heading from "../../Utilities/Heading";
 import { Link } from "react-router-dom";
+import { ProductData } from "../../api/Index";
 
 const HomeCategories = () => {
+
+const [productList, setProductList] = useState([]);
+  
+  useEffect(() => {
+  ProductData()
+    .then((data) => {
+      setProductList(data);  // data already is res.data from API
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+}, []);
+
+  console.log("productList:", productList);
+
   const categories = [
     {
       title: "Furniture",
@@ -53,9 +69,8 @@ const HomeCategories = () => {
             <Link
               key={index}
               to={cat.link}
-              className={`relative overflow-hidden rounded-md group ${
-                cat.colSpan || ""
-              }`}
+              className={`relative overflow-hidden rounded-md group ${cat.colSpan || ""
+                }`}
             >
               <img
                 src={cat.image}

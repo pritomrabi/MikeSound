@@ -16,19 +16,6 @@ const HomeBanner = () => {
     },
     {
       id: 2,
-      title: "A Collection of Suits for Every Day",
-      subtitle:
-        "Convallis interdum purus adipiscing dis parturient posuere adipiscing montes parturient.",
-      button: "VIEW COLLECTION",
-      background:
-        "https://woodmart.xtemos.com/wp-content/uploads/2024/02/fashion-flat-slide-3.jpg",
-      alignment: "items-end justify-center text-center",
-      titleStyles: "text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-semibold",
-      subtitleStyles: "mt-4 text-base md:text-lg max-w-lg mx-auto text-white",
-      whiteText: true,
-    },
-    {
-      id: 3,
       title: "Oversize Striped T-shirt",
       button: "SHOP COLLECTION",
       background:
@@ -105,13 +92,6 @@ const HomeBanner = () => {
                 >
                   {slide.title}
                 </h2>
-                {slide.subtitle && (
-                  <p
-                    className={` font-Nunito-font font-normal ${slide.subtitleStyles}`}
-                  >
-                    {slide.subtitle}
-                  </p>
-                )}
                 <div className="mt-6">
                   <Link
                     to="/shop"
