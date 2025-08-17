@@ -2,15 +2,25 @@ from django.db import models
 from django.conf import settings
 from orders.models import Order
 from django.utils import timezone
+
 class Transaction(models.Model):
-    STATUS_CHOICES = [
-        ('pending', 'Pending'),
-        ('success', 'Success'),
-        ('failed', 'Failed')
+    PAYMENT_METHODS = [
+        ('manual', 'Manual'),
+        ('stripe', 'Stripe'),
+        ('bkash', 'Bkash'),
+        ('nogod', 'Nagad'),
+        ('sslcommerz', 'SSLCommerz')
     ]
+    STATUS_CHOICES = [
+        ('pending','Pending'),
+        ('success','Success'),
+        ('failed','Failed')
+    ]
+
     order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='transactions')
     amount = models.DecimalField(max_digits=12, decimal_places=2)
-    gateway = models.CharField(max_length=50)
+    gateway = models.CharField(max_length=20, choices=PAYMENT_METHODS, default='manual')
+    reference = models.CharField(max_length=255, blank=True, null=True)
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='pending')
     raw_response = models.JSONField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -18,6 +28,13 @@ class Transaction(models.Model):
 
     def __str__(self):
         return f"Txn#{self.id} - {self.gateway} - {self.status}"
+
+class PaymentNumber(models.Model):
+    gateway = models.CharField(max_length=20, choices=[('bkash','Bkash'),('nogod','Nagad'),('rocket','Rocket')])
+    account_number = models.CharField(max_length=50)
+
+    def __str__(self):
+        return f"{self.gateway} - {self.account_number}"
 
 class AccountEntry(models.Model):
     transaction = models.ForeignKey(Transaction, on_delete=models.CASCADE)
@@ -29,12 +46,6 @@ class Expense(models.Model):
     amount = models.DecimalField(max_digits=12, decimal_places=2)
     date = models.DateField(default=timezone.now)
     note = models.TextField(blank=True)
-
-class SalaryEntry(models.Model):
-    staff = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    amount = models.DecimalField(max_digits=12, decimal_places=2)
-    date = models.DateField(default=timezone.now)
-    status = models.CharField(max_length=20, choices=[('paid','Paid'),('pending','Pending')], default='pending')
 
 class SalaryEntry(models.Model):
     staff_name = models.CharField(max_length=255)

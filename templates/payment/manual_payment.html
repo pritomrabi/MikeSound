@@ -1,0 +1,17 @@
+<h2>Manual Payment</h2>
+<p>Order ID: {{ txn.order.id }}</p>
+<p>Amount: {{ txn.amount }}</p>
+
+{% for pay in payment_numbers %}
+<p>{{ pay.gateway }} Number: <strong>{{ pay.account_number }}</strong></p>
+{% empty %}
+<p>No manual payment numbers available.</p>
+{% endfor %}
+
+<form method="post" action="{% url 'manual_reference_submit' txn.id %}">
+    {% csrf_token %}
+    <label>Reference Number:</label>
+    <input type="text" name="reference" required>
+    <button type="submit">Submit</button>
+</form>
+

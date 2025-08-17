@@ -166,5 +166,21 @@ NOGOD_MERCHANT_NUMBER="merchant_no"
 NOGOD_SECRET="nogod_secret"
 
 
+# Manual accounts
+MANUAL_PAYMENT_ACCOUNTS = {
+    "bkash": "017XXXXXXXX",
+    "nagad": "018XXXXXXXX",
+    "rocket": "019XXXXXXXX"
+}
+
+
+# Gmail Email Setup
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'pritomrabidas102@gmail.com'          # তোমার Gmail
+EMAIL_HOST_PASSWORD = 'your_app_password'        # Gmail App Password
+
 
 # python manage.py runserver_plus 127.0.0.1:8000 --cert-file cert.pem --key-file key.pem

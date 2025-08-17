@@ -1,0 +1,17 @@
+<h2>Verify Manual Payment</h2>
+<p>Txn ID: {{ txn.id }}</p>
+<p>Order ID: {{ txn.order.id }}</p>
+<p>Amount: {{ txn.amount }}</p>
+
+<form method="post">
+    {% csrf_token %}
+    <label>Reference Number</label>
+    <input type="text" name="reference" value="{{ txn.reference }}">
+    <label>Status</label>
+    <select name="status">
+        <option value="success" {% if txn.status == 'success' %}selected{% endif %}>Success</option>
+        <option value="failed" {% if txn.status == 'failed' %}selected{% endif %}>Failed</option>
+        <option value="pending" {% if txn.status == 'pending' %}selected{% endif %}>Pending</option>
+    </select>
+    <button type="submit">Update</button>
+</form>

@@ -2,15 +2,11 @@
 
 <h3>Items</h3>
 <table border="1" cellpadding="5">
-<tr>
-<th>Product</th><th>Variation</th><th>Quantity</th><th>Unit Price</th><th>Total</th>
-</tr>
+<tr><th>Product</th><th>Variation</th><th>Quantity</th><th>Unit Price</th><th>Total</th></tr>
 {% for item in items %}
 <tr>
 <td>{{ item.product.title }}</td>
-<td>
-{% if item.variation %} {{ item.variation.size }} {% else %} Default {% endif %}
-</td>
+<td>{% if item.variation %}{{ item.variation.size }}{% else %}Default{% endif %}</td>
 <td>{{ item.quantity }}</td>
 <td>{{ item.unit_price }}</td>
 <td>{{ item.line_total }}</td>
@@ -37,16 +33,13 @@
 <button type="submit">Place Order</button>
 </form>
 
+<h3>Payment Methods</h3>
 {% if order %}
-<h3>Payment</h3>
-<p>Amount to pay: {{ order.grand_total }}</p>
-<form method="GET" action="{% url 'payment_init' order.id 'nogod' %}">
-<button type="submit">Pay with Nagad</button>
-</form>
-<form method="GET" action="{% url 'payment_init' order.id 'bkash' %}">
-<button type="submit">Pay with Bkash</button>
-</form>
-<form method="GET" action="{% url 'payment_init' order.id 'rocket' %}">
-<button type="submit">Pay with Rocket</button>
-</form>
+<form method="GET" action="{% url 'payment_init' order.id 'bkash' %}"><button type="submit">Pay with Bkash</button></form>
+<form method="GET" action="{% url 'payment_init' order.id 'nogod' %}"><button type="submit">Pay with Nagad</button></form>
+<form method="GET" action="{% url 'payment_init' order.id 'rocket' %}"><button type="submit">Pay with Rocket</button></form>
+<form method="GET" action="{% url 'payment_init' order.id 'manual' %}"><button type="submit">Pay Manually</button></form>
+{% else %}
+<p>Place your order first to see payment options.</p>
 {% endif %}
+

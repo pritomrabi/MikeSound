@@ -1,7 +1,7 @@
-<h2>Redirecting to {{ gateway_url }}</h2>
+<h2>Redirecting to payment gateway</h2>
 <form id="gatewayForm" action="{{ gateway_url }}" method="post">
-{% for k,v in payload.items %}
-<input type="hidden" name="{{ k }}" value="{{ v }}">
-{% endfor %}
+    {% for k, v in payload.items %}
+    <input type="hidden" name="{{ k }}" value="{{ v }}">
+    {% endfor %}
 </form>
-<script>document.getElementById('gatewayForm').submit();</script>
+<script>document.getElementById('gatewayForm').submit()</script>
