@@ -1,0 +1,20 @@
+<h2>Wholesale Customer Profile</h2>
+<p>Name: {{ customer.user.username }}</p>
+<p>Company: {{ customer.company_name }}</p>
+<p>Role: {{ customer.role }}</p>
+
+<h3>Ledger</h3>
+<table border="1">
+    <tr>
+        <th>Amount</th>
+        <th>Note</th>
+        <th>Date</th>
+    </tr>
+    {% for entry in ledger %}
+    <tr>
+        <td>{{ entry.amount }}</td>
+        <td>{{ entry.note }}</td>
+        <td>{{ entry.created_at }}</td>
+    </tr>
+    {% endfor %}
+</table>

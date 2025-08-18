@@ -13,7 +13,7 @@ class CartItem(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     variation = models.ForeignKey(ProductVariation, null=True, blank=True, on_delete=models.SET_NULL)
     quantity = models.PositiveIntegerField(default=1)
-    unit_price = models.DecimalField(max_digits=10, decimal_places=2)
+    unit_price = models.DecimalField(max_digits=10, decimal_places=2, default=0)
 
     @property
     def line_total(self):
@@ -31,6 +31,7 @@ class Address(models.Model):
     country = models.CharField(max_length=50,default="USA")
     is_billing = models.BooleanField(default=False)
     is_shipping = models.BooleanField(default=False)
+    
 class Order(models.Model):
     STATUS_CHOICES = [
         ('pending','Pending'),

@@ -1,0 +1,22 @@
+<h2>Reports Dashboard</h2>
+
+<p>Total Orders: {{ total_orders }}</p>
+<p>Total Sales: {{ total_sales }}</p>
+
+<h3>Recent Sales</h3>
+<table border="1">
+    <tr>
+        <th>Order ID</th>
+        <th>User</th>
+        <th>Grand Total</th>
+        <th>Date</th>
+    </tr>
+    {% for order in recent_sales %}
+    <tr>
+        <td>{{ order.id }}</td>
+        <td>{{ order.user.username }}</td>
+        <td>{{ order.grand_total }}</td>
+        <td>{{ order.created_at }}</td>
+    </tr>
+    {% endfor %}
+</table>

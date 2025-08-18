@@ -1,0 +1,26 @@
+<h2>Order Products Report</h2>
+
+<form method="get">
+    Start Date: <input type="date" name="start_date" value="{{ request.GET.start_date }}">
+    End Date: <input type="date" name="end_date" value="{{ request.GET.end_date }}">
+    <button type="submit">Filter</button>
+</form>
+
+<table border="1">
+    <tr>
+        <th>Product</th>
+        <th>Variation</th>
+        <th>Total Quantity</th>
+        <th>Total Sales</th>
+    </tr>
+    {% for item in product_summary %}
+    <tr>
+        <td>{{ item.product__title }}</td>
+        <td>{{ item.variation__size|default:"Default" }}</td>
+        <td>{{ item.total_qty }}</td>
+        <td>{{ item.total_sales }}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+<a href="{% url 'order_products_report' %}"> Order Product Report </a>

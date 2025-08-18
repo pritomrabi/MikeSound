@@ -14,6 +14,16 @@
 {% endfor %}
 </table>
 
+<h3>Apply Coupon</h3>
+<form method="POST" action="{% url 'apply_coupon' %}">
+{% csrf_token %}
+<input name="code" placeholder="Enter Coupon Code" required>
+<button type="submit">Apply</button>
+{% if coupon %}
+<p>Applied Coupon: {{ coupon.code }} - Discount: {{ discount }}</p>
+{% endif %}
+</form>
+
 <h3>Shipping Address</h3>
 <form method="POST" action="{% url 'place_order' %}">
 {% csrf_token %}
@@ -42,4 +52,3 @@
 {% else %}
 <p>Place your order first to see payment options.</p>
 {% endif %}
-

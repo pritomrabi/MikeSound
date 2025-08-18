@@ -1,45 +1,24 @@
-from import_export import resources
-from import_export.admin import ImportExportModelAdmin
-from .models import *
 from django.contrib import admin
-
-class CityResource(resources.ModelResource):
-    class Meta:
-        model = City
-
-class ZoneResource(resources.ModelResource):
-    class Meta:
-        model = Zone
-
-class CourierResource(resources.ModelResource):
-    class Meta:
-        model = Courier
-        fields = ('id', 'name', 'phone', 'is_active', 'zones')
-
-class CourierAssignmentResource(resources.ModelResource):
-    class Meta:
-        model = CourierAssignment
-        fields = ('id', 'order', 'courier', 'assigned_at', 'remarks')
-
-@admin.register(City)
-class CityAdmin(ImportExportModelAdmin):
-    resource_class = CityResource
-    list_display = ['name']
-
-@admin.register(Zone)
-class ZoneAdmin(ImportExportModelAdmin):
-    resource_class = ZoneResource
-    list_display = ['name', 'city']
+from .models import Courier, OrderCourier
+import csv
+from django.http import HttpResponse
 
 @admin.register(Courier)
-class CourierAdmin(ImportExportModelAdmin):
-    resource_class = CourierResource
+class CourierAdmin(admin.ModelAdmin):
     list_display = ['name', 'phone', 'is_active']
-    filter_horizontal = ['zones']
+    actions = ['export_couriers']
 
-@admin.register(CourierAssignment)
-class CourierAssignmentAdmin(ImportExportModelAdmin):
-    resource_class = CourierAssignmentResource
-    list_display = ['order', 'courier', 'assigned_at']
-    search_fields = ['order__id', 'courier__name']
-    list_filter = ['assigned_at', 'courier']
+    def export_couriers(self, request, queryset):
+        response = HttpResponse(content_type='text/csv')
+        response['Content-Disposition'] = 'attachment; filename="couriers.csv"'
+        writer = csv.writer(response)
+        writer.writerow(['Name', 'Phone', 'Active'])
+        for c in queryset:
+            writer.writerow([c.name, c.phone, c.is_active])
+        return response
+    export_couriers.short_description = "Export selected couriers to CSV"
+
+@admin.register(OrderCourier)
+class OrderCourierAdmin(admin.ModelAdmin):
+    list_display = ['order', 'courier', 'status', 'assigned_at', 'delivered_at', 'auto_assigned']
+    list_filter = ['status', 'assigned_at', 'courier']

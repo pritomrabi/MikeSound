@@ -1,0 +1,16 @@
+<h2>Analytics Dashboard</h2>
+<p>Total Events: {{ summary.total_events }}</p>
+<p>Purchases: {{ summary.purchases }}</p>
+<p>Page Views: {{ summary.page_views }}</p>
+<table border="1">
+  <tr><th>Time</th><th>Event</th><th>User</th><th>Order</th><th>Data</th></tr>
+  {% for e in recent %}
+  <tr>
+    <td>{{ e.created_at }}</td>
+    <td>{{ e.event }}</td>
+    <td>{{ e.user }}</td>
+    <td>{{ e.order_id }}</td>
+    <td><pre style="white-space: pre-wrap">{{ e.data|json_script:"_" }}</pre></td>
+  </tr>
+  {% endfor %}
+</table>

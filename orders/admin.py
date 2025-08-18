@@ -28,8 +28,7 @@ class OrderItemInline(admin.TabularInline):
     variation_info.short_description = "Variation"
 
     def line_total(self, obj):
-        return obj.quantity * obj.unit_price
-    line_total.short_description = "Total"
+        return (obj.quantity or 0) * (obj.unit_price or 0)
 
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):

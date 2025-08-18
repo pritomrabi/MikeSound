@@ -1,0 +1,26 @@
+<h2>Staff Order Report</h2>
+
+<form method="get">
+    Start Date: <input type="date" name="start_date" value="{{ request.GET.start_date }}">
+    End Date: <input type="date" name="end_date" value="{{ request.GET.end_date }}">
+    <button type="submit">Filter</button>
+</form>
+
+<table border="1">
+    <tr>
+        <th>Staff ID</th>
+        <th>Username</th>
+        <th>Order Count</th>
+        <th>Total Sales</th>
+    </tr>
+    {% for staff in staff_orders %}
+    <tr>
+        <td>{{ staff.orderassignment__staff__id }}</td>
+        <td>{{ staff.orderassignment__staff__username }}</td>
+        <td>{{ staff.order_count }}</td>
+        <td>{{ staff.sales }}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+<a href="{% url 'reports_dashboard' %}"> Dashboard </a>

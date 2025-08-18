@@ -1,0 +1,13 @@
+<script>
+window.analytics = window.analytics || {};
+analytics.track = function(event, payload) {
+  fetch("/admin/analytics/track/", {
+    method: "POST",
+    headers: {"Content-Type":"application/json","X-CSRFToken": (window.csrfToken || "")},
+    body: JSON.stringify(Object.assign({event: event}, payload || {}))
+  });
+};
+document.addEventListener("DOMContentLoaded", function(){
+  analytics.track("page_view", {path: window.location.pathname});
+});
+</script>

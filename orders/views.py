@@ -4,6 +4,9 @@ from .models import Cart, CartItem, Order, OrderItem, Address
 from products.models import Product, ProductVariation
 from inventory.models import Inventory
 from django.db import transaction
+from customers.models import Coupon
+from django.db.models import Sum
+
 
 @login_required
 def cart_view(request):
@@ -63,13 +66,22 @@ def update_cart(request, item_id):
 def checkout_view(request):
     cart = get_object_or_404(Cart, user=request.user)
     addresses = Address.objects.filter(user=request.user)
-
     subtotal = sum([item.line_total for item in cart.items.all()])
-    # প্রতি product quantity এর উপর ভিত্তি করে shipping fee
     shipping_fee = sum([item.quantity * 50 for item in cart.items.all()])
-    discount = 0
-    grand_total = subtotal + shipping_fee - discount
 
+    # Coupon
+    coupon_id = request.session.get('coupon_id')
+    discount = 0
+    coupon = None
+    if coupon_id:
+        try:
+            coupon = Coupon.objects.get(id=coupon_id)
+            if coupon.is_valid():
+                discount = coupon.discount_percent / 100 * subtotal
+        except Coupon.DoesNotExist:
+            pass
+
+    grand_total = subtotal + shipping_fee - discount
     return render(request, 'orders/checkout.html', {
         'cart': cart,
         'items': cart.items.all(),
@@ -77,8 +89,31 @@ def checkout_view(request):
         'subtotal': subtotal,
         'shipping_fee': shipping_fee,
         'discount': discount,
-        'grand_total': grand_total
+        'grand_total': grand_total,
+        'coupon': coupon
     })
+
+@login_required
+def apply_coupon(request):
+    if request.method == 'POST':
+        code = request.POST.get('code').strip()
+        cart = Cart.objects.get(user=request.user)
+
+        try:
+            coupon = Coupon.objects.get(code=code, active=True)
+            # discount logic: percentage or fixed
+            if coupon.discount_type == 'fixed':
+                discount = coupon.amount
+            else:
+                discount = (cart.items.aggregate(total=Sum('unit_price'))['total'] or 0) * coupon.amount / 100
+            request.session['coupon_code'] = coupon.code
+            request.session['discount'] = float(discount)
+        except Coupon.DoesNotExist:
+            request.session['coupon_code'] = None
+            request.session['discount'] = 0
+
+    return redirect('checkout_view')
+
 
 @login_required
 def update_checkout_cart(request, item_id):
