@@ -1,0 +1,11 @@
+<h2>Reviews for {{ product.title }}</h2>
+
+{% for r in reviews %}
+  <div style="border:1px solid #ddd; padding:8px; margin:6px 0;">
+    <strong>{{ r.user.username }}</strong> — {{ r.rating }} / 5
+    <p>{{ r.comment }}</p>
+    <small>{{ r.created_at }}</small>
+  </div>
+{% empty %}
+  <p>No reviews yet.</p>
+{% endfor %}

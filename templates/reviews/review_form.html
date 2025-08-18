@@ -1,0 +1,12 @@
+<h2>{% if review %}Edit Review{% else %}Write Review{% endif %}</h2>
+
+<form method="post">
+  {% csrf_token %}
+  <label>Rating (1-5)</label>
+  {{ form.rating }}
+  <br>
+  <label>Comment</label>
+  {{ form.comment }}
+  <br>
+  <button type="submit">Submit</button>
+</form>

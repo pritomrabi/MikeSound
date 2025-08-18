@@ -26,7 +26,8 @@ urlpatterns = [
     path('payments/',include('payments.urls')),
     path('courier/',include('courier.urls')),
     path('pages/',include('pages.urls')),
-    path('reports/',include('reports.urls'))
+    path('reports/',include('reports.urls')),
+    path('reviews/',include('reviews.urls'))
 ]
 
 
