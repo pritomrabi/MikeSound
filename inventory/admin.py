@@ -5,7 +5,7 @@ from .models import Purchase, PurchaseItem, Supplier, Inventory, SupplierPayment
 class PurchaseItemInline(admin.TabularInline):
     model = PurchaseItem
     extra = 1
-    autocomplete_fields = ['product']  # দ্রুত প্রোডাক্ট সার্চ
+    autocomplete_fields = ['product']  
 
 
 @admin.register(Purchase)

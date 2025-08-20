@@ -2,11 +2,13 @@ from django.urls import path
 from .views import *
 from django.conf import settings
 from django.conf.urls.static import static
-
+from .api.api import product_list_api, product_detail_api
 
 urlpatterns = [
     path('', product_list, name='product_list'),  
     path('<int:product_id>/', product_detail, name='product_detail'),
+    path('api/products/', product_list_api, name='api_product_list'),
+    path('api/products/<int:product_id>/', product_detail_api, name='api_product_detail'),
 ]
 
 if settings.DEBUG:

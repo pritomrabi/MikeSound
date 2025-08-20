@@ -3,7 +3,7 @@ from django.dispatch import receiver
 from .models import PurchaseItem, Inventory, SupplierLedger, SupplierPayment
 
 
-# পুরনো quantity আর product ট্র্যাক করা
+# Tracking old quantities and products
 @receiver(pre_save, sender=PurchaseItem)
 def track_old_quantity_and_product(sender, instance, **kwargs):
     if instance.pk:
@@ -15,10 +15,10 @@ def track_old_quantity_and_product(sender, instance, **kwargs):
         instance._old_product = None
 
 
-# PurchaseItem তৈরি বা আপডেট হলে ইনভেন্টরি আপডেট
+# Inventory update when PurchaseItem is created or updated
 @receiver(post_save, sender=PurchaseItem)
 def update_inventory_on_purchase(sender, instance, created, **kwargs):
-    # প্রোডাক্ট পরিবর্তন হলে পুরনো প্রোডাক্ট থেকে স্টক কমানো
+    # Reduce stock from old products when product changes
     if not created and instance._old_product and instance._old_product != instance.product:
         old_inventory, _ = Inventory.objects.get_or_create(product=instance._old_product)
         old_inventory.current_stock -= instance._old_quantity
@@ -27,7 +27,7 @@ def update_inventory_on_purchase(sender, instance, created, **kwargs):
         old_inventory.save()
         instance._old_quantity = 0
 
-    # নতুন বা আপডেট quantity এর জন্য স্টক অ্যাডজাস্ট
+    # Stock adjustment for new or updated quantity
     inventory, _ = Inventory.objects.get_or_create(product=instance.product)
     qty_diff = instance.quantity - getattr(instance, "_old_quantity", 0)
     inventory.current_stock += qty_diff
@@ -35,7 +35,7 @@ def update_inventory_on_purchase(sender, instance, created, **kwargs):
         inventory.current_stock = 0
     inventory.save()
 
-    # শুধু নতুন হলে লেজার ডেবিট
+    # Ledger debit only if new
     if created:
         if not SupplierLedger.objects.filter(
             supplier=instance.purchase.supplier,
@@ -51,7 +51,7 @@ def update_inventory_on_purchase(sender, instance, created, **kwargs):
             )
 
 
-# PurchaseItem ডিলিট হলে ইনভেন্টরি কমানো
+# Reduce inventory when PurchaseItem is deleted
 @receiver(post_delete, sender=PurchaseItem)
 def update_inventory_on_delete(sender, instance, **kwargs):
     inventory = Inventory.objects.filter(product=instance.product).first()
@@ -62,7 +62,7 @@ def update_inventory_on_delete(sender, instance, **kwargs):
         inventory.save()
 
 
-# SupplierPayment তৈরি হলে লেজার ক্রেডিট
+# Ledger credit when SupplierPayment is created
 @receiver(post_save, sender=SupplierPayment)
 def update_ledger_on_payment(sender, instance, created, **kwargs):
     if created:

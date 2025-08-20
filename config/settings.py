@@ -51,6 +51,8 @@ INSTALLED_APPS = [
     'pages',
     'django_extensions',
     'import_export',
+    'rest_framework',
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
