@@ -11,13 +11,10 @@ import Home from "./Pages/Home";
 import Contact from "./Pages/Contact";
 import Shop from "./Pages/Shop";
 import ErrorPage from "./Pages/ErrorPage";
-import Registration from "./Auth/Registration";
-import Login from "./Auth/Login";
-import Forgot from "./Auth/Forgot";
-import OTP from "./Auth/OTP";
 import SingleProduct from "./Pages/SingleProduct";
 import ViewCart from "./Pages/ViewCart";
 import Checkout from "./Pages/Checkout";
+import Categories from "./Pages/Categories";
 
 function App() {
   const [darkMode, setDarkMode] = useState(
@@ -55,12 +52,13 @@ function App() {
           <Route path="/singleproduct" element={<SingleProduct />} />
           <Route path="/viewcart" element={<ViewCart />} />
           <Route path="/checkout" element={<Checkout />} />
+          <Route path="/categories/:slug" element={<Categories />} />
           <Route path="*" element={<ErrorPage />} />
         </Route>
-        <Route path="/registration" element={<Registration />} />
+        {/* <Route path="/registration" element={<Registration />} />
         <Route path="/login" element={<Login />} />
         <Route path="/forgot" element={<Forgot />} />
-        <Route path="/otp" element={<OTP />} />
+        <Route path="/otp" element={<OTP />} /> */}
       </Route>
     )
   );

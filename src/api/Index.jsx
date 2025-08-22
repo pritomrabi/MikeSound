@@ -13,7 +13,21 @@ const ProductData = async () => {
     }
 };
 
+const registerUser = async (username, email, password) => {
+    try {
+        const res = await axios.post(`${BASE_URL}/api/accounts/register/`, {
+            username: username,
+            email: email,
+            password: password
+        });
+        console.log("Registration successful:", res.data);
+        return res.data;
+    } catch (err) {
+        console.error("Registration error:", err.response?.data || err.message);
+        return null;
+    }
+};
 
 
-export { ProductData };
+export { ProductData, registerUser };
 

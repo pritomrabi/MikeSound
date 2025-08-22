@@ -32,7 +32,7 @@ const Navbar = () => {
             to="/"
             className="sm:text-2xl text-xl font-bold text-brand font-Lato"
           >
-            Fashion Flat
+            Mike Sound
           </Link>
           <div className=" items-center space-x-6 text-base font-Lato text-primary-default dark:text-primary-dark font-medium hidden md:block">
             <Link to="/" className="hover:text-brand duration-100">
@@ -47,12 +47,6 @@ const Navbar = () => {
           </div>
           <div className="flex items-center space-x-2 sm:space-x-4">
             <ThemeToggle />
-            <Link
-              to="/registration"
-              className="sm:text-base text-sm text-primary-default dark:text-primary-dark font-medium  font-Lato hover:underline hover:text-secandari duration-100 hidden sm:block"
-            >
-              Login/Register
-            </Link>
             {search ? (
               <RxCross2 className="text-2xl text-primary-default dark:text-primary-dark cursor-pointer hover:text-secandari duration-100 md:block hidden" />
             ) : (

@@ -12,7 +12,7 @@ const Footer = () => {
         <div>
           <Link to="/">
             <h4 className="text-2xl font-bold text-brand font-Monrope">
-              Tamim Vai 60$
+              Mike Sound
             </h4>
           </Link>
           <p className="text-secandari font-normal font-Nunito-font w-[95%] text-sm mt-2">
