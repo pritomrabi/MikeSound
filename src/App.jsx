@@ -8,13 +8,13 @@ import { useEffect, useState } from "react";
 import "./App.css";
 import Layout from "./Layout";
 import Home from "./Pages/Home";
-import Contact from "./Pages/Contact";
 import Shop from "./Pages/Shop";
 import ErrorPage from "./Pages/ErrorPage";
 import SingleProduct from "./Pages/SingleProduct";
 import ViewCart from "./Pages/ViewCart";
 import Checkout from "./Pages/Checkout";
 import Categories from "./Pages/Categories";
+import Support from "./Pages/Support";
 
 function App() {
   const [darkMode, setDarkMode] = useState(
@@ -47,7 +47,7 @@ function App() {
           errorElement={<ErrorPage />}
         >
           <Route index element={<Home />} />
-          <Route path="contact" element={<Contact />} />
+          <Route path="support" element={<Support />} />
           <Route path="shop" element={<Shop />} />
           <Route path="/singleproduct" element={<SingleProduct />} />
           <Route path="/viewcart" element={<ViewCart />} />

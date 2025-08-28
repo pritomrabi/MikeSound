@@ -40,7 +40,6 @@ const HomeBanner = () => {
       </svg>
     </div>
   );
-
   const PrevArrow = ({ onClick }) => (
     <div
       onClick={onClick}
@@ -61,7 +60,6 @@ const HomeBanner = () => {
       </svg>
     </div>
   );
-
   const settings = {
     autoplay: true,
     autoplaySpeed: 5000,

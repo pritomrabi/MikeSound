@@ -41,8 +41,8 @@ const Navbar = () => {
             <Link to="/shop" className="hover:text-brand duration-100">
               Shop
             </Link>
-            <Link to="/contact" className="hover:text-brand duration-100">
-              Contact
+            <Link to="/support" className="hover:text-brand duration-100">
+              Support
             </Link>
           </div>
           <div className="flex items-center space-x-2 sm:space-x-4">

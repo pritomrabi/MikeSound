@@ -1,6 +1,6 @@
 const Form = () => {
   return (
-    <section className="  py-12 bg-[#fdfeff] dark:bg-[#1a1a1a]">
+    <section className="  py-12 bg-[#fdfeff] dark:bg-[#201f1f]">
       <div className=" container mx-auto px-6 flex flex-wrap justify-center items-center">
         {/* Left Column: Contact Form */}
         <div className="w-full md:w-1/2 px-4">
@@ -21,6 +21,18 @@ const Form = () => {
             <input
               type="email"
               placeholder="Your email*"
+              className="w-full p-3 border border-gray-300 outline-none rounded text-sm text-primary-default dark:text-primary-dark font-normal font-Monrope"
+              required
+            />
+            <input
+              type="number"
+              placeholder="Your phone*"
+              className="w-full p-3 border border-gray-300 outline-none rounded text-sm text-primary-default dark:text-primary-dark font-normal font-Monrope"
+              required
+            />
+            <input
+              type="text"
+              placeholder="Your subject*"
               className="w-full p-3 border border-gray-300 outline-none rounded text-sm text-primary-default dark:text-primary-dark font-normal font-Monrope"
               required
             />

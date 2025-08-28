@@ -12,7 +12,7 @@ const HomeCategories = () => {
   ];
 
   return (
-    <section className="py-12">
+    <section className="py-12 dark:bg-[#212020]">
       <div className="container mx-auto px-4">
         <Heading Head="Featured Categories" />
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 auto-rows-[250px]">

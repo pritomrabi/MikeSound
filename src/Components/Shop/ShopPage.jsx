@@ -2,7 +2,6 @@ import { useState } from "react";
 import { FiAlignLeft } from "react-icons/fi";
 import { AiOutlineShoppingCart } from "react-icons/ai";
 import { LuSearch } from "react-icons/lu";
-import { FaRegHeart } from "react-icons/fa";
 import ReactPaginate from "react-paginate";
 import { Link } from "react-router-dom";
 import ProductQuickView from "../Home/ProductQuickView";
@@ -101,7 +100,7 @@ const ShopPage = () => {
   };
   return (
     <section>
-      <div className="container mx-auto px-4 py-8">
+      <div className="container mx-auto px-4 py-8 dark:bg-[#212020]">
         <div className="flex border-b border-gray-300 mb-6">
           <Link
             to="/"
@@ -120,7 +119,7 @@ const ShopPage = () => {
           <div className="flex-1">
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
               {currentItems.map((product) => (
-                <div
+                <Link
                   key={product.id}
                   className="group relative rounded-md shadow-sm  transition overflow-hidden"
                 >
@@ -168,21 +167,11 @@ const ShopPage = () => {
                         Search
                       </span>
                     </div>
-
-                    {/* Wishlist */}
-                    <Link to="/wishlist" className="relative group/icon">
-                      <button className="text-xl text-primary hover:text-secandari duration-200 cursor-pointer">
-                        <FaRegHeart />
-                      </button>
-                      <span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 rounded bg-black text-white text-xs opacity-0 group-hover/icon:opacity-100 transition whitespace-nowrap font-Lato font-normal">
-                        Wishlist
-                      </span>
-                    </Link>
                   </div>
                   {quickcart && (
                     <ProductQuickView setQuickcart={setQuickcart} />
                   )}
-                </div>
+                </Link>
               ))}
             </div>
 

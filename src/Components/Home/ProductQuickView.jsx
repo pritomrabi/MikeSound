@@ -111,28 +111,12 @@ const ProductQuickView = ({ setQuickcart }) => {
               Add to Cart
             </button>
           </div>
-
-          {/* SKU and Category */}
-          <p className="text-sm text-secandari font-Lato font-medium mb-1">
-            <strong className="text-primary dark:text-primary-dark">
-              SKU:
-            </strong>{" "}
-            N/A
-          </p>
           <p className="text-sm text-secandari font-Lato font-medium mb-4">
             <strong className="text-primary dark:text-primary-dark">
               Category:
             </strong>{" "}
             Fashion Flat
           </p>
-
-          {/* Social Share */}
-          <div className="flex gap-3 text-gray-600 dark:text-primary-dark text-sm">
-            <FaFacebookF className="hover:text-blue-600 duration-500 cursor-pointer" />
-            <FaTwitter className="hover:text-blue-400 duration-500 cursor-pointer" />
-            <FaPinterest className="hover:text-red-600 duration-500 cursor-pointer" />
-            <FaLinkedinIn className="hover:text-blue-700 duration-500 cursor-pointer" />
-          </div>
         </div>
       </div>
     </div>
