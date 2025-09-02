@@ -93,7 +93,7 @@ const HomeBanner = () => {
                 <div className="mt-6">
                   <Link
                     to="/shop"
-                    className={`px-6 py-3 cursor-pointer rounded bg-black text-white text-sm font-Opensans font-medium`}
+                    className={`px-6 py-3 cursor-pointer rounded bg-brand text-white text-sm font-Opensans font-medium`}
                   >
                     {slide.button}
                   </Link>

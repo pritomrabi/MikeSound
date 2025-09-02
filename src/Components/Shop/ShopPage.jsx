@@ -1,10 +1,13 @@
 import { useState } from "react";
 import { FiAlignLeft } from "react-icons/fi";
+import { FiX } from "react-icons/fi";
 import { AiOutlineShoppingCart } from "react-icons/ai";
 import { LuSearch } from "react-icons/lu";
+import { FaRegHeart } from "react-icons/fa";
 import ReactPaginate from "react-paginate";
 import { Link } from "react-router-dom";
 import ProductQuickView from "../Home/ProductQuickView";
+import Filter from "../../Utilities/Filter";
 
 const ShopPage = () => {
   const allProducts = [
@@ -75,6 +78,15 @@ const ShopPage = () => {
       image: "home.jpg",
     },
   ];
+
+  const categories = [
+    "All",
+    "Blackfriday",
+    "Furniture",
+    "Accessories",
+    "Lighting",
+  ];
+  const [showSidebar, setShowSidebar] = useState(false);
   const [topRated, setTopRated] = useState(false);
   const [itemOffset, setItemOffset] = useState(0);
   const [quickcart, setQuickcart] = useState(false);
@@ -82,13 +94,17 @@ const ShopPage = () => {
   const [category, setCategory] = useState("All");
   const itemsPerPage = 4;
 
+  const toggleSidebar = () => setShowSidebar(!showSidebar);
 
   const filteredProducts = allProducts.filter((product) => {
-    const withinPrice = product.price <= priceRange;
-    const matchCategory = category === "All" || product.category === category;
-    const matchRating = !topRated || product.rating >= 4.5;
-    return withinPrice && matchCategory && matchRating;
-  });
+  const withinPrice = Array.isArray(priceRange)
+    ? product.price >= priceRange[0] && product.price <= priceRange[1]
+    : product.price <= priceRange;
+  const matchCategory = category === "All" || product.category === category;
+  const matchRating = !topRated || product.rating >= 4.5;
+  return withinPrice && matchCategory && matchRating;
+});
+
 
   const endOffset = itemOffset + itemsPerPage;
   const currentItems = filteredProducts.slice(itemOffset, endOffset);
@@ -100,7 +116,7 @@ const ShopPage = () => {
   };
   return (
     <section>
-      <div className="container mx-auto px-4 py-8 dark:bg-[#212020]">
+      <div className="container mx-auto px-4 py-8">
         <div className="flex border-b border-gray-300 mb-6">
           <Link
             to="/"
@@ -112,6 +128,78 @@ const ShopPage = () => {
             <span className="text-secandari  pr-1">/</span> Shop
           </h3>
         </div>
+        <div className="flex text-base gap-2 cursor-pointer text-primary font-Lato font-medium items-center mb-4">
+          <FiAlignLeft onClick={toggleSidebar} />
+          <h2 className="">Show sidebar</h2>
+        </div>
+        {showSidebar && (
+          <div className=" fixed top-0 left-0 md:block w-full p-4 rounded-md mr-6 z-50 h-full">
+            <div className="fixed w-[90%] sm:w-[80%] md:w-[50%] lg:w-[25%] h-full top-0 left-0 bg-white px-5">
+              {/* Price Filter */}
+              <div
+                onClick={() => setShowSidebar(false)}
+                className="text-right my-4 border-b pb-4 border-gray-300 text-base text-primary font-Lato font-medium hover:text-secandari duration-300 cursor-pointer justify-end flex items-center gap-1 px-2"
+              >
+                <FiX className="text-lg" /> close
+              </div>
+              <Filter
+                priceRange={priceRange}
+                setPriceRange={setPriceRange}
+                category={category}
+                setCategory={setCategory}
+                showSidebar={showSidebar}
+                setShowSidebar={setShowSidebar}
+              />
+
+              {/* Category Filter */}
+              <div className="mt-6">
+                <h4 className="font-normal font-Roboto text-xl text-primary mb-2">
+                  Filter by Category
+                </h4>
+                {categories.map((cat) => (
+                  <div key={cat} className="flex items-center mb-1">
+                    <input
+                      type="radio"
+                      id={cat}
+                      name="category"
+                      value={cat}
+                      checked={category === cat}
+                      onChange={() => setCategory(cat)}
+                      className="mr-2"
+                    />
+
+                    <label
+                      className="text-primary text-base font-medium font-Lato"
+                      htmlFor={cat}
+                    >
+                      {cat}
+                    </label>
+                  </div>
+                ))}
+              </div>
+
+              {/* Top Rated Filter */}
+              <div className="mt-6">
+                <h4 className="font-normal font-Roboto text-xl text-primary mb-2">
+                  Top Rated
+                </h4>
+                <label className="flex items-center">
+                  <input
+                    type="checkbox"
+                    checked={topRated}
+                    onChange={() => setTopRated(!topRated)}
+                    className="mr-2"
+                  />
+                  4.5 stars & up
+                </label>
+              </div>
+            </div>
+            <div
+              onClick={() => setShowSidebar(false)}
+              className="fixed w-[10%] sm:w-[20%] md:w-[50%] lg:w-[75%] top-0 right-0 bg-[rgba(0,0,0,0.1)] z-50 h-full"
+            ></div>
+          </div>
+        )}
         <div className="flex">
           {/* Sidebar */}
 
@@ -119,10 +207,15 @@ const ShopPage = () => {
           <div className="flex-1">
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
               {currentItems.map((product) => (
-                <Link
+                <div
                   key={product.id}
                   className="group relative rounded-md shadow-sm  transition overflow-hidden"
                 >
+                  {product.discount && (
+                    <span className="absolute top-2 left-2 bg-brand text-white text-xs w-10 h-10 rounded-full justify-center flex items-center font-Monrope font-normal">
+                      -{product.discount}%
+                    </span>
+                  )}
                   <div className="overflow-hidden rounded-md">
                     <img
                       src={product.image}
@@ -167,11 +260,21 @@ const ShopPage = () => {
                         Search
                       </span>
                     </div>
+
+                    {/* Wishlist */}
+                    <Link to="/wishlist" className="relative group/icon">
+                      <button className="text-xl text-primary hover:text-secandari duration-200 cursor-pointer">
+                        <FaRegHeart />
+                      </button>
+                      <span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 rounded bg-black text-white text-xs opacity-0 group-hover/icon:opacity-100 transition whitespace-nowrap font-Lato font-normal">
+                        Wishlist
+                      </span>
+                    </Link>
                   </div>
                   {quickcart && (
                     <ProductQuickView setQuickcart={setQuickcart} />
                   )}
-                </Link>
+                </div>
               ))}
             </div>
 

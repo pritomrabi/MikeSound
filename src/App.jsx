@@ -15,6 +15,8 @@ import ViewCart from "./Pages/ViewCart";
 import Checkout from "./Pages/Checkout";
 import Categories from "./Pages/Categories";
 import Support from "./Pages/Support";
+import OrderHistory from "./Pages/OrderHistory";
+import SpecialOffers from "./Pages/SpecialOffers";
 
 function App() {
   const [darkMode, setDarkMode] = useState(
@@ -50,6 +52,8 @@ function App() {
           <Route path="support" element={<Support />} />
           <Route path="shop" element={<Shop />} />
           <Route path="/singleproduct" element={<SingleProduct />} />
+          <Route path="/SpecialOffers" element={<SpecialOffers />} />
+          <Route path="/orderhistory" element={<OrderHistory />} />
           <Route path="/viewcart" element={<ViewCart />} />
           <Route path="/checkout" element={<Checkout />} />
           <Route path="/categories/:slug" element={<Categories />} />

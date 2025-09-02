@@ -66,7 +66,7 @@ const AdBanner = () => {
               {ad.link ? (
                 <Link
                   to={ad.link}
-                  className="px-6 py-3 bg-black text-white rounded text-sm font-medium"
+                  className="px-6 py-3 bg-brand text-white rounded text-sm font-medium"
                 >
                   {ad.title}
                 </Link>

@@ -1,7 +1,7 @@
 const Form = () => {
   return (
     <section className="  py-12 bg-[#fdfeff] dark:bg-[#201f1f]">
-      <div className=" container mx-auto px-6 flex flex-wrap justify-center items-center">
+      <div className=" container mx-auto px-2 md:px-6 flex flex-wrap justify-center items-center">
         {/* Left Column: Contact Form */}
         <div className="w-full md:w-1/2 px-4">
           <h2 className="sm:text-3xl text-2xl font-semibold text-primary-default dark:text-primary-dark font-Roboto uppercase">
@@ -51,7 +51,7 @@ const Form = () => {
         </div>
 
         {/* Right Column: Contact Info */}
-        <div className="w-full md:w-1/2 px-4 flex flex-col space-y-6 mt-8 md:mt-0">
+        <div className="w-full md:block sm:hidden hidden md:w-1/2 px-4 flex flex-col space-y-6 mt-8 md:mt-0">
           <div
             className="sm:h-[400px] h-[350px] bg-cover bg-no-repeat bg-center rounded-md w-[95%] sm:w-[90%] justify-center flex mx-auto"
             style={{ backgroundImage: "url('home.jpg')" }}
