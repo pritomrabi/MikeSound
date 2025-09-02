@@ -4,18 +4,16 @@ import { Link } from "react-router-dom";
 
 const HomeCategories = () => {
   const categories = [
-    { title: "Furniture", slug: "furniture", image: "https://woodmart.xtemos.com/wp-content/uploads/2017/01/cat-img-kids-4.jpg", total: "20 Products", colSpan: "col-span-2 row-span-2" },
+    { title: "Furniture", slug: "furniture", image: "https://woodmart.xtemos.com/wp-content/uploads/2017/01/cat-img-kids-4.jpg", total: "20 Products" },
     { title: "Clocks", slug: "clocks", image: "https://woodmart.xtemos.com/wp-content/uploads/2017/01/cat-img-woman.jpg", total: "15 Products" },
     { title: "Accessories", slug: "accessories", image: "https://woodmart.xtemos.com/wp-content/uploads/2017/01/cat-img-glass.jpg", total: "10 Products" },
-    { title: "Cooking", slug: "cooking", image: "https://woodmart.xtemos.com/wp-content/uploads/2017/01/cat-img-accesories-9.jpg", total: "8 Products" },
-    { title: "Lighting", slug: "lighting", image: "https://woodmart.xtemos.com/wp-content/uploads/2017/01/cat-img-man.jpg", total: "12 Products" },
   ];
 
   return (
     <section className="py-12 dark:bg-[#212020]">
       <div className="container mx-auto px-4">
-        <Heading Head="Featured Categories" />
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 auto-rows-[250px]">
+        <Heading Head="Shop By Categories" />
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-4 auto-rows-[250px]">
           {categories.map((cat, idx) => (
             <Link 
               key={idx} 

@@ -10,48 +10,18 @@ const AdBanner = () => {
       title: "Special Offer - 50% Off",
       image: "https://woodmart.xtemos.com/wp-content/uploads/2024/02/fashion-flat-slide-2.jpg",
       link: "/shop",
-    },
-    {
-      id: 2,
-      title: "New Collection Available",
-      image: "https://woodmart.xtemos.com/wp-content/uploads/2024/02/fashion-flat-slide-1.jpg",
-      link: "/shop",
-    },
+    }
   ];
-
-  const Arrow = ({ onClick, direction }) => (
-    <div
-      onClick={onClick}
-      className={`absolute top-1/2 transform -translate-y-1/2 z-10 cursor-pointer p-2 bg-black/50 hover:bg-black/70 text-white rounded-full ${
-        direction === "next" ? "right-4" : "left-4"
-      }`}
-    >
-      <svg
-        className="w-6 h-6"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="2"
-        viewBox="0 0 24 24"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          d={direction === "next" ? "M9 5l7 7-7 7" : "M15 19l-7-7 7-7"}
-        />
-      </svg>
-    </div>
-  );
 
   const settings = {
     autoplay: true,
     autoplaySpeed: 5000,
     infinite: true,
     fade: true,
-    arrows: true,
+    arrows: false, // remove arrows
     dots: false,
     speed: 1000,
-    nextArrow: <Arrow direction="next" />,
-    prevArrow: <Arrow direction="prev" />,
+    swipe: true, // allow drag/swipe
   };
 
   return (

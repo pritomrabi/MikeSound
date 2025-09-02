@@ -20,10 +20,10 @@ const HomeLatest = () => {
   ];
 
   return (
-    <section className="py-12 dark:bg-[#212020]">
+    <section className="py-12 dark:bg-[#212020] bg-[#fafdff]">
       <div className="container mx-auto px-4">
         <Heading Head="Our Latest Posts" />
-        <div className="w-full  px-6 py-10 bg-[#fdfeff] dark:bg-[#212020]">
+        <div className="w-full  px-6 py-10  dark:bg-[#212020]">
           <Swiper modules={[Navigation, Pagination]} className="!pb-14" spaceBetween={20} slidesPerView={1} pagination={{ clickable: true }} breakpoints={{768:{slidesPerView:2},1024:{slidesPerView:3},1280:{slidesPerView:4}}}>
             {posts.map((post, idx) => (
               <SwiperSlide key={idx}>
