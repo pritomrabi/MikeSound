@@ -46,6 +46,7 @@ const Navbar = () => {
             </Link>
           </div>
           <div className="flex items-center space-x-2 sm:space-x-4">
+            <ThemeToggle/>
             {search ? (
               <RxCross2 className="text-2xl text-primary-default dark:text-primary-dark cursor-pointer hover:text-secandari duration-100 md:block hidden" />
             ) : (

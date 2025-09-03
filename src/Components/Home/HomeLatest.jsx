@@ -20,7 +20,7 @@ const HomeLatest = () => {
   ];
 
   return (
-    <section className="py-12 dark:bg-[#212020] bg-[#fafdff]">
+    <section className="py-12 dark:bg-[#212020]">
       <div className="container mx-auto px-4">
         <Heading Head="Our Latest Posts" />
         <div className="w-full  px-6 py-10  dark:bg-[#212020]">

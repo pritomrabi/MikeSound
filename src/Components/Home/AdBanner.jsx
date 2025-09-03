@@ -30,7 +30,7 @@ const AdBanner = () => {
         {ads.map(ad => (
           <div key={ad.id}>
             <div
-              className="min-h-[400px] md:min-h-[500px] lg:min-h-[600px] flex items-center justify-center bg-cover bg-center px-4"
+              className="min-h-[300px] md:min-h-[400px] lg:min-h-[500px] flex items-center justify-center bg-cover bg-center px-4"
               style={{ backgroundImage: `url(${ad.image})` }}
             >
               {ad.link ? (

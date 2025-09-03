@@ -5,12 +5,16 @@ import HomeLatest from "../Components/Home/HomeLatest";
 import HomeDiscover from "../Components/Home/HomeDiscover";
 import AdBanner from "../Components/Home/AdBanner";
 import ProductShowcase from "../Components/Home/ProductShowcase";
+import BigDeal from "../Components/Home/BigDeal";
+import BestSeller from "../Components/Home/BestSeller";
 
 const Home = () => {
   return (
     <div className="pt-20">
       <HomeBanner />
+      <BestSeller/>
       <ProductShowcase />
+      <BigDeal/>
       <HomeLatest />
       <AdBanner />
       <HomeCategories />
