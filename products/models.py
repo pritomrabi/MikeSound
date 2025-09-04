@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils.text import slugify
+from django.conf import settings
 from django.db.models.signals import post_delete
 from django.dispatch import receiver
 import os
@@ -8,6 +9,10 @@ class Category(models.Model):
     name = models.CharField(max_length=100)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    def product_count(self):
+        return self.product_set.count()
+
     def __str__(self):
         return self.name
 
@@ -16,6 +21,7 @@ class SubCategory(models.Model):
     name = models.CharField(max_length=100)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
     def __str__(self):
         return self.name
 
@@ -23,36 +29,56 @@ class Brand(models.Model):
     name = models.CharField(max_length=100)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.name
+
+class Color(models.Model):
+    name = models.CharField(max_length=50)
+    hex_code = models.CharField(max_length=7, blank=True, null=True)
+
     def __str__(self):
         return self.name
 
 class Product(models.Model):
-    category = models.ForeignKey('Category', on_delete=models.CASCADE)
-    subcategory = models.ForeignKey('SubCategory', on_delete=models.CASCADE)
-    brand = models.ForeignKey('Brand', on_delete=models.CASCADE)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE)
+    subcategory = models.ForeignKey(SubCategory, on_delete=models.CASCADE)
+    brand = models.ForeignKey(Brand, on_delete=models.CASCADE)
     title = models.CharField(max_length=255)
     description = models.TextField()
     slug = models.SlugField(max_length=255, unique=True, blank=True)
     meta_title = models.CharField(max_length=255, blank=True)
     meta_description = models.TextField(blank=True)
     status = models.BooleanField(default=True)
+    discount = models.DecimalField(max_digits=5, decimal_places=2, default=0)
+    users_wishlist = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='wishlist', blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     def save(self, *args, **kwargs):
-        # Auto-generate slug if not provided
         if not self.slug:
             self.slug = slugify(self.title)
-
-        # Auto-generate meta_title if empty
         if not self.meta_title:
             self.meta_title = self.title
-
-        # Auto-generate meta_description if empty
         if not self.meta_description:
-            self.meta_description = self.description[:155]  # First 155 chars
-
+            self.meta_description = self.description[:155]
         super().save(*args, **kwargs)
+
+    @classmethod
+    def latest_products(cls, limit=10):
+        return cls.objects.filter(status=True).order_by('-created_at')[:limit]
+
+    def get_discounted_price(self, variation):
+        if self.discount > 0:
+            return variation.price - (variation.price * self.discount / 100)
+        return variation.price
+
+    def stock_by_color(self):
+        colors = {}
+        for variation in self.variations.all():
+            color_name = variation.color.name if variation.color else "No Color"
+            colors[color_name] = colors.get(color_name, 0) + variation.stock
+        return colors
 
     def __str__(self):
         return self.title
@@ -65,9 +91,8 @@ class ProductImage(models.Model):
 
 @receiver(post_delete, sender=ProductImage)
 def delete_image_file(sender, instance, **kwargs):
-    if instance.image:
-        if os.path.isfile(instance.image.path):
-            os.remove(instance.image.path)
+    if instance.image and os.path.isfile(instance.image.path):
+        os.remove(instance.image.path)
 
 class ProductVariation(models.Model):
     SIZE_CHOICES = [
@@ -79,12 +104,14 @@ class ProductVariation(models.Model):
         ('XXL', 'Double Extra Large'),
     ]
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='variations')
+    color = models.ForeignKey(Color, on_delete=models.SET_NULL, null=True, blank=True, related_name='variations')
     size = models.CharField(max_length=10, choices=SIZE_CHOICES)
     stock = models.PositiveIntegerField(default=0)
     price = models.DecimalField(max_digits=10, decimal_places=2, default=0)
 
     class Meta:
-        unique_together = ('product', 'size')
+        unique_together = ('product', 'size', 'color')
+
 class Slider(models.Model):
     title = models.CharField(max_length=255, blank=True, null=True)
     image = models.ImageField(upload_to='media/sliders/')
@@ -95,7 +122,6 @@ class Slider(models.Model):
 
     def __str__(self):
         return self.title if self.title else "Slider " + str(self.id)
-
 
 class AdsBanner(models.Model):
     POSITION_CHOICES = [

@@ -1,9 +1,9 @@
 from django.db import models
-from django.contrib.auth.models import User
+from django.conf import settings
 from django.utils import timezone
 
 class WholesaleCustomer(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     company_name = models.CharField(max_length=255)
     role = models.CharField(max_length=50, choices=[('retail','Retail'),('wholesale','Wholesale')])
     created_at = models.DateTimeField(auto_now_add=True)
@@ -28,7 +28,7 @@ class VisitorCount(models.Model):
     visit_count = models.PositiveIntegerField(default=1)
 
 class FraudChecker(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     order_id = models.IntegerField()
     reason = models.TextField()
     detected_at = models.DateTimeField(auto_now_add=True)

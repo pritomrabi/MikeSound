@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.contrib.admin.views.decorators import staff_member_required
-from .models import OrderCourier
+from .models import OrderCourier, Courier
 
 @staff_member_required
 def courier_report(request):
@@ -9,6 +9,7 @@ def courier_report(request):
     start_date = request.GET.get('start_date')
     end_date = request.GET.get('end_date')
     status = request.GET.get('status')
+    courier_id = request.GET.get('courier')
 
     if start_date:
         couriers = couriers.filter(assigned_at__date__gte=start_date)
@@ -16,5 +17,9 @@ def courier_report(request):
         couriers = couriers.filter(assigned_at__date__lte=end_date)
     if status:
         couriers = couriers.filter(status=status)
+    if courier_id:
+        couriers = couriers.filter(courier_id=courier_id)
 
-    return render(request, 'courier/report.html', {'couriers': couriers})
+    all_couriers = Courier.objects.filter(is_active=True)
+
+    return render(request, 'courier/report.html', {'couriers': couriers, 'all_couriers': all_couriers})

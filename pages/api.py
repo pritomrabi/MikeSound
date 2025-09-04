@@ -1,10 +1,10 @@
-from rest_framework.decorators import api_view, permission_classes
-from rest_framework.permissions import IsAuthenticated, AllowAny
+from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from .models import AboutUs, TermsConditions, HelpCenter, FAQ, ContactMessage
-from .serializers import AboutUsSerializer, TermsConditionsSerializer, HelpCenterSerializer, FAQSerializer, ContactMessageSerializer
+from django.core.mail import send_mail
+from django.conf import settings
+from .models import AboutUs, TermsConditions, HelpCenter, FAQ, ContactMessage, Footer
+from .serializers import *
 
-# Static Pages (Public)
 @api_view(['GET'])
 def about_us_api(request):
     page = AboutUs.objects.first()
@@ -29,15 +29,11 @@ def faqs_api(request):
     serializer = FAQSerializer(faqs_list, many=True)
     return Response(serializer.data)
 
-# Contact Form (Public)
 @api_view(['POST'])
 def contact_us_api(request):
     serializer = ContactMessageSerializer(data=request.data)
     if serializer.is_valid():
         serializer.save()
-        # Send email to admin
-        from django.core.mail import send_mail
-        from django.conf import settings
         send_mail(
             subject=serializer.validated_data['subject'],
             message=f"Name: {serializer.validated_data['name']}\nEmail: {serializer.validated_data['email']}\nPhone: {serializer.validated_data.get('phone','')}\n\nMessage:\n{serializer.validated_data['message']}",
@@ -45,5 +41,12 @@ def contact_us_api(request):
             recipient_list=[settings.EMAIL_HOST_USER],
             fail_silently=True,
         )
-        return Response({'detail':'Message sent successfully'})
+        return Response({'detail': 'Message sent successfully'})
     return Response(serializer.errors, status=400)
+
+# Footer API
+@api_view(['GET'])
+def get_footer(request):
+    footer = Footer.objects.first()
+    serializer = FooterSerializer(footer)
+    return Response(serializer.data)

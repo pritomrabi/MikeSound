@@ -1,8 +1,8 @@
 # inventory/api/api.py
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from ..models import Supplier, Inventory, Purchase, PurchaseItem, SupplierPayment, SupplierLedger
-from ..serializers import SupplierSerializer, InventorySerializer, PurchaseSerializer, PurchaseItemSerializer, SupplierPaymentSerializer, SupplierLedgerSerializer
+from ..models import *
+from ..serializers import *
 
 # Supplier APIs
 @api_view(['GET'])

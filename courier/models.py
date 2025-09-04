@@ -1,5 +1,4 @@
 from django.db import models
-from django.contrib.auth.models import User
 from orders.models import Order
 
 class Courier(models.Model):
@@ -11,11 +10,16 @@ class Courier(models.Model):
         return self.name
 
 class OrderCourier(models.Model):
-    order = models.OneToOneField(Order, on_delete=models.CASCADE, related_name='courier_assignment')
+    STATUS_CHOICES = [
+        ('assigned','Assigned'),
+        ('delivered','Delivered')
+    ]
+
+    order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='courier_assignments')
     courier = models.ForeignKey(Courier, on_delete=models.SET_NULL, null=True, blank=True)
     assigned_at = models.DateTimeField(auto_now_add=True)
     delivered_at = models.DateTimeField(null=True, blank=True)
-    status = models.CharField(max_length=20, choices=Order.STATUS_CHOICES, default='confirmed')
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='assigned')
     auto_assigned = models.BooleanField(default=True)
 
     def __str__(self):

@@ -7,26 +7,34 @@ from django.db import transaction
 from customers.models import Coupon
 from django.db.models import Sum
 
-
 @login_required
 def cart_view(request):
     cart, _ = Cart.objects.get_or_create(user=request.user)
     items = cart.items.select_related('product', 'variation').prefetch_related('product__images')
-    return render(request, 'orders/cart.html', {'cart': cart, 'items': items})
+
+    subtotal = sum([item.line_total for item in items])
+    coupon_discount = request.session.get('coupon_discount', 0)
+    grand_total = subtotal - coupon_discount
+
+    return render(request, 'orders/cart.html', {
+        'cart': cart,
+        'items': items,
+        'subtotal': subtotal,
+        'discount': coupon_discount,
+        'grand_total': grand_total
+    })
 
 @login_required
-def add_to_cart(request, product_id, variation_id=None):
+def add_to_cart(request, product_id):
     product = get_object_or_404(Product, id=product_id)
     variation = None
-    if request.POST.get('variation_id'):
+    if 'variation_id' in request.POST:
         variation = get_object_or_404(ProductVariation, id=request.POST['variation_id'])
 
     quantity = int(request.POST.get('quantity', 1))
 
     cart, _ = Cart.objects.get_or_create(user=request.user)
-    price = variation.price if variation else (
-        product.variations.first().price if product.variations.exists() else product.price
-    )
+    price = variation.price if variation else (product.variations.first().price if product.variations.exists() else 0)
 
     cart_item, created = CartItem.objects.get_or_create(
         cart=cart,
@@ -59,7 +67,8 @@ def update_cart(request, item_id):
         item.quantity = qty
         item.save()
 
-    return redirect('checkout_view')
+    return redirect('cart_view')
+
 
 
 @login_required
@@ -93,24 +102,25 @@ def checkout_view(request):
         'coupon': coupon
     })
 
+
 @login_required
 def apply_coupon(request):
     if request.method == 'POST':
         code = request.POST.get('code').strip()
         cart = Cart.objects.get(user=request.user)
-
         try:
             coupon = Coupon.objects.get(code=code, active=True)
-            # discount logic: percentage or fixed
             if coupon.discount_type == 'fixed':
                 discount = coupon.amount
             else:
-                discount = (cart.items.aggregate(total=Sum('unit_price'))['total'] or 0) * coupon.amount / 100
+                subtotal = sum([item.line_total for item in cart.items.all()])
+                discount = subtotal * coupon.amount / 100
+
             request.session['coupon_code'] = coupon.code
-            request.session['discount'] = float(discount)
+            request.session['coupon_discount'] = float(discount)
         except Coupon.DoesNotExist:
             request.session['coupon_code'] = None
-            request.session['discount'] = 0
+            request.session['coupon_discount'] = 0
 
     return redirect('checkout_view')
 
@@ -156,33 +166,21 @@ def place_order(request):
         return redirect('cart_view')
 
     if request.method == 'POST':
-        # Get address from form
-        name = request.POST.get('name')
-        email = request.POST.get('email')
-        phone = request.POST.get('phone')
-        country = request.POST.get('country')
-        city = request.POST.get('city')
-        postal_code = request.POST.get('postal_code')
-        street = request.POST.get('street')
-
-        if not all([name, email, phone, country, city, postal_code, street]):
-            return redirect('checkout_view')
-
         address = Address.objects.create(
             user=request.user,
-            full_name=name,
-            phone=phone,
-            line1=street,
-            city=city,
-            state='',
-            postal_code=postal_code,
-            country=country,
+            full_name=request.POST.get('name'),
+            phone=request.POST.get('phone'),
+            line1=request.POST.get('street'),
+            city=request.POST.get('city'),
+            state=request.POST.get('state',''),
+            postal_code=request.POST.get('postal_code'),
+            country=request.POST.get('country'),
             is_shipping=True
         )
 
-        subtotal = sum([item.line_total for item in cart.items.all()])
-        shipping_fee = sum([item.quantity * 50 for item in cart.items.all()])
-        discount = 0
+        subtotal = sum([item.quantity * item.unit_price for item in cart.items.all()])
+        shipping_fee = sum([item.quantity*50 for item in cart.items.all()])
+        discount = request.session.get('coupon_discount', 0)
         grand_total = subtotal + shipping_fee - discount
 
         with transaction.atomic():
@@ -196,6 +194,7 @@ def place_order(request):
                 status='confirmed',
                 payment_status='pending'
             )
+
             for item in cart.items.all():
                 OrderItem.objects.create(
                     order=order,
@@ -204,10 +203,12 @@ def place_order(request):
                     quantity=item.quantity,
                     unit_price=item.unit_price
                 )
+
             cart.items.all().delete()
+            request.session['coupon_discount'] = 0
+            request.session['coupon_code'] = None
 
         return redirect('order_detail', order_id=order.id)
-
 
 
 @login_required

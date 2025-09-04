@@ -1,9 +1,8 @@
-# api/api.py
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from django.db.models import Q
-from ..models import Product, Slider, AdsBanner
-from ..serializers import ProductSerializer, SliderSerializer, AdsBannerSerializer
+from ..models import *
+from ..serializers import *
 
 @api_view(['GET'])
 def product_list_api(request):
@@ -31,7 +30,7 @@ def product_list_api(request):
 @api_view(['GET'])
 def product_detail_api(request, product_id):
     try:
-        product = Product.objects.prefetch_related('images', 'variations', 'brand').get(id=product_id, status=True)
+        product = Product.objects.prefetch_related('images', 'variations__color', 'brand').get(id=product_id, status=True)
     except Product.DoesNotExist:
         return Response({'error': 'Product not found'}, status=404)
 
@@ -46,3 +45,16 @@ def product_detail_api(request, product_id):
         'sliders': sliders_serializer.data,
         'ads': ads_serializer.data
     })
+
+@api_view(['GET'])
+def category_list_with_count_api(request):
+    categories = Category.objects.all()
+    serializer = CategoryWithCountSerializer(categories, many=True)
+    return Response(serializer.data)
+
+@api_view(['GET'])
+def latest_products_api(request):
+    limit = int(request.GET.get('limit', 10))
+    latest_products = Product.objects.filter(status=True).order_by('-created_at')[:limit]
+    serializer = ProductSerializer(latest_products, many=True)
+    return Response(serializer.data)

@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import AboutUs, TermsConditions, HelpCenter, FAQ, ContactMessage
+from .models import *
 
 class AboutUsSerializer(serializers.ModelSerializer):
     class Meta:
@@ -25,3 +25,8 @@ class ContactMessageSerializer(serializers.ModelSerializer):
     class Meta:
         model = ContactMessage
         fields = ['name', 'email', 'phone', 'subject', 'message', 'created_at']
+
+class FooterSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Footer
+        fields = "__all__"

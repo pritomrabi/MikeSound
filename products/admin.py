@@ -1,13 +1,10 @@
 from django.contrib import admin
-from django.core.exceptions import ValidationError
 from .models import *
+
 class ProductImageInline(admin.TabularInline):
     model = ProductImage
     extra = 1
-    max_num = 3  
-
-    def get_max_num(self, request, obj=None, **kwargs):
-        return 3
+    max_num = 3
 
 class ProductVariationInline(admin.TabularInline):
     model = ProductVariation
@@ -15,7 +12,7 @@ class ProductVariationInline(admin.TabularInline):
 
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ('title', 'category', 'brand', 'status', 'created_at')
+    list_display = ('title', 'category', 'brand', 'status', 'discount', 'created_at')
     list_filter = ('category', 'brand', 'status')
     search_fields = ('title', 'brand__name')
     inlines = [ProductImageInline, ProductVariationInline]
@@ -25,6 +22,12 @@ class ProductAdmin(admin.ModelAdmin):
 class CategoryAdmin(admin.ModelAdmin):
     list_display = ('name', 'created_at')
 
+
+@admin.register(Color)
+class ColorAdmin(admin.ModelAdmin):
+    list_display = ('name', 'hex_code')
+    search_fields = ('name',)
+
 @admin.register(SubCategory)
 class SubCategoryAdmin(admin.ModelAdmin):
     list_display = ('name', 'category')
@@ -32,7 +35,6 @@ class SubCategoryAdmin(admin.ModelAdmin):
 @admin.register(Brand)
 class BrandAdmin(admin.ModelAdmin):
     list_display = ('name',)
-
 
 @admin.register(Slider)
 class SliderAdmin(admin.ModelAdmin):

@@ -12,21 +12,16 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 
 from pathlib import Path
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-y&w&&as(&q0(@$ptcu4%i#)wbjov(l@8$g4amj_^!(j+06wl!p'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
-
+ALLOWED_HOSTS = ["*"]
+DEBUG = False
+AUTH_USER_MODEL = 'accounts.CustomUser'
 
 # Application definition
 
@@ -55,6 +50,8 @@ INSTALLED_APPS = [
     'corsheaders',
 ]
 
+
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -63,6 +60,9 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
+    "whitenoise.middleware.WhiteNoiseMiddleware",
+
 ]
 
 ROOT_URLCONF = 'config.urls'
@@ -85,16 +85,14 @@ TEMPLATES = [
 WSGI_APPLICATION = 'config.wsgi.application'
 
 
-# Database
-# https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
 DATABASES = {
   'default': {
     'ENGINE': 'django.db.backends.postgresql',
     'NAME': 'neondb',
     'USER': 'neondb_owner',
-    'PASSWORD': 'npg_U9dHe2KrfqwX',
-    'HOST': 'ep-billowing-lake-a1bur8p6-pooler.ap-southeast-1.aws.neon.tech',
+    'PASSWORD': 'npg_DBEs8ygIc1bH',
+    'HOST': 'ep-wandering-scene-a1x47ora-pooler.ap-southeast-1.aws.neon.tech',
     'PORT':  "5432",
     'OPTIONS': {
       'sslmode': 'require',
@@ -122,7 +120,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/5.2/topics/i18n/
 
@@ -134,10 +131,8 @@ USE_I18N = True
 
 USE_TZ = True
 
-
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/5.2/howto/static-files/
-
+import os
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     BASE_DIR / 'static',
@@ -175,14 +170,15 @@ MANUAL_PAYMENT_ACCOUNTS = {
     "rocket": "019XXXXXXXX"
 }
 
+LOGIN_URL = '/accounts/login/'
 
 # Gmail Email Setup
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'pritomrabidas102@gmail.com'          # তোমার Gmail
-EMAIL_HOST_PASSWORD = 'your_app_password'        # Gmail App Password
+EMAIL_HOST_USER = 'pritomrabidas102@gmail.com'          
+EMAIL_HOST_PASSWORD = 'lsvr vstt qhde hrpe'        
 
 
 # python manage.py runserver_plus 127.0.0.1:8000 --cert-file cert.pem --key-file key.pem

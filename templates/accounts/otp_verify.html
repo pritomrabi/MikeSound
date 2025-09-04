@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>OTP Verification - Fashion Flat</title>
+    <style>
+        .message {
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .success {
+            background-color: #d4edda;
+            color: #155724;
+            border-color: #c3e6cb;
+        }
+        .error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border-color: #f5c6cb;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Enter 4-Digit OTP</h2>
+
+    <!-- Message display section -->
+    {% if messages %}
+        {% for message in messages %}
+            <div class="message {% if message.tags %}{{ message.tags }}{% endif %}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    <form method="post">
+        {% csrf_token %}
+        <input type="number" name="otp" maxlength="4" placeholder="----" required><br>
+        <button type="submit">Verify OTP</button>
+    </form>
+
+</body>
+</html>

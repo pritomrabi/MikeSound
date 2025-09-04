@@ -72,8 +72,6 @@ def manual_start(request, order_id, gateway):
         return render(request, 'payment/already_paid.html', {'order': order})
 
     txn = Transaction.objects.create(order=order, amount=order.grand_total, gateway=gateway, status='pending')
-
-    # DB থেকে সব manual payment accounts load করা
     payment_numbers = PaymentNumber.objects.all()
 
     return render(
@@ -95,15 +93,19 @@ def manual_reference_submit(request, txn_id):
     if not reference:
         return render(request, 'payment/manual_payment.html', {
             'txn': txn,
-            'account_number': settings.MANUAL_PAYMENT_ACCOUNTS.get(txn.gateway),
+            'payment_numbers': PaymentNumber.objects.all(),
             'gateway': txn.gateway,
-            'error': 'Reference required'
+            'error': 'Reference required. Use Txn ID as reference.'
         })
 
     txn.reference = reference
-    txn.status = 'pending'
+    txn.status = 'pending'  # Always pending until admin verifies
     txn.save()
-    return render(request, 'payment/manual_submitted.html', {'txn': txn})
+    return render(request, 'payment/manual_submitted.html', {
+        'txn': txn,
+        'note': f'Use Txn#{txn.id} as reference when transferring. Admin will verify.'
+    })
+
 
 @staff_member_required
 def manual_verify(request, txn_id):
@@ -111,15 +113,15 @@ def manual_verify(request, txn_id):
     if request.method == 'POST':
         status = request.POST.get('status')
         reference = request.POST.get('reference', '').strip()
+
         if reference:
             txn.reference = reference
+
+        # Only allow admin to mark success if they verified actual payment
         if status in ['success', 'failed']:
             txn.status = status
         if status == 'success':
             txn.verified_at = timezone.now()
-        txn.save()
-
-        if txn.status == 'success':
             order = txn.order
             order.payment_status = 'paid'
             order.status = 'confirmed'
@@ -129,9 +131,12 @@ def manual_verify(request, txn_id):
                 decrement_stock_for_order(order)
             except Exception:
                 pass
+
+        txn.save()
         return redirect('manual_payment_done', txn_id=txn.id)
 
     return render(request, 'payment/manual_verify.html', {'txn': txn})
+
 
 def manual_done(request, txn_id):
     txn = get_object_or_404(Transaction, id=txn_id)

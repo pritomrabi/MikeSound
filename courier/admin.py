@@ -2,6 +2,7 @@ from django.contrib import admin
 from .models import Courier, OrderCourier
 import csv
 from django.http import HttpResponse
+from django.utils.html import format_html
 
 @admin.register(Courier)
 class CourierAdmin(admin.ModelAdmin):
@@ -20,5 +21,11 @@ class CourierAdmin(admin.ModelAdmin):
 
 @admin.register(OrderCourier)
 class OrderCourierAdmin(admin.ModelAdmin):
-    list_display = ['order', 'courier', 'status', 'assigned_at', 'delivered_at', 'auto_assigned']
+    list_display = ['order', 'courier', 'status', 'assigned_at', 'delivered_at', 'auto_assigned', 'mark_delivered']
     list_filter = ['status', 'assigned_at', 'courier']
+
+    def mark_delivered(self, obj):
+        if obj.status != 'delivered':
+            return format_html('<a class="button" href="/admin/courier/ordercourier/{}/deliver/">Deliver</a>', obj.id)
+        return "Delivered"
+    mark_delivered.short_description = "Mark Delivered"
