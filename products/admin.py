@@ -12,7 +12,7 @@ class ProductVariationInline(admin.TabularInline):
 
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ('title', 'category', 'brand', 'status', 'discount', 'created_at')
+    list_display = ('title', 'category', 'brand', 'status', 'discount', 'views_count', 'sold_count', 'created_at')
     list_filter = ('category', 'brand', 'status')
     search_fields = ('title', 'brand__name')
     inlines = [ProductImageInline, ProductVariationInline]

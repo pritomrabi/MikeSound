@@ -20,7 +20,6 @@ SECRET_KEY = 'django-insecure-y&w&&as(&q0(@$ptcu4%i#)wbjov(l@8$g4amj_^!(j+06wl!p
 DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
-DEBUG = False
 AUTH_USER_MODEL = 'accounts.CustomUser'
 
 # Application definition
@@ -138,7 +137,7 @@ STATICFILES_DIRS = [
     BASE_DIR / 'static',
 ]
 MEDIA_URL = '/media/'
-
+MEDIA_ROOT = BASE_DIR / 'media'
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 

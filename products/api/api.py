@@ -1,20 +1,17 @@
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from django.db.models import Q
-from ..models import *
-from ..serializers import *
+from ..models import Product, Slider, AdsBanner, Category
+from ..serializers import ProductSerializer, SliderSerializer, AdsBannerSerializer, CategoryWithCountSerializer
 
 @api_view(['GET'])
 def product_list_api(request):
     query = request.GET.get('q', '')
     products = Product.objects.filter(status=True)
     if query:
-        products = products.filter(
-            Q(title__icontains=query) |
-            Q(brand__name__icontains=query)
-        )
+        products = products.filter(Q(title__icontains=query) | Q(brand__name__icontains=query))
     products = products.prefetch_related('images', 'variations', 'brand')
-    serializer = ProductSerializer(products, many=True)
+    serializer = ProductSerializer(products, many=True, context={'request': request})
 
     sliders = Slider.objects.filter(status=True)
     ads = AdsBanner.objects.filter(status=True)
@@ -35,6 +32,7 @@ def product_detail_api(request, product_id):
         return Response({'error': 'Product not found'}, status=404)
 
     serializer = ProductSerializer(product)
+
     sliders = Slider.objects.filter(status=True)
     ads = AdsBanner.objects.filter(status=True)
     sliders_serializer = SliderSerializer(sliders, many=True)

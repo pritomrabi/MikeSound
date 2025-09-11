@@ -35,7 +35,7 @@ class Brand(models.Model):
 
 class Color(models.Model):
     name = models.CharField(max_length=50)
-    hex_code = models.CharField(max_length=7, blank=True, null=True)
+    hex_code = models.CharField(max_length=7, default="#000000")
 
     def __str__(self):
         return self.name
@@ -52,6 +52,9 @@ class Product(models.Model):
     status = models.BooleanField(default=True)
     discount = models.DecimalField(max_digits=5, decimal_places=2, default=0)
     users_wishlist = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='wishlist', blank=True)
+    views_count = models.PositiveIntegerField(default=0)
+    sold_count = models.PositiveIntegerField(default=0)
+    is_featured = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -83,17 +86,6 @@ class Product(models.Model):
     def __str__(self):
         return self.title
 
-class ProductImage(models.Model):
-    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='images')
-    image = models.ImageField(upload_to='media/product_images/', null=True, blank=True)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-
-@receiver(post_delete, sender=ProductImage)
-def delete_image_file(sender, instance, **kwargs):
-    if instance.image and os.path.isfile(instance.image.path):
-        os.remove(instance.image.path)
-
 class ProductVariation(models.Model):
     SIZE_CHOICES = [
         ('XS', 'Extra Small'),
@@ -104,17 +96,30 @@ class ProductVariation(models.Model):
         ('XXL', 'Double Extra Large'),
     ]
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='variations')
-    color = models.ForeignKey(Color, on_delete=models.SET_NULL, null=True, blank=True, related_name='variations')
+    color = models.ForeignKey(Color, on_delete=models.SET_NULL, null=True, related_name='variations')
     size = models.CharField(max_length=10, choices=SIZE_CHOICES)
     stock = models.PositiveIntegerField(default=0)
-    price = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    price = models.DecimalField(max_digits=10, decimal_places=2)
+    sku = models.CharField(max_length=50, unique=True, default="TEMP-SKU")
+
 
     class Meta:
         unique_together = ('product', 'size', 'color')
 
+class ProductImage(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='images')
+    image = models.ImageField(upload_to='product_images/', null=True, blank=True, default='product_images/default.png')
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+@receiver(post_delete, sender=ProductImage)
+def delete_image_file(sender, instance, **kwargs):
+    if instance.image and os.path.isfile(instance.image.path):
+        os.remove(instance.image.path)
+
 class Slider(models.Model):
     title = models.CharField(max_length=255, blank=True, null=True)
-    image = models.ImageField(upload_to='media/sliders/')
+    image = models.ImageField(upload_to='sliders/')
     link = models.URLField(blank=True, null=True)
     status = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -131,7 +136,7 @@ class AdsBanner(models.Model):
         ('FOOTER', 'Footer'),
     ]
     title = models.CharField(max_length=255, blank=True, null=True)
-    image = models.ImageField(upload_to='media/ads/')
+    image = models.ImageField(upload_to='ads/')
     link = models.URLField(blank=True, null=True)
     position = models.CharField(max_length=50, choices=POSITION_CHOICES)
     status = models.BooleanField(default=True)

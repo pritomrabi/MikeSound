@@ -23,7 +23,8 @@ def product_detail(request, product_id):
     product = get_object_or_404(Product.objects.prefetch_related('variations__color', 'images'), id=product_id, status=True)
     sliders = Slider.objects.filter(status=True)
     ads = AdsBanner.objects.filter(status=True)
-
+    product.views_count += 1
+    product.save(update_fields=['views_count'])
     variations = []
     out_of_stock = True
     for var in product.variations.all():
@@ -59,6 +60,8 @@ def product_detail(request, product_id):
             'product_id': product.id,
             'title': product.title,
             'variations': variations,
+            'views_count': product.views_count,
+            'sold_count': product.sold_count,
             'message': product_message
         })
 

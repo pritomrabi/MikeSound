@@ -47,51 +47,60 @@
 <table border="1" cellpadding="5" cellspacing="0">
 <thead>
 <tr>
-<th>Images</th>
-<th>Title</th>
-<th>Description</th>
-<th>Price</th>
-<th>Brand</th>
-<th>Color</th>
-<th>Wishlist</th>
+    <th>Images</th>
+    <th>Title</th>
+    <th>Description</th>
+    <th>Price</th>
+    <th>Brand</th>
+    <th>Color</th>
+    <th>Sold</th>
+    <th>Wishlist</th>
 </tr>
 </thead>
 <tbody>
 {% for product in products %}
 <tr>
-<td>
-    {% for image in product.images.all|slice:":4" %}
-        <a href="{% url 'product_detail' product.id %}">
-            <img src="{{ image.image.url }}" alt="{{ product.title }}" width="60" height="60">
-        </a>
-    {% endfor %}
-</td>
-<td><a href="{% url 'product_detail' product.id %}">{{ product.title }}</a></td>
-<td>{{ product.description|truncatechars:100 }}</td>
-<td>
-    {% if product.variations.exists %}
-        {% with first_var=product.variations.first %}
-            {{ product|get_discounted_price:first_var|default:first_var.price|floatformat:2 }}
-        {% endwith %}
-    {% else %}
-        -
-    {% endif %}
-</td>
-<td>{{ product.brand.name }}</td>
-<td>
-    {% if product.variations.exists %}
-        {% with first_var=product.variations.first %}
-            {% if first_var.color %}{{ first_var.color.name }}{% else %}No Color{% endif %}
-        {% endwith %}
-    {% else %}
-        -
-    {% endif %}
-</td>
-<td>{{ product.users_wishlist.count }}</td>
+    <td>
+        {% for image in product.images.all|slice:":4" %}
+            <a href="{% url 'product_detail' product.id %}">
+                <img src="{{ image.image.url }}" alt="{{ product.title }}" width="60" height="60">
+            </a>
+        {% endfor %}
+    </td>
+    <td><a href="{% url 'product_detail' product.id %}">{{ product.title }}</a></td>
+    <td>{{ product.description|truncatechars:100 }}</td>
+    <td>
+        {% if product.variations.all %}
+            {% with first_var=product.variations.first %}
+                {% if first_var %}
+                    {{ product|get_discounted_price:first_var|floatformat:2 }}
+                {% endif %}
+            {% endwith %}
+        {% else %}
+            -
+        {% endif %}
+    </td>
+    <td>{{ product.brand.name }}</td>
+    <td>
+        {% if product.variations.all %}
+            {% with first_var=product.variations.first %}
+                {% if first_var.color %}{{ first_var.color.name }}{% else %}No Color{% endif %}
+            {% endwith %}
+        {% else %}
+            -
+        {% endif %}
+    </td>
+    <td>
+        {% if product.sold_count > 0 %}
+            {{ product.sold_count }}
+        {% endif %}
+    </td>
+    <td>{{ product.users_wishlist.count }}</td>
 </tr>
 {% empty %}
-<tr><td colspan="7">No products found</td></tr>
+<tr><td colspan="8">No products found</td></tr>
 {% endfor %}
 </tbody>
 </table>
+
 {% endblock %}
