@@ -77,6 +77,72 @@ const ShopPage = () => {
       rating: 4.5,
       image: "home.jpg",
     },
+    {
+      id: 1,
+      title: "Balai Sports",
+      category: "Blackfriday",
+      price: 269,
+      rating: 4.2,
+      image: "home.jpg",
+    },
+    {
+      id: 2,
+      title: "Nerd wooden chair",
+      category: "Furniture",
+      price: 599,
+      rating: 4.8,
+      discount: 25,
+      image: "home.jpg",
+    },
+    {
+      id: 3,
+      title: "iPhone Dock",
+      category: "Accessories",
+      price: 399,
+      rating: 5.0,
+      image: "home.jpg",
+    },
+    {
+      id: 4,
+      title: "Pendant Light",
+      category: "Lighting",
+      price: 169,
+      rating: 4.5,
+      image: "home.jpg",
+    },
+    {
+      id: 5,
+      title: "Balai Sports",
+      category: "Blackfriday",
+      price: 269,
+      rating: 4.2,
+      image: "home.jpg",
+    },
+    {
+      id: 6,
+      title: "Nerd wooden chair",
+      category: "Furniture",
+      price: 599,
+      rating: 4.8,
+      discount: 25,
+      image: "home.jpg",
+    },
+    {
+      id: 7,
+      title: "iPhone Dock",
+      category: "Accessories",
+      price: 399,
+      rating: 5.0,
+      image: "home.jpg",
+    },
+    {
+      id: 8,
+      title: "Pendant Light",
+      category: "Lighting",
+      price: 169,
+      rating: 4.5,
+      image: "home.jpg",
+    },
   ];
 
   const categories = [
@@ -92,7 +158,7 @@ const ShopPage = () => {
   const [quickcart, setQuickcart] = useState(false);
   const [priceRange, setPriceRange] = useState(1000);
   const [category, setCategory] = useState("All");
-  const itemsPerPage = 4;
+  const itemsPerPage = 6;
 
   const toggleSidebar = () => setShowSidebar(!showSidebar);
 
@@ -115,7 +181,7 @@ const ShopPage = () => {
     setItemOffset(newOffset);
   };
   return (
-    <section>
+    <section className="dark:bg-[#1b1b1b]">
       <div className="container mx-auto px-4 py-8">
         <div className="flex border-b border-gray-300 mb-6">
           <Link
@@ -124,11 +190,11 @@ const ShopPage = () => {
           >
             Home
           </Link>
-          <h3 className="text-primary text-base font-Lato font-semibold mb-4 inline-block">
-            <span className="text-secandari  pr-1">/</span> Shop
+          <h3 className="text-primary dark:text-white text-base font-Lato font-semibold mb-4 inline-block">
+            <span className="text-secandari dark:text-white  pr-1">/</span> Shop
           </h3>
         </div>
-        <div className="flex text-base gap-2 cursor-pointer text-primary font-Lato font-medium items-center mb-4">
+        <div className="flex text-base gap-2 cursor-pointer dark:text-white text-primary font-Lato font-medium items-center mb-4">
           <FiAlignLeft onClick={toggleSidebar} />
           <h2 className="">Show sidebar</h2>
         </div>
@@ -205,11 +271,11 @@ const ShopPage = () => {
 
           {/* Product Grid */}
           <div className="flex-1">
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-6">
               {currentItems.map((product) => (
                 <div
                   key={product.id}
-                  className="group relative rounded-md shadow-sm  transition overflow-hidden"
+                  className="group relative rounded-md shadow-sm bg-white dark:bg-[#2a2a2a] transition overflow-hidden"
                 >
                   {product.discount && (
                     <span className="absolute top-2 left-2 bg-brand text-white text-xs w-10 h-10 rounded-full justify-center flex items-center font-Monrope font-normal">
@@ -220,7 +286,7 @@ const ShopPage = () => {
                     <img
                       src={product.image}
                       alt={product.title}
-                      className="w-full h-80 object-cover transform transition-transform duration-500 group-hover:scale-105 cursor-pointer"
+                      className="w-full h-52 sm:h-56 object-cover transform transition-transform duration-500 group-hover:scale-105 cursor-pointer"
                     />
                   </div>
                   <div className=" text-center space-y-1 p-3">

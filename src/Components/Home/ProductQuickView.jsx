@@ -17,7 +17,7 @@ const ProductQuickView = ({ setQuickcart }) => {
   const images = ["home.jpg", "home.jpg", "home.jpg", "home.jpg"];
 
   return (
-    <div className="fixed top-0 inset-0 bg-[rgba(0,0,0,0.2)] bg-opacity-40 z-50 h-full w-full overflow-auto px-4 py-6 flex items-start justify-center">
+    <div className="fixed top-0 inset-0 bg-[rgba(0,0,0,0.2)] bg-opacity-40 z-50 h-full w-full overflow-auto px-4 md:py-20 py-5 flex items-start justify-center">
       <div className="bg-[#fdfeff] dark:bg-[#1a1a1a] w-full max-w-full md:max-w-3xl lg:max-w-5xl rounded-lg shadow-lg flex flex-col md:flex-row mt-5">
         {/* Left: Image Slider */}
         <button className="absolute top-4 right-4 text-white  cursor-pointer transition duration-200 block  md:hidden">
@@ -27,7 +27,7 @@ const ProductQuickView = ({ setQuickcart }) => {
           <img
             src={images[currentImageIndex]}
             alt={`Product Image ${currentImageIndex + 1}`}
-            className="max-h-[400px] w-full object-cover rounded mb-4"
+            className="md:h-[400px] sm:h-[250px] h-[250px] w-full object-cover rounded mb-4"
           />
           <div className="flex gap-2 overflow-x-auto">
             {images.map((img, index) => (
@@ -87,10 +87,9 @@ const ProductQuickView = ({ setQuickcart }) => {
               ))}
             </div>
           </div>
-
           {/* Quantity & Add to Cart */}
           <div className="flex flex-col sm:flex-row sm:items-center gap-4 mb-4 border-b pb-4 border-gray-300">
-            <div className="flex border rounded border-gray-300">
+            <div className="flex border w-fit rounded border-gray-300">
               <button
                 className="p-2 cursor-pointer"
                 onClick={() => setQuantity(Math.max(1, quantity - 1))}

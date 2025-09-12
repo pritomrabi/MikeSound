@@ -10,6 +10,17 @@ const Categories = () => {
 
   const allProducts = [
     { title: "Wooden Chair", price: "$99.00", img: "home.jpg", category: "furniture" },
+    { title: "Wooden Chair", price: "$99.00", img: "home.jpg", category: "furniture" },
+    { title: "Wooden Chair", price: "$99.00", img: "home.jpg", category: "furniture" },
+    { title: "Wooden Chair", price: "$99.00", img: "home.jpg", category: "furniture" },
+    { title: "Wooden Chair", price: "$99.00", img: "home.jpg", category: "furniture" },
+    { title: "Wooden Chair", price: "$99.00", img: "home.jpg", category: "furniture" },
+    { title: "Wooden Chair", price: "$99.00", img: "home.jpg", category: "furniture" },
+    { title: "Wooden Chair", price: "$99.00", img: "home.jpg", category: "furniture" },
+    { title: "Wooden Chair", price: "$99.00", img: "home.jpg", category: "furniture" },
+    { title: "Wooden Chair", price: "$99.00", img: "home.jpg", category: "furniture" },
+    { title: "Wooden Chair", price: "$99.00", img: "home.jpg", category: "furniture" },
+    { title: "Wooden Chair", price: "$99.00", img: "home.jpg", category: "furniture" },
     { title: "Wall Clock", price: "$120.00", img: "https://via.placeholder.com/300x300", category: "clocks" },
     { title: "Sunglasses", price: "$75.00", img: "https://via.placeholder.com/300x300", category: "accessories" },
     { title: "Cooking Pan", price: "$89.00", img: "https://via.placeholder.com/300x300", category: "cooking" },
@@ -19,39 +30,39 @@ const Categories = () => {
   const posts = allProducts.filter(item => item.category === slug);
 
   return (
-    <section className="py-28">
+    <section className="py-28 dark:bg-[#1b1b1b]">
       <div className="container mx-auto px-4">
         <div className="flex border-b border-gray-300 mb-6">
           <Link to="/" className="text-secandari cursor-pointer text-base font-Lato font-normal mb-4 inline-block pr-1 hover:underline duration-300">
             Home
           </Link>
-          <h3 className="text-primary text-base font-Lato font-semibold mb-4 inline-block">
-            <span className="text-secandari p-1"> /</span> Categories 
+          <h3 className="text-primary dark:text-white text-base font-Lato font-semibold mb-4 inline-block">
+            <span className="text-secandari dark:text-white p-1"> /</span> Categories
           </h3>
-          <h3 className="text-primary text-base font-Lato font-semibold mb-4 inline-block">
-            <span className="text-secandari p-1"> /</span> {slug.charAt(0).toUpperCase() + slug.slice(1)}
+          <h3 className="text-primary dark:text-white text-base font-Lato font-semibold mb-4 inline-block">
+            <span className="text-secandari dark:text-white p-1"> /</span> {slug.charAt(0).toUpperCase() + slug.slice(1)}
           </h3>
         </div>
 
-        <div className="w-full px-6 py-10 bg-[#fdfeff] dark:bg-black grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3 mt-8">
           {posts.length > 0 ? (
             posts.map((post, idx) => (
-              <div key={idx} className="group relative rounded-md shadow-sm transition overflow-hidden">
+              <div key={idx} className="group relative rounded-md bg-white dark:bg-[#2a2a2a] shadow-sm transition overflow-hidden">
                 <div className="overflow-hidden rounded-md">
-                  <img src={post.img} alt={post.title} className="w-full h-80 object-cover transform transition-transform duration-500 group-hover:scale-105 cursor-pointer" />
+                  <img src={post.img} alt={post.title} className="w-full h-52 sm:h-56 object-cover transform transition-transform duration-500 group-hover:scale-105 cursor-pointer" />
                 </div>
                 <div className="text-center space-y-1 p-3">
-                  <h3 className="text-sm font-medium text-primary-default dark:text-primary-dark font-Roboto">
-                    {post.title}
-                  </h3>
-                  <p className="text-md font-bold text-brand font-Monrope">{post.price}</p>
+                  <Link to="/singleproduct" className="text-start">
+                    <h3 className="text-base font-medium text-primary-default dark:text-primary-dark font-Roboto">{post.title.substring(0, 25)}...</h3>
+                    <p className="text-md font-bold text-brand font-Monrope ">৳{post.price}</p>
+                    </Link>
                 </div>
-                <div className="absolute bottom-32 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition flex gap-4 bg-white py-2.5 px-5 rounded shadow z-10">
+                <div className="absolute bottom-28 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition flex gap-4 bg-white py-2.5 px-5 rounded shadow z-10">
                   <Link to="/singleproduct" className="relative group/icon">
                     <button className="text-xl text-primary hover:text-secandari duration-200 cursor-pointer">
                       <AiOutlineShoppingCart />
                     </button>
-                    <span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 rounded bg-black text-white text-xs opacity-0 group-hover/icon:opacity-100">
+                    <span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 rounded bg-black text-white text-xs opacity-0 group-hover/icon:opacity-100 whitespace-nowrap">
                       Add to cart
                     </span>
                   </Link>
@@ -59,7 +70,7 @@ const Categories = () => {
                     <button onClick={() => setQuickcart(true)} className="text-xl text-primary hover:text-secandari duration-200 cursor-pointer">
                       <LuSearch />
                     </button>
-                    <span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 rounded bg-black text-white text-xs opacity-0 group-hover/icon:opacity-100">
+                    <span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 rounded bg-black text-white text-xs opacity-0 group-hover/icon:opacity-100 whitespace-nowrap">
                       Search
                     </span>
                   </div>
