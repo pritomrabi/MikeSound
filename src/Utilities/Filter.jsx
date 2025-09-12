@@ -28,7 +28,7 @@ const Filter = ({
 
   return (
     <div>
-      <h4 className="font-normal font-Roboto text-xl text-primary mb-2">
+      <h4 className="font-normal font-Roboto text-xl text-primary dark:text-white mb-2">
         Filter by Price
       </h4>
 
@@ -67,7 +67,7 @@ const Filter = ({
       />
 
       <div className="justify-between items-center flex pt-4">
-        <p className="text-sm text-primary font-Monrope font-normal">
+        <p className="text-sm text-primary dark:text-white font-Monrope font-normal">
           Price $ {tempPriceRange[0]} - $ {tempPriceRange[1]}
         </p>
         <button

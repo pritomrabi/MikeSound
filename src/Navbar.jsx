@@ -32,7 +32,7 @@ const Navbar = () => {
             to="/"
             className="sm:text-2xl text-xl font-bold text-brand font-Lato"
           >
-            Mike Sound
+            SMART
           </Link>
           <div className=" items-center space-x-6 text-base font-Lato text-primary-default dark:text-primary-dark font-medium hidden md:block">
             <Link to="/" className="hover:text-brand duration-100">

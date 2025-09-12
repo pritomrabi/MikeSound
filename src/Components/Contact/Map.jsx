@@ -8,7 +8,7 @@ const Map = () => {
         <iframe
           title="Google Maps"
           className="w-full h-full rounded-lg shadow-md"
-          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3151.8354345093717!2d144.9559253153181!3d-37.81720974202161!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6ad642af0f11fd81%3A0x5045675218ce6e0!2sCake%20Shop!5e0!3m2!1sen!2sus!4v1614972000000!5m2!1sen!2sus"
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d116638.9685886066!2d90.24331679615287!3d23.9969152492504!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3755dafdd8aa72a1%3A0xe3a23793cb030fdb!2sGazipur!5e0!3m2!1sen!2sbd!4v1757683771437!5m2!1sen!2sbd"
           allowFullScreen
         ></iframe>
       </div>
