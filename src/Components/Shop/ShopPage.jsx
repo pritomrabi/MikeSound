@@ -107,7 +107,7 @@ const ShopPage = () => {
                 <h4 className="font-normal font-Roboto text-xl text-primary dark:text-white mb-2">Top Rated</h4>
                 <label className="flex items-center">
                   <input type="checkbox" checked={topRated} onChange={() => setTopRated(!topRated)} className="mr-2" />
-                  4.5 stars & up
+                  4 stars & up
                 </label>
               </div>
             </div>

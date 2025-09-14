@@ -17,6 +17,11 @@ import Categories from "./Pages/Categories";
 import Support from "./Pages/Support";
 import OrderHistory from "./Pages/OrderHistory";
 import SpecialOffers from "./Pages/SpecialOffers";
+import Registration from "./Auth/Registration";
+import Login from "./Auth/Login";
+import Forgot from "./Auth/Forgot";
+import OTP from "./Auth/OTP";
+import Wishlist from "./Pages/Wishlist";
 
 function App() {
   const [darkMode, setDarkMode] = useState(
@@ -54,15 +59,16 @@ function App() {
           <Route path="/singleproduct" element={<SingleProduct />} />
           <Route path="/SpecialOffers" element={<SpecialOffers />} />
           <Route path="/orderhistory" element={<OrderHistory />} />
+          <Route path="/wishlist" element={<Wishlist />} />
           <Route path="/viewcart" element={<ViewCart />} />
           <Route path="/checkout" element={<Checkout />} />
           <Route path="/categories/:slug" element={<Categories />} />
           <Route path="*" element={<ErrorPage />} />
         </Route>
-        {/* <Route path="/registration" element={<Registration />} />
+        <Route path="/registration" element={<Registration />} />
         <Route path="/login" element={<Login />} />
         <Route path="/forgot" element={<Forgot />} />
-        <Route path="/otp" element={<OTP />} /> */}
+        <Route path="/otp" element={<OTP />} />
       </Route>
     )
   );

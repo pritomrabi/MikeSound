@@ -8,7 +8,6 @@ const SpecialOffers = () => {
     const [quickcart, setQuickcart] = useState(false);
     const [showPercentage, setShowPercentage] = useState(50);
 
-    // ধরো API থেকে আসবে
     const allProducts = [
         { title: "Wooden Chair", price: "$99.00", img: "home.jpg", discount: 50 },
         { title: "Wall Clock", price: "$120.00", img: "https://via.placeholder.com/300x300", discount: 30 },

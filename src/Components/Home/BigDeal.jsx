@@ -9,6 +9,7 @@ import { LuSearch } from "react-icons/lu";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import ProductQuickView from "./ProductQuickView";
+import { FaRegHeart } from "react-icons/fa";
 
 const BigDeal = () => {
   const [quickView, setQuickView] = useState(false);
@@ -71,6 +72,14 @@ const BigDeal = () => {
                       <button onClick={() => setQuickView(true)} className="text-xl text-primary hover:text-secondary duration-200 cursor-pointer"><LuSearch /></button>
                       <span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 rounded bg-black text-white text-[10px] opacity-0 group-hover/icon:opacity-100 whitespace-nowrap">Quick View</span>
                     </div>
+                    <Link to="/wishlist" className="relative group/icon">
+                      <button className="text-xl text-primary hover:text-secandari duration-200 cursor-pointer">
+                        <FaRegHeart />
+                      </button>
+                      <span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 rounded bg-black text-white text-xs opacity-0 group-hover/icon:opacity-100 transition whitespace-nowrap font-Lato font-normal">
+                        Wishlist
+                      </span>
+                    </Link>
                   </div>
 
                 </Link>

@@ -7,77 +7,85 @@ import { LuSearch } from "react-icons/lu";
 import { FaRegHeart } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import ProductQuickView from "../Home/ProductQuickView";
+import Heading from "../../Utilities/Heading";
 const RelatedProduct = () => {
   const settings = {
-    dots: true,
+    dots: false,
     infinite: false,
     speed: 500,
-    slidesToShow: 4,
+    slidesToShow: 6,       // বড় স্ক্রিনে 6
     slidesToScroll: 2,
     autoplay: true,
     autoplaySpeed: 3000,
+    responsive: [
+      {
+        breakpoint: 1280,   // max-width 1280px
+        settings: { slidesToShow: 5 }
+      },
+      {
+        breakpoint: 1024,
+        settings: { slidesToShow: 4 }
+      },
+      {
+        breakpoint: 768,
+        settings: { slidesToShow: 3 }
+      },
+      {
+        breakpoint: 480,
+        settings: { slidesToShow: 2 }
+      }
+    ]
   };
-
   const [quickcart, setQuickcart] = useState(false);
+  const posts = [
+    { title: "Creative water features and exterior", price: "99.00", img: "home.jpg" },
+    { title: "Creative water features and exterior", price: "99.00", img: "home.jpg" },
+    { title: "Creative water features and exterior", price: "99.00", img: "home.jpg" },
+    { title: "Creative water features and exterior", price: "99.00", img: "home.jpg" },
+    { title: "Exterior ideas: 10 colored garden seats", price: "120.00", img: "https://via.placeholder.com/300x300" },
+    { title: "Exterior ideas: 10 colored garden seats", price: "120.00", img: "https://via.placeholder.com/300x300" },
+    { title: "The big design: Wall likes pictures", price: "75.00", img: "https://via.placeholder.com/300x300" },
+    { title: "The big design: Wall likes pictures", price: "75.00", img: "https://via.placeholder.com/300x300" },
+    { title: "Sweet seat: functional seat for IT folks", price: "89.00", img: "https://via.placeholder.com/300x300" },
+    { title: "Sweet seat: functional seat for IT folks", price: "89.00", img: "https://via.placeholder.com/300x300" },
+  ];
   return (
     <section>
       <div className="container mx-auto px-3">
         <div className=" mx-auto px-4 py-10 ">
-          <h2 className="text-2xl font-normal text-primary dark:text-primary-dark font-Roboto mb-6">
-            Related Products
-          </h2>
+          <Heading Head="Related Products" />
           <Slider {...settings}>
-            <div className="group relative rounded-md shadow-sm  transition overflow-hidden">
-              <div className="overflow-hidden rounded-md">
-                <img
-                  src="home.jpg"
-                  alt="home"
-                  className="w-full h-80 object-cover transform transition-transform duration-500 group-hover:scale-105 cursor-pointer"
-                />
-              </div>
-
-              <div className=" text-center space-y-1 p-3">
-                <div className="flex justify-center gap-2 text-xs text-primary dark:text-primary-dark font-medium font-Lato">
-                  {/* Optional sizes */}
-                  <span>XS</span>
-                  <span>S</span>
-                  <span>XL</span>
-                </div>
-                <h3 className="text-sm font-medium text-primary font-Roboto ">
-                  Men's Slim Fit Shirt
-                </h3>
-                <p className="text-xs text-secandari font-medium font-Lato">
-                  Fashion Flat
-                </p>
-                <p className="text-md font-bold text-brand font-Monrope">
-                  $99.00
-                </p>
-              </div>
-
-              {/* Hover icons (stay inside structure) */}
-              <div className="absolute bottom-32 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition flex gap-4 bg-white py-2.5 px-5 rounded shadow z-10">
-                {/* Add to Cart */}
-                <div className="relative group/icon">
-                  <button className="text-xl text-primary hover:text-secandari duration-200 cursor-pointer">
-                    <AiOutlineShoppingCart />
-                  </button>
-                  <span className="absolute  bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 rounded bg-black text-white text-xs opacity-0 group-hover/icon:opacity-100 transition whitespace-nowrap font-Lato font-normal">
-                    Add to cart
-                  </span>
-                </div>
-
-                {/* Search */}
-                <div className="relative group/icon">
-                  <button className="text-xl text-primary hover:text-secandari duration-200 cursor-pointer">
-                    <LuSearch onClick={() => setQuickcart(true)} />
-                  </button>
-                  <span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 rounded bg-black text-white text-xs opacity-0 group-hover/icon:opacity-100 transition whitespace-nowrap font-Lato font-normal">
-                    Search
-                  </span>
+            {posts.map((post, idx) => (
+              <div key={idx} className="px-2">
+                <div className="group relative rounded-md shadow-sm transition overflow-hidden">
+                  <div className="overflow-hidden rounded-t-md">
+                    <img
+                      src={post.img}
+                      alt={post.title}
+                      className="w-full h-52 sm:h-56 object-cover transform transition-transform duration-500 group-hover:scale-105"
+                    />
+                  </div>
+                  <div className="text-center dark:bg-[#2a2a2a] space-y-1 px-3 py-5 shadow rounded-b-md">
+                    <Link to="/singleproduct">
+                      <h3 className="text-base font-medium text-primary-default dark:text-primary-dark font-Roboto">
+                        {post.title.substring(0, 25)}...
+                      </h3>
+                      <p className="text-md font-bold text-brand font-Monrope text-start">৳{post.price}</p>
+                      <div className="flex gap-2">
+                        <p className="text-md font-normal text-secandari line-through font-Monrope">
+                          ৳{Math.max(195, post.price * 1.2)}
+                        </p>
+                        <span className="text-md font-normal text-primary dark:text-white font-Monrope">
+                          -{Math.round(((Math.max(195, post.price * 1.2) - post.price) / Math.max(195, post.price * 1.2)) * 100)}%
+                        </span>
+                      </div>
+                    </Link>
+                  </div>
                 </div>
               </div>
-            </div>
+            ))}
           </Slider>
+
           {quickcart && <ProductQuickView setQuickcart={setQuickcart} />}
         </div>
       </div>

@@ -9,7 +9,7 @@ import { LuSearch } from "react-icons/lu";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import ProductQuickView from "./ProductQuickView";
-
+import { FaRegHeart } from "react-icons/fa";
 const HomeLatest = () => {
   const [quickcart, setQuickcart] = useState(false);
   const posts = [
@@ -58,9 +58,16 @@ const HomeLatest = () => {
                       <button onClick={() => setQuickcart(true)} className="text-xl text-primary hover:text-secandari duration-200 cursor-pointer"><LuSearch /></button>
                       <span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 rounded bg-black text-white text-xs opacity-0 group-hover/icon:opacity-100 whitespace-nowrap">Search</span>
                     </div>
+                    <Link to="/wishlist" className="relative group/icon">
+                      <button className="text-xl text-primary hover:text-secandari duration-200 cursor-pointer">
+                        <FaRegHeart />
+                      </button>
+                      <span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 rounded bg-black text-white text-xs opacity-0 group-hover/icon:opacity-100 transition whitespace-nowrap font-Lato font-normal">
+                        Wishlist
+                      </span>
+                    </Link>
                   </div>
                 </div>
-
               </SwiperSlide>
             ))}
           </Swiper>
