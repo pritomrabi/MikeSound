@@ -9,7 +9,7 @@ const AdBanner = () => {
       id: 1,
       title: "Special Offer - 50% Off",
       image: "https://woodmart.xtemos.com/wp-content/uploads/2024/02/fashion-flat-slide-2.jpg",
-      link: "/shop",
+      link: "/discount",
     }
   ];
 

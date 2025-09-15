@@ -59,7 +59,6 @@ const BigDeal = () => {
                       <p className="text-md font-bold text-brand font-Monrope text-start">৳{product.price}</p>
                       <div className="flex gap-2">
                         <p className="text-md font-normal text-secandari line-through font-Monrope">৳195</p>
-                        <span className="text-md font-normal text-primary dark:text-white font-Monrope ">-7%</span>
                       </div>
                     </Link>
                   </div>
