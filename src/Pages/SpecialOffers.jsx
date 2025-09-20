@@ -20,7 +20,7 @@ const SpecialOffers = () => {
     const filteredPosts = allProducts.filter(p => p.discount === showPercentage);
 
     return (
-        <section className="py-28">
+        <section className="md:pt-20 pt-16">
             <div className="container mx-auto px-4">
                 {/* Page Title */}
                 <div className="mb-8 text-center">

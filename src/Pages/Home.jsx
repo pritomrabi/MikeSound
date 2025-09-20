@@ -10,7 +10,7 @@ import BestSeller from "../Components/Home/BestSeller";
 
 const Home = () => {
   return (
-    <div className="pt-20">
+    <div className="md:pt-20 pt-16">
       <HomeBanner />
       <BestSeller/>
       <ProductShowcase />

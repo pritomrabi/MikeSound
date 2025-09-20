@@ -4,7 +4,7 @@ import CheckoutDetails from "../Components/Checkout/CheckoutDetails";
 
 const Checkout = () => {
   return (
-    <div className="pt-20">
+    <div className="md:pt-20 pt-16">
       <CheckoutBanner />
       <CheckoutDetails />
     </div>

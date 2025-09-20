@@ -20,9 +20,9 @@ const BestSeller = () => {
 
     return (
         <section className="py-12 bg-[#f5f5f5] dark:bg-[#1b1b1b]">
-            <div className="container mx-auto px-4">
+            <div className="container mx-auto px-1  md:px-4">
                 <Heading Head="Explore Bestsellers" />
-                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3 mt-8">
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6  md:gap-3 gap-1 mt-8">
                     {products.map((product, idx) => (
                         <div key={idx} className="relative group bg-white dark:bg-[#2a2a2a] rounded-md shadow-md overflow-hidden">
                             <div className="relative overflow-hidden rounded-t-md">
@@ -30,7 +30,7 @@ const BestSeller = () => {
                                     <img src={product.img} alt={product.title} className="w-full h-52 sm:h-56 object-cover transform transition-transform duration-500 group-hover:scale-105" />
                                 </div>
                             </div>
-                            <div className="p-4">
+                            <div className="md:p-4 p-2">
                                 <Link to="/singleproduct">
                                     <h3 className="text-base font-medium text-primary-default dark:text-primary-dark font-Roboto">{product.title.substring(0, 25)}...</h3>
                                     <p className="text-md font-bold text-brand font-Monrope text-start">৳{product.price}</p>
@@ -45,7 +45,7 @@ const BestSeller = () => {
                                     </div>
                                 </Link>
                             </div>
-                            <div className="absolute xl:bottom-32 bottom-44 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition flex gap-4 bg-white py-2.5 px-5 rounded shadow z-10">
+                            <div className="absolute xl:bottom-32 bottom-36 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition flex gap-4 bg-white py-2.5 px-5 rounded shadow z-10">
                                 <Link to="/singleproduct" className="relative group/icon">
                                     <button className="text-xl text-primary hover:text-secandari duration-200 cursor-pointer"><AiOutlineShoppingCart /></button>
                                     <span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 rounded bg-black text-white text-xs opacity-0 group-hover/icon:opacity-100 whitespace-nowrap">Add to cart</span>

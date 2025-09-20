@@ -12,8 +12,8 @@ const Wishlist = () => {
     ];
 
     return (
-        <section className="dark:bg-[#212020] pt-20">
-            <div className="container mx-auto px-4">
+        <section className="dark:bg-[#212020] md:pt-20 pt-16">
+            <div className="container mx-auto md:px-4 px-1">
                 <div className="w-full sm:px-6 px-0 py-10 dark:bg-[#212020]">
                     {posts.length > 0 ? (
                         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-6">
@@ -42,7 +42,7 @@ const Wishlist = () => {
                                             </div>
                                         </Link>
                                     </div>
-                                    <div className="absolute xl:bottom-32 bottom-44 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition flex gap-4 bg-white py-2.5 px-5 rounded shadow z-10">
+                                    <div className="absolute xl:bottom-32 bottom-28 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition flex gap-4 bg-white py-2.5 px-5 rounded shadow z-10">
                                         <Link to="/singleproduct" className="relative group/icon">
                                             <button className="text-xl text-primary hover:text-secandari duration-200 cursor-pointer">
                                                 <AiOutlineShoppingCart />
@@ -67,7 +67,7 @@ const Wishlist = () => {
                             ))}
                         </div>
                     ) : (
-                        <div className="text-center py-28">
+                        <div className="text-center md:pt-20 pt-16">
                             <p className="text-xl font-medium text-gray-500 font-Lato">
                                 No wishlist available
                             </p>

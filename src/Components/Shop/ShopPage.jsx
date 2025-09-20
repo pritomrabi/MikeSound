@@ -54,7 +54,7 @@ const ShopPage = () => {
 
   return (
     <section className="dark:bg-[#1b1b1b]">
-      <div className="container mx-auto px-4 py-8">
+      <div className="container mx-auto md:px-4 px-1 py-8">
         <div className="flex border-b border-gray-300 mb-6">
           <Link to="/" className="text-secandari cursor-pointer text-base font-Lato font-normal mb-4 inline-block pr-1 hover:underline duration-300">
             Home
@@ -116,7 +116,7 @@ const ShopPage = () => {
         )}
         <div className="flex">
           <div className="flex-1">
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-6">
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-1 md:gap-6">
               {currentItems.map((product) => (
                 <div key={product.id} className="group relative rounded-md shadow-sm bg-white dark:bg-[#2a2a2a] transition overflow-hidden">
                   {product.discount && (
@@ -146,7 +146,7 @@ const ShopPage = () => {
                       </p>
                     </Link>
                   </div>
-                  <div className="absolute bottom-32 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition flex gap-4 bg-white py-2.5 px-5 rounded shadow z-10">
+                  <div className="absolute bottom-24 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition flex gap-4 bg-white py-2.5 px-5 rounded shadow z-10">
                     <Link to="/singleproduct" className="relative group/icon">
                       <button className="text-xl text-primary hover:text-secandari duration-200 cursor-pointer">
                         <AiOutlineShoppingCart />

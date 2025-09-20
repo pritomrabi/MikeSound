@@ -31,13 +31,13 @@ const BigDeal = () => {
 
   return (
     <section className="md:py-12 sm:py-9 py-6 dark:bg-[#1b1b1b]">
-      <div className="container mx-auto px-4">
+      <div className="container mx-auto md:px-4 px-1">
         <Heading Head="Big Deals Today" />
-        <div className="w-full sm:px-6 px-0 py-10">
+        <div className="w-full sm:px-6 px-0 pt-10">
           <Swiper
             modules={[Navigation, Pagination]}
             className="!pb-14"
-            spaceBetween={10}
+            spaceBetween={5}
             slidesPerView={1}
             pagination={false}
             breakpoints={{ 0: { slidesPerView: 2 }, 640: { slidesPerView: 3 }, 768: { slidesPerView: 4 }, 1024: { slidesPerView: 5 }, 1280: { slidesPerView: 6 } }}
@@ -53,7 +53,7 @@ const BigDeal = () => {
                     />
                     <span className="absolute top-3 left-3 bg-brand text-white text-xs font-Lato font-bold px-2 py-1 rounded">{product.discount} OFF</span>
                   </div>
-                  <div className=" dark:bg-[#2a2a2a] text-center space-y-1 px-3 py-5 shadow rounded-b-md ">
+                  <div className=" dark:bg-[#2a2a2a] text-center space-y-1 md:px-3 px-2 py-5 shadow rounded-b-md ">
                     <Link to="/singleproduct">
                       <h3 className="text-base font-medium text-primary-default dark:text-primary-dark font-Roboto">{product.title.substring(0, 25)}...</h3>
                       <p className="text-md font-bold text-brand font-Monrope text-start">৳{product.price}</p>

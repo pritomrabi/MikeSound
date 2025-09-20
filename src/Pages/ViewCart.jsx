@@ -4,7 +4,7 @@ import ViewShopping from "../Components/ViewCart/ViewShopping";
 
 const ViewCart = () => {
   return (
-    <div className="pt-20">
+    <div className="md:pt-20 pt-16">
       <ViewBanner />
       <ViewShopping />
     </div>

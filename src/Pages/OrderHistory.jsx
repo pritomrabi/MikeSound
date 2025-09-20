@@ -51,7 +51,7 @@ const OrderHistory = () => {
   }, []);
 
   return (
-    <div className="lg:w-[70%] w-full mx-auto px-4 py-10">
+    <div className="lg:w-[70%] w-full mx-auto px-4 md:pt-20 pt-16">
       <h2 className="text-2xl font-semibold text-center mb-6">Your Order History</h2>
 
       {orders.length === 0 ? (

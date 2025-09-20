@@ -5,7 +5,7 @@ import FAQ from "../Components/Contact/FAQ";
 
 const Support = () => {
   return (
-    <div className="pt-20">
+    <div className="md:pt-20 pt-16">
       <Banner para="This is the support page" />
       <FAQ />
       <Form />

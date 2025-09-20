@@ -25,7 +25,7 @@ const HomeLatest = () => {
 
   return (
     <section className=" dark:bg-[#212020]">
-      <div className="container mx-auto px-4">
+      <div className="container mx-auto md:px-4 px-1">
         <Heading Head="Our Latest Posts" />
         <div className="w-full sm:px-6 px-0 py-10  dark:bg-[#212020]">
           <Swiper modules={[Navigation, Pagination]} className="!pb-14" spaceBetween={10} slidesPerView={1} pagination={false} breakpoints={{ 0: { slidesPerView: 2 }, 640: { slidesPerView: 3 }, 768: { slidesPerView: 4 }, 1024: { slidesPerView: 5 }, 1280: { slidesPerView: 6 } }}>
@@ -39,7 +39,7 @@ const HomeLatest = () => {
                       className="w-full h-52 sm:h-56 object-cover transform transition-transform duration-500 group-hover:scale-105 "
                     />
                   </div>
-                  <div className="text-center dark:bg-[#2a2a2a] space-y-1 px-3 py-5 shadow rounded-b-md">
+                  <div className="text-center dark:bg-[#2a2a2a] space-y-1 md:p-3 p-2  shadow rounded-b-md">
                     <Link to="/singleproduct">
                       <h3 className="text-base font-medium text-primary-default dark:text-primary-dark font-Roboto">{post.title.substring(0, 25)}...</h3>
                       <p className="text-md font-bold text-brand font-Monrope text-start">৳{post.price}</p>
@@ -49,7 +49,7 @@ const HomeLatest = () => {
                       </div>
                     </Link>
                   </div>
-                  <div className="absolute xl:bottom-32 bottom-44 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition flex gap-4 bg-white py-2.5 px-5 rounded shadow z-10">
+                  <div className="absolute xl:bottom-32 bottom-28 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition flex gap-4 bg-white py-2.5 px-5 rounded shadow z-10">
                     <Link to="/singleproduct" className="relative group/icon">
                       <button className="text-xl text-primary hover:text-secandari duration-200 cursor-pointer"><AiOutlineShoppingCart /></button>
                       <span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 rounded bg-black text-white text-xs opacity-0 group-hover/icon:opacity-100 whitespace-nowrap">Add to cart</span>

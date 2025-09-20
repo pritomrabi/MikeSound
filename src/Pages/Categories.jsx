@@ -3,6 +3,7 @@ import { LuSearch } from "react-icons/lu";
 import { Link, useParams } from "react-router-dom";
 import { useState } from "react";
 import ProductQuickView from "../Components/Home/ProductQuickView";
+import { FaRegHeart } from "react-icons/fa";
 
 const Categories = () => {
   const [quickcart, setQuickcart] = useState(false);
@@ -30,8 +31,8 @@ const Categories = () => {
   const posts = allProducts.filter(item => item.category === slug);
 
   return (
-    <section className="py-28 dark:bg-[#1b1b1b]">
-      <div className="container mx-auto px-4">
+    <section className="md:pt-20 pt-16 dark:bg-[#1b1b1b]">
+      <div className="container mx-auto md:px-4 px-1">
         <div className="flex border-b border-gray-300 mb-6">
           <Link to="/" className="text-secandari cursor-pointer text-base font-Lato font-normal mb-4 inline-block pr-1 hover:underline duration-300">
             Home
@@ -44,7 +45,7 @@ const Categories = () => {
           </h3>
         </div>
 
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3 mt-8">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-1 md:gap-3 mt-8">
           {posts.length > 0 ? (
             posts.map((post, idx) => (
               <div key={idx} className="group relative rounded-md bg-white dark:bg-[#2a2a2a] shadow-sm transition overflow-hidden">
@@ -53,9 +54,10 @@ const Categories = () => {
                 </div>
                 <div className="text-center space-y-1 p-3">
                   <Link to="/singleproduct" className="text-start">
-                    <h3 className="text-base font-medium text-primary-default dark:text-primary-dark font-Roboto">{post.title.substring(0, 25)}...</h3>
+                    <h3 className="text-base font-medium text-primary-default dark:text-primary-dark font-Roboto">{post.title.substring(0, 20)}...</h3>
                     <p className="text-md font-bold text-brand font-Monrope ">৳{post.price}</p>
-                    </Link>
+                      <p className="text-md font-normal text-secandari line-through font-Monrope">৳195</p>
+                  </Link>
                 </div>
                 <div className="absolute bottom-28 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition flex gap-4 bg-white py-2.5 px-5 rounded shadow z-10">
                   <Link to="/singleproduct" className="relative group/icon">
@@ -74,6 +76,14 @@ const Categories = () => {
                       Search
                     </span>
                   </div>
+                  <Link to="/wishlist" className="relative group/icon">
+                    <button className="text-xl text-primary hover:text-secandari duration-200 cursor-pointer">
+                      <FaRegHeart />
+                    </button>
+                    <span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 rounded bg-black text-white text-xs opacity-0 group-hover/icon:opacity-100 transition whitespace-nowrap font-Lato font-normal">
+                      Wishlist
+                    </span>
+                  </Link>
                 </div>
               </div>
             ))

@@ -25,10 +25,10 @@ const ProductPage = () => {
   };
 
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="container mx-auto md:px-4 px-0 md:py-8 py-2">
       <div className="flex flex-col lg:flex-row gap-8">
         {/* Image Section */}
-        <div className="w-full md:w-1/2 p-5 flex flex-col md:flex-row gap-3">
+        <div className="w-full md:w-1/2 md:p-5 p-3 flex flex-col md:flex-row gap-3">
           {/* Thumbnail Section */}
           <div className="flex md:flex-col gap-2 overflow-x-auto md:overflow-y-auto md:h-[450px] md:w-[100px] order-2 md:order-1 justify-center">
             {images.map((img, idx) => (
@@ -57,7 +57,7 @@ const ProductPage = () => {
         </div>
 
         {/* Product Details */}
-        <div className="w-full md:w-1/2 p-6">
+        <div className="w-full md:w-1/2 md:p-6 p-0 px-4 md:px-0">
           <p className="text-sm text-black mb-2">Watches / Casual / Arabic Aura</p>
           <h2 className="text-2xl text-primary dark:text-primary-dark font-medium mb-2">
             {product.title}

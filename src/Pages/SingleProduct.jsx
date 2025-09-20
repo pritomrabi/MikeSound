@@ -3,7 +3,7 @@ import RelatedProduct from "../Components/SingleProduct/RelatedProduct";
 
 const SingleProduct = () => {
   return (
-    <div className="pt-20">
+    <div className="md:pt-20 pt-16">
       <ProductPage />
       <RelatedProduct />
     </div>

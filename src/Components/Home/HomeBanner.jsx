@@ -38,19 +38,19 @@ const HomeBanner = () => {
         {slides.map((slide) => (
           <div key={slide.id}>
             <div
-              className={`min-h-[500px] md:min-h-[600px] lg:min-h-[700px] flex ${slide.alignment} bg-cover bg-center items-center px-4`}
+              className={`h-[40vh] sm:h-[45vh] md:h-[70vh] flex ${slide.alignment} bg-cover bg-center items-center px-4`}
               style={{ backgroundImage: `url(${slide.background})` }}
             >
               <div className="max-w-2xl text-start mx-auto text-white py-16">
                 <h2
-                  className="text-primary text-start text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-semibold"
+                  className="text-primary text-start sm:text-4xl text-2xl md:text-6xl lg:text-7xl font-semibold"
                 >
                   {slide.title}
                 </h2>
                 <div className="mt-6">
                   <Link
                     to="/shop"
-                    className="px-6 py-3 cursor-pointer rounded bg-brand text-white text-sm font-Opensans font-medium"
+                    className="md:px-6 px-4 md:py-2 py-3 cursor-pointer rounded bg-brand text-white text-sm font-Opensans font-medium"
                   >
                     {slide.button}
                   </Link>
