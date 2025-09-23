@@ -32,11 +32,23 @@ const Navbar = () => {
             to="/"
             className="sm:text-2xl text-xl font-bold text-brand font-Lato"
           >
-            SMART
+            Mike Sound
           </Link>
-          <div className=" items-center space-x-6 text-base font-Lato text-primary-default dark:text-primary-dark font-medium hidden md:block">
+          <div className=" items-center md:space-x-3 lg:space-x-6 md:text-sm lg:text-base font-Lato text-primary-default dark:text-primary-dark font-medium hidden md:block">
             <Link to="/" className="hover:text-brand duration-100">
               Home
+            </Link>
+            <Link to="/headphone" className="hover:text-brand duration-100">
+              Headphone
+            </Link>
+            <Link to="/speakers" className="hover:text-brand duration-100">
+              Speakers
+            </Link>
+            <Link to="/audio" className="hover:text-brand duration-100">
+              Audio
+            </Link>
+            <Link to="/celebrations" className="hover:text-brand duration-100">
+              Celebrations
             </Link>
             <Link to="/shop" className="hover:text-brand duration-100">
               Shop

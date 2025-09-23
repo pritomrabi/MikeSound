@@ -31,7 +31,7 @@ const Categories = () => {
   const posts = allProducts.filter(item => item.category === slug);
 
   return (
-    <section className="md:pt-20 pt-16 dark:bg-[#1b1b1b]">
+    <section className="md:pt-24 pt-16 dark:bg-[#1b1b1b]">
       <div className="container mx-auto md:px-4 px-1">
         <div className="flex border-b border-gray-300 mb-6">
           <Link to="/" className="text-secandari cursor-pointer text-base font-Lato font-normal mb-4 inline-block pr-1 hover:underline duration-300">

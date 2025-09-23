@@ -12,7 +12,7 @@ const Footer = () => {
         <div>
           <Link to="/">
             <h4 className="text-2xl font-bold text-brand font-Monrope">
-              SMART
+              Mike Sound
             </h4>
           </Link>
           <p className="text-secandari font-normal font-Nunito-font w-[95%] text-sm mt-2">
@@ -76,7 +76,7 @@ const Footer = () => {
       {/* Footer bottom */}
       <div className="mt-8 border-t border-secandari pt-6 text-center">
         <p className="text-secandari font-Nunito-font text-sm">
-          © 2025 smart. All Rights Reserved.
+          © 2025 Mike Sound. All Rights Reserved.
         </p>
       </div>
     </footer>

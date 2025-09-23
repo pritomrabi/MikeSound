@@ -20,7 +20,7 @@ export default {
           DEFAULT: "#767676",
           dark: "#bab5b5", // Light gray for dark mode
         },
-        brand: "#bea163",
+        brand: "#FF0000",
         Green: "#FF0000",
       },
       fontFamily: {

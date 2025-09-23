@@ -23,6 +23,10 @@ import Forgot from "./Auth/Forgot";
 import OTP from "./Auth/OTP";
 import Wishlist from "./Pages/Wishlist";
 import Discount from "./Pages/Discount";
+import Headphone from "./Pages/Headphone";
+import Speakers from "./Pages/Speakers";
+import Audio from "./Pages/Audio";
+import Celebrations from "./Pages/Celebrations";
 
 function App() {
   const [darkMode, setDarkMode] = useState(
@@ -55,8 +59,12 @@ function App() {
           errorElement={<ErrorPage />}
         >
           <Route index element={<Home />} />
-          <Route path="support" element={<Support />} />
-          <Route path="shop" element={<Shop />} />
+          <Route path="/headphone" element={<Headphone />} />
+          <Route path="/speakers" element={<Speakers />} />
+          <Route path="/audio" element={<Audio />} />
+          <Route path="/celebrations" element={<Celebrations />} />
+          <Route path="/support" element={<Support />} />
+          <Route path="/shop" element={<Shop />} />
           <Route path="/singleproduct" element={<SingleProduct />} />
           <Route path="/SpecialOffers" element={<SpecialOffers />} />
           <Route path="/discount" element={<Discount />} />

@@ -124,6 +124,34 @@ const Cart = ({ setIsOpen }) => {
               Home
             </Link>
             <Link
+              to="/headphone"
+              onClick={() => setIsOpen(true)}
+              className="hover:text-brand duration-100"
+            >
+              Headphone
+            </Link>
+            <Link
+              to="/speakers"
+              onClick={() => setIsOpen(true)}
+              className="hover:text-brand duration-100"
+            >
+              Speakers
+            </Link>
+            <Link
+              to="/audio"
+              onClick={() => setIsOpen(true)}
+              className="hover:text-brand duration-100"
+            >
+              Audio
+            </Link>
+            <Link
+              to="/celebrations"
+              onClick={() => setIsOpen(true)}
+              className="hover:text-brand duration-100"
+            >
+              Celebrations
+            </Link>
+            <Link
               to="/shop"
               onClick={() => setIsOpen(true)}
               className="hover:text-brand duration-100"

@@ -49,7 +49,7 @@ const HomeLatest = () => {
                       </div>
                     </Link>
                   </div>
-                  <div className="absolute xl:bottom-32 bottom-28 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition flex gap-4 bg-white py-2.5 px-5 rounded shadow z-10">
+                  <div className="absolute bottom-28 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition flex gap-4 bg-white py-2.5 px-5 rounded shadow z-10">
                     <Link to="/singleproduct" className="relative group/icon">
                       <button className="text-xl text-primary hover:text-secandari duration-200 cursor-pointer"><AiOutlineShoppingCart /></button>
                       <span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 rounded bg-black text-white text-xs opacity-0 group-hover/icon:opacity-100 whitespace-nowrap">Add to cart</span>
