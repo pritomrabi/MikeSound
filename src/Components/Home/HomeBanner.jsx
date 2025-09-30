@@ -19,6 +19,13 @@ const HomeBanner = () => {
       background:
         "https://woodmart.xtemos.com/wp-content/uploads/2024/02/fashion-flat-slide-1.jpg",
     },
+    {
+      id: 3,
+      title: "New Elegant Evening Dresses",
+      button: "SHOP NOW",
+      background:
+        "https://woodmart.xtemos.com/wp-content/uploads/2024/02/fashion-flat-slide-2.jpg",
+    },
   ];
 
   const settings = {
@@ -26,10 +33,18 @@ const HomeBanner = () => {
     autoplaySpeed: 5000,
     infinite: true,
     fade: true,
-    arrows: false, 
-    dots: false,
+    arrows: false,
+    dots: true, // dots on
     speed: 1000,
-    swipe: true, 
+    swipe: true,
+    appendDots: dots => (
+      <div>
+        <ul className="flex justify-center mt-4"> {dots} </ul>
+      </div>
+    ),
+    customPaging: i => (
+      <div className="w-3 h-3 rounded-full bg-gray-400"></div>
+    ),
   };
 
   return (
@@ -42,9 +57,7 @@ const HomeBanner = () => {
               style={{ backgroundImage: `url(${slide.background})` }}
             >
               <div className="max-w-2xl text-start mx-auto text-white py-16">
-                <h2
-                  className="text-primary text-start sm:text-4xl text-2xl md:text-6xl lg:text-7xl font-semibold"
-                >
+                <h2 className="text-primary text-start sm:text-4xl text-2xl md:text-6xl lg:text-7xl font-semibold">
                   {slide.title}
                 </h2>
                 <div className="mt-6">
@@ -60,6 +73,13 @@ const HomeBanner = () => {
           </div>
         ))}
       </Slider>
+
+      {/* extra css for active dot */}
+      <style>{`
+        .slick-dots li.slick-active div {
+          background-color: red !important;
+        }
+      `}</style>
     </div>
   );
 };

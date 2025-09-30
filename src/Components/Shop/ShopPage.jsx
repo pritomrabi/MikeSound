@@ -2,7 +2,7 @@ import { useState, useMemo } from "react";
 import { FiAlignLeft, FiX } from "react-icons/fi";
 import { AiOutlineShoppingCart, AiFillStar } from "react-icons/ai";
 import { LuSearch } from "react-icons/lu";
-import { FaRegHeart } from "react-icons/fa";
+import { FaRegHeart, FaHeart } from "react-icons/fa";
 import ReactPaginate from "react-paginate";
 import { Link } from "react-router-dom";
 import ProductQuickView from "../Home/ProductQuickView";
@@ -19,7 +19,7 @@ const ShopPage = () => {
     { id: 7, title: "iPhone Dock 2", category: "Accessories", price: 399, rating: 5, image: "home.jpg" },
     { id: 8, title: "Pendant Light 2", category: "Lighting", price: 169, rating: 4, image: "home.jpg" },
   ];
-
+const [isWishlisted, setIsWishlisted] = useState(false);
   const categories = ["All", "Blackfriday", "Furniture", "Accessories", "Lighting"];
   const [showSidebar, setShowSidebar] = useState(false);
   const [topRated, setTopRated] = useState(false);
@@ -124,14 +124,15 @@ const ShopPage = () => {
                       -{product.discount}%
                     </span>
                   )}
-                  <div className="overflow-hidden rounded-md">
-                    <img
-                      src={product.image}
-                      alt={product.title}
-                      loading="lazy"
-                      className="w-full h-52 sm:h-56 object-cover transform transition-transform duration-500 group-hover:scale-105"
-                    />
-                  </div>
+                  <Link to="/singleproduct">
+                    <div className="relative overflow-hidden rounded-t-md">
+                      <img
+                        src={product.img}
+                        alt={product.title}
+                        className="w-full h-52 sm:h-56 object-cover transform transition-transform duration-500 group-hover:scale-105"
+                      />
+                    </div>
+                  </Link>
                   <div className="text-start space-y-1 p-3">
                     <Link to="/singleproduct">
                       <h3 className="text-sm font-medium text-primary-default dark:text-primary-dark font-Roboto ">
@@ -146,32 +147,32 @@ const ShopPage = () => {
                       </p>
                     </Link>
                   </div>
-                  <div className="absolute bottom-24 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition flex gap-4 bg-white py-2.5 px-5 rounded shadow z-10">
-                    <Link to="/singleproduct" className="relative group/icon">
-                      <button className="text-xl text-primary hover:text-secandari duration-200 cursor-pointer">
-                        <AiOutlineShoppingCart />
-                      </button>
-                      <span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 rounded bg-black text-white text-xs opacity-0 group-hover/icon:opacity-100 transition whitespace-nowrap font-Lato font-normal">
-                        Add to cart
-                      </span>
-                    </Link>
+                  <div className="absolute top-[25%] right-2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition flex flex-col gap-4 bg-white py-2.5 px-3 rounded shadow z-10">
+                    {/* Search */}
                     <div className="relative group/icon">
-                      <button className="text-xl text-primary hover:text-secandari duration-200 cursor-pointer" onClick={() => setQuickcart(product)}>
+                      <button
+                        onClick={() => setQuickView(true)}
+                        className="text-xl text-primary hover:text-secandari duration-200 cursor-pointer"
+                      >
                         <LuSearch />
                       </button>
-                      <span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 rounded bg-black text-white text-xs opacity-0 group-hover/icon:opacity-100 transition whitespace-nowrap font-Lato font-normal">
+                      <span className="absolute right-full top-1/2 -translate-y-1/2 mr-2 px-2 py-1 rounded bg-black text-white text-xs opacity-0 group-hover/icon:opacity-100 whitespace-nowrap">
                         Search
                       </span>
                     </div>
 
-                    <Link to="/wishlist" className="relative group/icon">
-                      <button className="text-xl text-primary hover:text-secandari duration-200 cursor-pointer">
-                        <FaRegHeart />
+                    {/* Wishlist */}
+                    <div className="relative group/icon">
+                      <button
+                        onClick={() => setIsWishlisted(!isWishlisted)}
+                        className="text-xl text-primary hover:text-secandari duration-200 cursor-pointer"
+                      >
+                        {isWishlisted ? <FaHeart className="text-red-500" /> : <FaRegHeart />}
                       </button>
-                      <span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 rounded bg-black text-white text-xs opacity-0 group-hover/icon:opacity-100 transition whitespace-nowrap font-Lato font-normal">
+                      <span className="absolute right-full top-1/2 -translate-y-1/2 mr-2 px-2 py-1 rounded bg-black text-white text-xs opacity-0 group-hover/icon:opacity-100 transition whitespace-nowrap font-Lato font-normal">
                         Wishlist
                       </span>
-                    </Link>
+                    </div>
                   </div>
                 </div>
               ))}
@@ -195,7 +196,7 @@ const ShopPage = () => {
         </div>
       </div>
 
-      {quickcart && <ProductQuickView product={quickcart} setQuickcart={setQuickcart} />}
+      {quickcart && <ProductQuickView product={quickcart} setQuickcart={setQuickView} />}
     </section>
   );
 };

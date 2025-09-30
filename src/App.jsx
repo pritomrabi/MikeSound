@@ -25,8 +25,8 @@ import Wishlist from "./Pages/Wishlist";
 import Discount from "./Pages/Discount";
 import Headphone from "./Pages/Headphone";
 import Speakers from "./Pages/Speakers";
-import Audio from "./Pages/Audio";
-import Celebrations from "./Pages/Celebrations";
+import Gaming from "./Pages/Gaming";
+import Earbud from "./Pages/Earbud";
 
 function App() {
   const [darkMode, setDarkMode] = useState(
@@ -61,8 +61,8 @@ function App() {
           <Route index element={<Home />} />
           <Route path="/headphone" element={<Headphone />} />
           <Route path="/speakers" element={<Speakers />} />
-          <Route path="/audio" element={<Audio />} />
-          <Route path="/celebrations" element={<Celebrations />} />
+          <Route path="/gaming" element={<Gaming />} />
+          <Route path="/earbud" element={<Earbud />} />
           <Route path="/support" element={<Support />} />
           <Route path="/shop" element={<Shop />} />
           <Route path="/singleproduct" element={<SingleProduct />} />

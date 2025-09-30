@@ -17,25 +17,6 @@ const CheckoutLeft = () => {
           </div>
         </div>
         <div>
-          <CheckoutName name="Company name (optional)" />
-          <div className="pt-2">
-            <input
-              type="text"
-              name="name"
-              className=" w-full px-3 py-2 border border-gray-300 rounded shadow-xs outline-none "
-            />
-          </div>
-        </div>
-        <div>
-          <CheckoutName name="Country / Region" />
-          <div className="pt-2">
-            <input
-              type="text"
-              name="name"
-              placeholder="Full Name"
-              className=" w-full px-3 py-2 border border-gray-300 rounded shadow-xs outline-none "
-            />
-          </div>
         </div>
         <div>
           <CheckoutName name="Street address *" />

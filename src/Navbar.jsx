@@ -9,6 +9,7 @@ import Search from "./Utilities/Search";
 import ShoppingCart from "./Utilities/ShoppingCart";
 import Cart from "./Utilities/Cart";
 import ThemeToggle from "./Utilities/ThemeToggle";
+import Header from "./Header";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(true);
@@ -25,73 +26,76 @@ const Navbar = () => {
   }, [location.pathname]);
 
   return (
-    <section className="bg-[#fdfeff] dark:bg-[#1a1a1a] p-6 shadow w-full fixed top-0 z-40">
-      <div className="container mx-auto flex">
-        <div className="flex items-center justify-between w-full">
-          <Link
-            to="/"
-            className="sm:text-2xl text-xl font-bold text-brand font-Lato"
-          >
-            Mike Sound
-          </Link>
-          <div className=" items-center md:space-x-3 lg:space-x-6 md:text-sm lg:text-base font-Lato text-primary-default dark:text-primary-dark font-medium hidden md:block">
-            <Link to="/" className="hover:text-brand duration-100">
-              Home
-            </Link>
-            <Link to="/headphone" className="hover:text-brand duration-100">
-              Headphone
-            </Link>
-            <Link to="/speakers" className="hover:text-brand duration-100">
-              Speakers
-            </Link>
-            <Link to="/audio" className="hover:text-brand duration-100">
-              Audio
-            </Link>
-            <Link to="/celebrations" className="hover:text-brand duration-100">
-              Celebrations
-            </Link>
-            <Link to="/shop" className="hover:text-brand duration-100">
-              Shop
-            </Link>
-            <Link to="/support" className="hover:text-brand duration-100">
-              Support
-            </Link>
-          </div>
-          <div className="flex items-center space-x-2 sm:space-x-4">
-            <Link to={"/wishlist"}>
-              <FaRegHeart />
-            </Link>
-            <ThemeToggle />
-            {search ? (
-              <RxCross2 className="text-2xl text-primary-default dark:text-primary-dark cursor-pointer hover:text-secandari duration-100 md:block hidden" />
-            ) : (
-              <IoSearchOutline
-                onClick={() => setSearch(true)}
-                className="text-2xl text-primary-default dark:text-primary-dark cursor-pointer hover:text-secandari duration-100 md:block hidden"
-              />
-            )}
-            <div
-              onClick={() => setShop(true)}
-              className="relative inline-block"
+    <section className="shadow w-full fixed top-0 z-40">
+      <Header />
+      <div className="bg-[#fdfeff] dark:bg-[#1a1a1a] p-6 ">
+        <div className="container mx-auto flex">
+          <div className="flex items-center justify-between w-full">
+            <Link
+              to="/"
+              className="sm:text-2xl text-xl font-bold text-brand font-Lato"
             >
-              <PiShoppingCartSimpleLight className="sm:text-xl text-lg text-primary-default dark:text-primary-dark cursor-pointer hover:text-secandari duration-100 " />
-              <span className="bg-brand text-white text-[8px] rounded-full w-3 h-3 absolute -top-1 -left-1 text-center flex items-center justify-center ">
-                0
-              </span>
+              Mike Sound
+            </Link>
+            <div className="items-center md:space-x-3 lg:space-x-6 md:text-sm lg:text-lg font-Lato text-primary-default dark:text-primary-dark font-medium hidden md:block">
+              <Link to="/" className="hover:text-brand duration-100">
+                Home
+              </Link>
+              <Link to="/headphone" className="hover:text-brand duration-100">
+                Headphone
+              </Link>
+              <Link to="/speakers" className="hover:text-brand duration-100">
+                Speakers
+              </Link>
+              <Link to="/earbud" className="hover:text-brand duration-100">
+                Earbud 
+              </Link>
+              <Link to="/gaming" className="hover:text-brand duration-100">
+                Gaming
+              </Link>
+              <Link to="/shop" className="hover:text-brand duration-100">
+                Shop
+              </Link>
+              <Link to="/support" className="hover:text-brand duration-100">
+                Support
+              </Link>
             </div>
-            {isOpen ? (
-              <FiAlignRight
-                onClick={() => setIsOpen(false)}
-                className="sm:text-xl text-lg text-primary-default dark:text-primary-dark cursor-pointer hover:text-secandari duration-100 block md:hidden"
-              />
-            ) : (
-              <Cart setIsOpen={setIsOpen} />
-            )}
+            <div className="flex items-center space-x-2 sm:space-x-4">
+              <Link to={"/wishlist"}>
+                <FaRegHeart />
+              </Link>
+              <ThemeToggle />
+              {search ? (
+                <RxCross2 className="text-2xl text-primary-default dark:text-primary-dark cursor-pointer hover:text-secandari duration-100 md:block hidden" />
+              ) : (
+                <IoSearchOutline
+                  onClick={() => setSearch(true)}
+                  className="text-2xl text-primary-default dark:text-primary-dark cursor-pointer hover:text-secandari duration-100 md:block hidden"
+                />
+              )}
+              <div
+                onClick={() => setShop(true)}
+                className="relative inline-block"
+              >
+                <PiShoppingCartSimpleLight className="sm:text-xl text-lg text-primary-default dark:text-primary-dark cursor-pointer hover:text-secandari duration-100 " />
+                <span className="bg-brand text-white text-[8px] rounded-full w-3 h-3 absolute -top-1 -left-1 text-center flex items-center justify-center ">
+                  0
+                </span>
+              </div>
+              {isOpen ? (
+                <FiAlignRight
+                  onClick={() => setIsOpen(false)}
+                  className="sm:text-xl text-lg text-primary-default dark:text-primary-dark cursor-pointer hover:text-secandari duration-100 block md:hidden"
+                />
+              ) : (
+                <Cart setIsOpen={setIsOpen} />
+              )}
+            </div>
           </div>
         </div>
+        {search && <Search setSearch={setSearch} />}
+        {shop && !disableCartPopup && <ShoppingCart setShop={setShop} />}
       </div>
-      {search && <Search setSearch={setSearch} />}
-      {shop && !disableCartPopup && <ShoppingCart setShop={setShop} />}
     </section>
   );
 };

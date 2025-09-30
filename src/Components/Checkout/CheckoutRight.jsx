@@ -1,275 +1,204 @@
 import { Link } from "react-router-dom";
-import React, { useState } from "react";
+import { useState } from "react";
 import { PiMinusThin } from "react-icons/pi";
 import { HiOutlinePlusSmall } from "react-icons/hi2";
 const CheckoutRight = () => {
-  const [quantity, setQuantity] = useState(1);
-  const [selectedMethod, setSelectedMethod] = useState("bacs");
-  const [agreeTerms, setAgreeTerms] = useState(false);
-  const paymentOptions = [
-    {
-      id: "bacs",
-      label: "Direct bank transfer",
-      description:
-        "Make your payment directly into our bank account. Please use your Order ID as the payment reference. Your order won’t be shipped until the funds have cleared in our account.",
-    },
-    {
-      id: "cheque",
-      label: "Cheque Payment",
-      description:
-        "Please send your cheque to Store Name, Store Street, Store Town, Store State / County, Store Postcode.",
-    },
-    {
-      id: "cod",
-      label: "Cash on delivery",
-      description: "Pay with cash upon delivery.",
-    },
-    {
-      id: "paypal",
-      label: (
-        <>
-          PayPal{" "}
-          <img
-            src="https://www.paypalobjects.com/webstatic/mktg/logo/AM_mc_vs_dc_ae.jpg"
-            alt="PayPal"
-            className="inline h-4 ml-1"
-          />{" "}
-          <a
-            href="https://www.paypal.com/us/webapps/mpp/paypal-popup"
-            className="text-blue-600 hover:underline text-sm ml-1"
-            onClick={(e) => {
-              e.preventDefault();
-              window.open(
-                "https://www.paypal.com/us/webapps/mpp/paypal-popup",
-                "WIPaypal",
-                "toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=1060,height=700"
-              );
-            }}
-          >
-            What is PayPal?
-          </a>
-        </>
-      ),
-      description:
-        "Pay via PayPal; you can pay with your credit card if you don’t have a PayPal account. SANDBOX ENABLED. You can use sandbox testing accounts only. See the PayPal Sandbox Testing Guide for more details.",
-    },
-  ];
+  
+  const [method, setMethod] = useState("bkash");
 
   return (
-    <div className="lg:w-[50%] w-full sm:px-4 px-0 py-10">
-      <div className="bg-[#fdfeff] dark:bg-[#1a1a1a] p-6 rounded border-2 border-gray-300 shadow-md mb-8">
-        <h2 className="sm:text-2xl text-xl text-center font-semibold text-primary-default dark:text-primary-dark font-Roboto mb-4">
-          YOUR ORDER
-        </h2>
-
-        <div className="overflow-x-auto space-y-3">
-          <table className="w-full text-left border-collapse">
-            <tbody>
-              <tr className="border-b-2 border-gray-300">
-                <th className="py-2 font-medium text-primary-default dark:text-primary-dark text-base font-Roboto ">
-                  PRODUCT
-                </th>
-                <td className="py-2 text-right font-medium text-primary-default dark:text-primary-dark text-base font-Roboto">
-                  SUBTOTAL
-                </td>
-              </tr>
-            </tbody>
-          </table>
-          <div className="border-b pb-4 border-gray-300 flex items-center space-x-2">
-            <div className="p-2">
-              <img
-                src="https://woodmart.xtemos.com/wp-content/uploads/2017/04/fashion-product-3.jpg"
-                alt="Product"
-                className="sm:w-28 w-24 h-20 sm:h-24 object-cover"
-              />
-            </div>
-            <div className="flex flex-col w-full ">
-              <p className="text-primary-default dark:tex-primary-dark text-sm font-Lato font-medium pb-2">
-                Wkinny Fit Suit - XXL
-              </p>
-              <div className="flex sm:w-20 w-14 border rounded border-gray-300">
-                <button
-                  className="sm:p-2 p-1 cursor-pointer"
-                  onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                >
-                  <PiMinusThin size={10} />
-                </button>
-                <div className="sm:px-2 px-1 py-1 font-medium font-Monrope text-secandari-default sm:text-sm text-xs">
-                  {quantity}
-                </div>
-                <button
-                  className="sm:p-2 p-1 cursor-pointer"
-                  onClick={() => setQuantity(quantity + 1)}
-                >
-                  <HiOutlinePlusSmall size={10} />
-                </button>
-              </div>
-            </div>
-            <p className="p-2 text-brand text-sm font-Monrope font-medium">
-              $599.00
-            </p>
+    <div className="lg:w-[50%] w-full sm:px-4 px-0 py-10 font-Lato">
+      <div class="bg-white shadow rounded-xl p-6 mt-6">
+        <h3 class="text-lg font-semibold mb-4 text-center">Your Order</h3>
+        <div class=" rounded-lg overflow-hidden">
+          <div class="flex justify-between bg-gray-50 px-4 py-2 font-medium text-sm text-gray-600">
+            <span>Product</span>
+            <span>Subtotal</span>
           </div>
-          <table className="w-full text-left border-collapse">
-            <tbody>
-              <tr className="border-b border-gray-300">
-                <th className="py-2 font-normal text-primary-default dark:text-primary-dark text-base font-Roboto">
-                  Subtotal
-                </th>
-                <td
-                  className="py-2 text-right font-semibold text-brand font-Monrope text-sm"
-                  data-title="Subtotal"
-                >
-                  <span className="">
-                    <span className="">$</span>
-                    4,193.00
-                  </span>
-                </td>
-              </tr>
+          <div class="flex justify-between items-start px-4 py-3 border-b border-secandari">
 
-              <tr className="border-b border-gray-200  justify-end">
-                <td className="py-2 font-normal text-primary-default dark:text-primary-dark text-base font-Roboto">
-                  Shipping
-                </td>
-                <td className="py-5 text-end" data-title="Shipping">
-                  <ul className="list-none p-0 space-y-2">
-                    <li>
-                      <label
-                        htmlFor=""
-                        className="text-primary-default dark:text-primary-dark font-Lato font-medium text-base pr-2"
-                      >
-                        Flat rate:{" "}
-                        <span className="font-semibold text-brand">$20.00</span>
-                      </label>
-                      <input
-                        type="radio"
-                        name="shipping_method[0]"
-                        data-index="0"
-                        id=""
-                        value="flat_rate:1"
-                        className="cursor-pointer mr-2"
-                        defaultChecked
-                      />
-                    </li>
-                    <li>
-                      <label
-                        htmlFor="shipping_method_0_local_pickup3"
-                        className="text-primary font-Lato font-medium text-base pr-2"
-                      >
-                        Local pickup:{" "}
-                        <span className="font-semibold text-brand">$25.00</span>
-                      </label>
-                      <input
-                        type="radio"
-                        name="shipping_method[0]"
-                        data-index="0"
-                        id="shipping_method_0_local_pickup3"
-                        value="local_pickup:3"
-                        className="shipping_method mr-2"
-                      />
-                    </li>
-                  </ul>
-                </td>
-              </tr>
-
-              <tr className="border-t-2 border-gray-300">
-                <th className="py-4 font-semibold text-lg text-primary-default dark:text-primary-dark font-Roboto">
-                  Total
-                </th>
-                <td
-                  className="py-4 text-right font-medium font-Monrope text-lg text-brand"
-                  data-title="Total"
-                >
-                  <strong>
-                    <span className="">
-                      <span className="">$</span>
-                      4,213.00
-                    </span>
-                  </strong>
-                </td>
-              </tr>
-            </tbody>
-          </table>
+            <div className="items-center flex gap-2">
+              <img src="home.jpg" alt="home" className="object-cover h-20 w-20 rounded-xl" />
+              <p class="font-medium text-gray-800 font-Lato text-base">Netflix Subscription × 2</p>
+            </div>
+            <span class="text-gray-700">৳ 2,580.00</span>
+          </div>
+          <div class="flex justify-between px-4 py-2 border-b border-secandari">
+            <span class="text-gray-600">Subtotal</span>
+            <span class="font-medium">৳ 2,580.00</span>
+          </div>
+          <div class="flex justify-between px-4 py-2 border-b border-secandari">
+            <span class="text-gray-600">bKash Charge</span>
+            <span>৳ 0.00</span>
+          </div>
+          <div class="flex justify-between px-4 py-3 font-semibold text-lg">
+            <span>Total</span>
+            <span class="text-green-600">৳ 2,580.00</span>
+          </div>
         </div>
-      </div>
-      <div className="mt-8  pt-6">
-        <ul className="space-y-4">
-          {paymentOptions.map((method) => (
-            <li
-              key={method.id}
-              className="p-0.5 font-Lato font-normal text-sm text-secandari-default dark:text-secandari-dark"
-            >
-              <label className="flex items-start space-x-3">
-                <input
-                  type="radio"
-                  id={`payment_method_${method.id}`}
-                  name="payment_method"
-                  value={method.id}
-                  checked={selectedMethod === method.id}
-                  onChange={() => setSelectedMethod(method.id)}
-                  className="mt-1"
-                />
-                <span className="text-base text-primary-default dark:text-primary-dark  font-medium">
-                  {method.label}
-                </span>
-              </label>
-              {selectedMethod === method.id && (
-                <div className="mt-3 text-sm text-primary-default dark:text-primary-dark">
-                  {method.description}
+        <div className="bg-white shadow rounded-xl  p-6 mt-6">
+          <h3 className="text-lg font-semibold font-Nunito-font mb-4">Choose Payment Method</h3>
+
+          {/* Payment Options */}
+          <div className="space-y-3">
+            <label className="flex items-center gap-3 p-3 shadow-sm rounded-lg cursor-pointer hover:bg-gray-50">
+              <input
+                type="radio"
+                name="payment"
+                value="bkash"
+                checked={method === "bkash"}
+                onChange={() => setMethod("bkash")}
+                className="payment-radio"
+              />
+              <span className="flex-1 font-Nunito-font">bKash Personal</span>
+              <img
+                src="https://i.ibb.co/PG1XxvD/bkash.png"
+                className="w-6 h-6"
+                alt="bkash"
+              />
+            </label>
+
+            <label className="flex items-center gap-3 p-3 shadow-sm rounded-lg cursor-pointer hover:bg-gray-50">
+              <input
+                type="radio"
+                name="payment"
+                value="nagad"
+                checked={method === "nagad"}
+                onChange={() => setMethod("nagad")}
+                className="payment-radio"
+              />
+              <span className="flex-1 font-Nunito-font">Nagad Personal</span>
+              <img
+                src="https://i.ibb.co/kHw04Yw/nagad.png"
+                className="w-6 h-6"
+                alt="nagad"
+              />
+            </label>
+
+            <label className="flex items-center gap-3 p-3 shadow-sm rounded-lg cursor-pointer hover:bg-gray-50">
+              <input
+                type="radio"
+                name="payment"
+                value="rocket"
+                checked={method === "rocket"}
+                onChange={() => setMethod("rocket")}
+                className="payment-radio"
+              />
+              <span className="flex-1 font-Nunito-font">Rocket Personal</span>
+              <img
+                src="https://i.ibb.co/CPwq1Nm/rocket.png"
+                className="w-6 h-6"
+                alt="rocket"
+              />
+            </label>
+
+            <label className="flex items-center gap-3 p-3 shadow-sm rounded-lg cursor-pointer hover:bg-gray-50">
+              <input
+                type="radio"
+                name="payment"
+                value="upay"
+                checked={method === "upay"}
+                onChange={() => setMethod("upay")}
+                className="payment-radio"
+              />
+              <span className="flex-1 font-Nunito-font">Upay Personal</span>
+              <img
+                src="https://i.ibb.co/YpRj7td/upay.png"
+                className="w-6 h-6"
+                alt="upay"
+              />
+            </label>
+          </div>
+
+          {/* Instruction Boxes */}
+          <div className="my-6">
+            {method === "bkash" && (
+              <div className="payment-box">
+                <p className="font-semibold text-pink-600 font-Nunito-font">bKash Payment Instructions</p>
+                <ol className="text-sm text-gray-700 list-decimal ml-5 mt-2 space-y-1">
+                  <li>Open your bKash App or Dial *247#</li>
+                  <li>Choose “Send Money”</li>
+                  <li>Enter the Account Number: <strong>01XXXXXXXXX</strong></li>
+                  <li>Enter total amount</li>
+                  <li>Confirm with your PIN</li>
+                  <li>Copy the Transaction ID & paste below</li>
+                </ol>
+                <div className="mt-3">
+                  <label className="block text-sm font-Nunito-font">Your bKash Number</label>
+                  <input type="text" placeholder="01XXXXXXXXX" className="w-full border rounded-lg px-3 py-2 mt-1" />
                 </div>
-              )}
-            </li>
-          ))}
-        </ul>
+                <div className="mt-3">
+                  <label className="block text-sm font-Nunito-font">Transaction ID</label>
+                  <input type="text" placeholder="ABC123XYZ" className="w-full border rounded-lg px-3 py-2 mt-1" />
+                </div>
+              </div>
+            )}
 
-        <div className="mt-6 text-sm text-primary-default dark:text-primary-dark font-Lato font-normal">
-          <p>
-            Your personal data will be used to process your order, support your
-            experience throughout this website, and for other purposes described
-            in our{" "}
-            <Link
-              to="https://woodmart.xtemos.com/privacy-policy/demo/flat/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-blue-600 hover:underline"
-            >
-              privacy policy
-            </Link>
-            .
-          </p>
+            {method === "nagad" && (
+              <div className="payment-box">
+                <p className="font-semibold text-orange-600 font-Nunito-font">Nagad Payment Instructions</p>
+                <ol className="text-sm text-gray-700 list-decimal ml-5 mt-2 space-y-1">
+                  <li>Go to your Nagad app or Dial *167#</li>
+                  <li>Choose “Send Money”</li>
+                  <li>Enter Account Number</li>
+                  <li>Enter total amount</li>
+                  <li>Confirm with PIN</li>
+                  <li>Copy Transaction ID & paste below</li>
+                </ol>
+                <p className="mt-2 text-green-600 font-medium font-Nunito-font">You need to send ৳ 2617.00</p>
+                <div className="mt-3">
+                  <label className="block text-sm font-Nunito-font">Your Nagad Number</label>
+                  <input type="text" placeholder="01XXXXXXXXX" className="w-full border rounded-lg px-3 py-2 mt-1" />
+                </div>
+                <div className="mt-3">
+                  <label className="block text-sm font-Nunito-font">Transaction ID</label>
+                  <input type="text" placeholder="XYZ789" className="w-full border rounded-lg px-3 py-2 mt-1" />
+                </div>
+              </div>
+            )}
+
+            {method === "rocket" && (
+              <div className="payment-box">
+                <p className="font-semibold text-purple-600 font-Nunito-font">Rocket Payment Instructions</p>
+                <p className="text-sm mt-2">Use Rocket app or *322# to send money. Enter account number and confirm. Paste your Transaction ID below.</p>
+                <div className="mt-3">
+                  <label className="block text-sm font-Nunito-font">Your Rocket Number</label>
+                  <input type="text" placeholder="01XXXXXXXXX" className="w-full border rounded-lg px-3 py-2 mt-1" />
+                </div>
+                <div className="mt-3">
+                  <label className="block text-sm font-Nunito-font">Transaction ID</label>
+                  <input type="text" placeholder="TRX12345" className="w-full border rounded-lg px-3 py-2 mt-1" />
+                </div>
+              </div>
+            )}
+
+            {method === "upay" && (
+              <div className="payment-box">
+                <p className="font-semibold text-blue-600 font-Nunito-font">Upay Payment Instructions</p>
+                <p className="text-sm mt-2">Open Upay app and send money to account: <strong>01XXXXXXXXX</strong>. Paste your Transaction ID below.</p>
+                <div className="mt-3">
+                  <label className="block text-sm font-Nunito-font">Your Upay Number</label>
+                  <input type="text" placeholder="01XXXXXXXXX" className="w-full border rounded-lg px-3 py-2 mt-1" />
+                </div>
+                <div className="mt-3">
+                  <label className="block text-sm font-Nunito-font">Transaction ID</label>
+                  <input type="text" placeholder="UPAY123" className="w-full border rounded-lg px-3 py-2 mt-1" />
+                </div>
+              </div>
+            )}
+          </div>
         </div>
-
-        {/* Terms and Conditions */}
-        <div className="mt-4">
-          <label className="flex items-start text-sm text-primary-default dark:text-primary-dark font-Lato font-normal space-x-2">
-            <input
-              type="checkbox"
-              className="mt-1"
-              checked={agreeTerms}
-              onChange={() => setAgreeTerms(!agreeTerms)}
-            />
-            <span>
-              I have read and agree to the website{" "}
-              <a
-                href="https://woodmart.xtemos.com/terms-and-conditions/demo/flat/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-blue-600 hover:underline"
-              >
-                terms and conditions
-              </a>
-              . <abbr className="text-red-600">*</abbr>
-            </span>
-          </label>
+        <div className="pt-5">
+          <Link
+            to="/viewcart"
+            type="submit"
+            class="w-full bg-Dark text-white bg-Green font-semibold p-3 rounded-xl transition"
+          >
+            PLACE ORDER
+          </Link>
         </div>
       </div>
-      <div className="my-6 text-center">
-        <Link
-          to="/checkout"
-          className="inline-block bg-brand text-white px-4 py-2 rounded-md  text-base font-Lato font-semibold w-full "
-        >
-          Proceed to checkout
-        </Link>
-      </div>
+
     </div>
   );
 };
