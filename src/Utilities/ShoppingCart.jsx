@@ -87,7 +87,7 @@ const ShoppingCart = ({ setShop }) => {
               <Link
                 to="/checkout"
                 onClick={() => setShop(false)}
-                className="bg-[#b98d30] text-white duration-300 font-NunitoFont font-medium sm:text-lg text-base sm:px-8 px-4 py-2 rounded-md"
+                className="bg-brand text-white duration-300 font-NunitoFont font-medium sm:text-lg text-base sm:px-8 px-4 py-2 rounded-md"
               >
                 Checkout
               </Link>

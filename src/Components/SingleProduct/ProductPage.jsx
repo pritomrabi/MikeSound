@@ -161,6 +161,9 @@ const ProductPage = () => {
             <button className="bg-orange-500 hover:bg-orange-600 text-white px-6 py-2 rounded cursor-pointer">
               Add to Cart
             </button>
+            <button className="bg-green-500 hover:bg-green-600 text-white px-6 py-2 rounded cursor-pointer">
+              WhatsAPP
+            </button>
           </div>
         </div>
       </div>

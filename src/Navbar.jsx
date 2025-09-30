@@ -17,75 +17,94 @@ const Navbar = () => {
   const [search, setSearch] = useState(false);
 
   const location = useLocation();
-  const disableCartPopup = ["/viewcart", "/checkout"].includes(
-    location.pathname
-  );
+  const disableCartPopup = ["/viewcart", "/checkout"].includes(location.pathname);
 
   useEffect(() => {
     setShop(false);
   }, [location.pathname]);
 
+  // === Menus with subcategories ===
+  const menuItems = [
+    { title: "Home", path: "/" },
+    { title: "Headphone", path: "headphone", sub: ["Wireless Headphones", "Noise Cancelling", "Over-Ear", "On-Ear"] },
+    { title: "Speakers", path: "speakers", sub: ["Bluetooth Speakers", "Home Theater", "Portable", "Smart Speakers"] },
+    { title: "Earbud", path: "earbud", sub: ["Wireless Earbuds", "Gaming Earbuds", "Noise Cancelling"] },
+    { title: "Gaming", path: "gaming", sub: ["Gaming Headset", "Gaming Chair", "Accessories"] },
+    { title: "Shop", path: "shop" },
+    { title: "Support", path: "support" },
+  ];
+
   return (
-    <section className="shadow w-full fixed top-0 z-40">
+    <section className="shadow w-full fixed top-0 z-50 bg-[#fdfeff] dark:bg-[#1a1a1a]">
       <Header />
-      <div className="bg-[#fdfeff] dark:bg-[#1a1a1a] p-6 ">
-        <div className="container mx-auto flex">
+      <div className="p-6">
+        <div className="container mx-auto flex overflow-visible">
           <div className="flex items-center justify-between w-full">
-            <Link
-              to="/"
-              className="sm:text-2xl text-xl font-bold text-brand font-Lato"
-            >
+            
+            {/* Logo */}
+            <Link to="/" className="sm:text-2xl text-xl font-bold text-brand font-Lato">
               Mike Sound
             </Link>
-            <div className="items-center md:space-x-3 lg:space-x-6 md:text-sm lg:text-lg font-Lato text-primary-default dark:text-primary-dark font-medium hidden md:block">
-              <Link to="/" className="hover:text-brand duration-100">
-                Home
-              </Link>
-              <Link to="/headphone" className="hover:text-brand duration-100">
-                Headphone
-              </Link>
-              <Link to="/speakers" className="hover:text-brand duration-100">
-                Speakers
-              </Link>
-              <Link to="/earbud" className="hover:text-brand duration-100">
-                Earbud 
-              </Link>
-              <Link to="/gaming" className="hover:text-brand duration-100">
-                Gaming
-              </Link>
-              <Link to="/shop" className="hover:text-brand duration-100">
-                Shop
-              </Link>
-              <Link to="/support" className="hover:text-brand duration-100">
-                Support
-              </Link>
+
+            {/* ===== Main Menu ===== */}
+            <div className="hidden md:flex items-center md:space-x-3 lg:space-x-6 md:text-sm lg:text-lg font-Lato text-primary-default dark:text-primary-dark font-medium">
+              {menuItems.map((menu, i) =>
+                menu.sub ? (
+                  <div key={i} className="relative group">
+                    <Link to={`/${menu.path}`} className="hover:text-brand duration-100">
+                      {menu.title}
+                    </Link>
+                    <div className="absolute top-full left-1/2 -translate-x-1/2 hidden group-hover:block bg-white dark:bg-gray-900 shadow-lg rounded-lg mt-2 p-3 w-48">
+                      <ul className="space-y-2 text-sm">
+                        {menu.sub.map((item, idx) => (
+                          <li key={idx}>
+                            <Link
+                              to={`/${menu.path}/${item.toLowerCase().replace(/\s+/g, "-")}`}
+                              className="block hover:text-brand duration-100"
+                            >
+                              {item}
+                            </Link>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
+                ) : (
+                  <Link key={i} to={`/${menu.path}`} className="hover:text-brand duration-100">
+                    {menu.title}
+                  </Link>
+                )
+              )}
             </div>
+
+            {/* ===== Right Section ===== */}
             <div className="flex items-center space-x-2 sm:space-x-4">
-              <Link to={"/wishlist"}>
-                <FaRegHeart />
-              </Link>
+              <Link to={"/wishlist"}><FaRegHeart /></Link>
               <ThemeToggle />
+
               {search ? (
-                <RxCross2 className="text-2xl text-primary-default dark:text-primary-dark cursor-pointer hover:text-secandari duration-100 md:block hidden" />
+                <RxCross2
+                  onClick={() => setSearch(false)}
+                  className="text-2xl cursor-pointer md:block hidden"
+                />
               ) : (
                 <IoSearchOutline
                   onClick={() => setSearch(true)}
-                  className="text-2xl text-primary-default dark:text-primary-dark cursor-pointer hover:text-secandari duration-100 md:block hidden"
+                  className="text-2xl cursor-pointer md:block hidden"
                 />
               )}
-              <div
-                onClick={() => setShop(true)}
-                className="relative inline-block"
-              >
-                <PiShoppingCartSimpleLight className="sm:text-xl text-lg text-primary-default dark:text-primary-dark cursor-pointer hover:text-secandari duration-100 " />
-                <span className="bg-brand text-white text-[8px] rounded-full w-3 h-3 absolute -top-1 -left-1 text-center flex items-center justify-center ">
+
+              <div onClick={() => setShop(true)} className="relative inline-block">
+                <PiShoppingCartSimpleLight className="sm:text-xl text-lg cursor-pointer" />
+                <span className="bg-brand text-white text-[8px] rounded-full w-3 h-3 absolute -top-1 -left-1 flex items-center justify-center">
                   0
                 </span>
               </div>
+
               {isOpen ? (
                 <FiAlignRight
                   onClick={() => setIsOpen(false)}
-                  className="sm:text-xl text-lg text-primary-default dark:text-primary-dark cursor-pointer hover:text-secandari duration-100 block md:hidden"
+                  className="sm:text-xl text-lg cursor-pointer block md:hidden"
                 />
               ) : (
                 <Cart setIsOpen={setIsOpen} />
@@ -93,6 +112,7 @@ const Navbar = () => {
             </div>
           </div>
         </div>
+
         {search && <Search setSearch={setSearch} />}
         {shop && !disableCartPopup && <ShoppingCart setShop={setShop} />}
       </div>

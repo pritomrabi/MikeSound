@@ -2,13 +2,23 @@ import { useState, useEffect, useRef } from "react";
 import { RxCross2 } from "react-icons/rx";
 import { Link } from "react-router-dom";
 import { FiSearch } from "react-icons/fi";
+import { FiChevronDown, FiChevronUp } from "react-icons/fi";
 
 const Cart = ({ setIsOpen }) => {
   const [query, setQuery] = useState("");
   const [loading, setLoading] = useState(false);
   const [results, setResults] = useState([]);
   const [activeIndex, setActiveIndex] = useState(-1);
+  const [openCategory, setOpenCategory] = useState(null); // dropdown state
   const debounceRef = useRef(null);
+
+  // === Categories ===
+  const categories = {
+    headphone: ["Wireless Headphones", "Noise Cancelling", "Over-Ear", "On-Ear"],
+    speakers: ["Bluetooth Speakers", "Home Theater", "Portable", "Smart Speakers"],
+    earbud: ["Wireless Earbuds", "Gaming Earbuds", "Noise Cancelling"],
+    gaming: ["Gaming Headset", "Gaming Chair", "Accessories"],
+  };
 
   useEffect(() => {
     if (!query.trim()) {
@@ -41,14 +51,17 @@ const Cart = ({ setIsOpen }) => {
     }
     if (e.key === "ArrowUp") {
       e.preventDefault();
-      setActiveIndex((prev) =>
-        prev === 0 ? results.length - 1 : prev - 1
-      );
+      setActiveIndex((prev) => (prev === 0 ? results.length - 1 : prev - 1));
     }
     if (e.key === "Enter" && activeIndex >= 0) {
       e.preventDefault();
       alert(`Selected: ${results[activeIndex].name}`);
     }
+  };
+
+  // Toggle Category
+  const toggleCategory = (cat) => {
+    setOpenCategory(openCategory === cat ? null : cat);
   };
 
   return (
@@ -58,7 +71,8 @@ const Cart = ({ setIsOpen }) => {
         className="lg:w-[55%] xl:w-[65%] md:w-[35%] sm:w-[40%] w-[5%] h-full cursor-pointer fixed top-0 left-0 z-40"
       ></div>
 
-      <div className="fixed right-0  bg-[#fdfeff] dark:bg-[#1a1a1a] xl:w-[35%] lg:w-[45%] md:w-[65%] sm:w-[60%] w-[85%] h-[98%] items-center top-1 bottom-2  shadow-md rounded-l-2xl px-1 sm:px-4 md:px-8 py-4 z-50">
+      <div className="fixed right-0 bg-[#fdfeff] dark:bg-[#1a1a1a] xl:w-[35%] lg:w-[45%] md:w-[65%] sm:w-[60%] w-[85%] h-[98%] items-center top-1 bottom-2 shadow-md rounded-l-2xl px-1 sm:px-4 md:px-8 py-4 z-50">
+        {/* Close button */}
         <p
           onClick={() => setIsOpen(true)}
           className=" absolute -left-5 border-[4px] text-white bg-brand duration-100 p-2 w-fit rounded-full drop-shadow-sm cursor-pointer"
@@ -67,7 +81,7 @@ const Cart = ({ setIsOpen }) => {
         </p>
 
         <div className="p-6">
-          {/* Search Box */}
+          {/* 🔍 Search Box */}
           <div className="relative w-full">
             <input
               type="text"
@@ -102,10 +116,11 @@ const Cart = ({ setIsOpen }) => {
                 {results.map((item, index) => (
                   <li
                     key={item.id}
-                    className={`p-3 rounded-lg cursor-pointer ${index === activeIndex
-                      ? "bg-gray-300 dark:bg-gray-600"
-                      : "bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700"
-                      }`}
+                    className={`p-3 rounded-lg cursor-pointer ${
+                      index === activeIndex
+                        ? "bg-gray-300 dark:bg-gray-600"
+                        : "bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700"
+                    }`}
                   >
                     {item.name}
                   </li>
@@ -116,53 +131,43 @@ const Cart = ({ setIsOpen }) => {
 
           {/* Sidebar Links */}
           <ul className="flex flex-col items-start space-y-4 mt-8 text-primary-default dark:text-primary-dark font-Lato font-medium text-lg">
-            <Link
-              to="/"
-              onClick={() => setIsOpen(true)}
-              className="hover:text-brand duration-100"
-            >
+            <Link to="/" onClick={() => setIsOpen(true)} className="hover:text-brand duration-100">
               Home
             </Link>
-            <Link
-              to="/headphone"
-              onClick={() => setIsOpen(true)}
-              className="hover:text-brand duration-100"
-            >
-              Headphone
-            </Link>
-            <Link
-              to="/speakers"
-              onClick={() => setIsOpen(true)}
-              className="hover:text-brand duration-100"
-            >
-              Speakers
-            </Link>
-            <Link
-              to="/audio"
-              onClick={() => setIsOpen(true)}
-              className="hover:text-brand duration-100"
-            >
-              Audio
-            </Link>
-            <Link
-              to="/celebrations"
-              onClick={() => setIsOpen(true)}
-              className="hover:text-brand duration-100"
-            >
-              Celebrations
-            </Link>
-            <Link
-              to="/shop"
-              onClick={() => setIsOpen(true)}
-              className="hover:text-brand duration-100"
-            >
+
+            {/* Loop categories */}
+            {Object.keys(categories).map((cat, idx) => (
+              <li key={idx} className="w-full">
+                <button
+                  onClick={() => toggleCategory(cat)}
+                  className="flex justify-between items-center w-full hover:text-brand duration-100"
+                >
+                  {cat.charAt(0).toUpperCase() + cat.slice(1)}
+                  {openCategory === cat ? <FiChevronUp /> : <FiChevronDown />}
+                </button>
+
+                {openCategory === cat && (
+                  <ul className="ml-4 mt-2 space-y-2 text-sm">
+                    {categories[cat].map((sub, subIdx) => (
+                      <li key={subIdx}>
+                        <Link
+                          to={`/${cat}/${sub.toLowerCase().replace(/\s+/g, "-")}`}
+                          onClick={() => setIsOpen(true)}
+                          className="block hover:text-brand duration-100"
+                        >
+                          {sub}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </li>
+            ))}
+
+            <Link to="/shop" onClick={() => setIsOpen(true)} className="hover:text-brand duration-100">
               Shop
             </Link>
-            <Link
-              to="/support"
-              onClick={() => setIsOpen(true)}
-              className="hover:text-brand duration-100"
-            >
+            <Link to="/support" onClick={() => setIsOpen(true)} className="hover:text-brand duration-100">
               Support
             </Link>
           </ul>
