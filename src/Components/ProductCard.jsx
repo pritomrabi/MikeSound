@@ -2,12 +2,10 @@
 import { Link } from "react-router-dom";
 import { AiFillStar } from "react-icons/ai";
 import { LuSearch } from "react-icons/lu";
-import { FaRegHeart, FaHeart } from "react-icons/fa";
-import { useState } from "react";
+import { IoCartOutline } from "react-icons/io5";
 
 const ProductCard = ({ product, onQuickView }) => {
-  const [isWishlisted, setIsWishlisted] = useState(false);
-  
+
   if (!product.title && !product.rating && !product.description) {
     return null;
   }
@@ -20,16 +18,23 @@ const ProductCard = ({ product, onQuickView }) => {
           <img
             src={product.img}
             alt={product.title || "Product Image"}
-            className="w-full h-52 sm:h-56 object-cover transform transition-transform duration-500 group-hover:scale-105"
+            className="w-full h-48 sm:h-68 md:h-64 lg:h-68 object-cover transform transition-transform duration-500 group-hover:scale-105"
           />
+
+          {/* Discount Badge */}
+          {product.oldPrice && (
+            <span className="absolute top-2 left-2 bg-red-500 text-white text-xs font-Monrope font-bold px-2 py-3.5 rounded-full">
+              -{Math.round(((product.oldPrice - product.price) / product.oldPrice) * 100)}%
+            </span>
+          )}
         </div>
       </Link>
 
       {/* Info */}
-      <div className="md:p-4 p-2">
+      <div className="md:p-4 p-4">
         <Link to="/singleproduct">
           {product.title && (
-            <h3 className="text-base font-medium text-primary-default dark:text-primary-dark font-Roboto">
+            <h3 className="text-base font-medium font-Lato text-primary-default dark:text-primary-dark font-Roboto">
               {product.title.substring(0, 25)}...
             </h3>
           )}
@@ -38,9 +43,6 @@ const ProductCard = ({ product, onQuickView }) => {
           {product.oldPrice && (
             <div className="flex gap-2">
               <p className="text-md font-normal text-secandari line-through font-Monrope">৳{product.oldPrice}</p>
-              <span className="text-md font-normal text-primary dark:text-white font-Monrope">
-                -{Math.round(((product.oldPrice - product.price) / product.oldPrice) * 100)}%
-              </span>
             </div>
           )}
 
@@ -67,20 +69,17 @@ const ProductCard = ({ product, onQuickView }) => {
             <LuSearch />
           </button>
           <span className="absolute right-full top-1/2 -translate-y-1/2 mr-2 px-2 py-1 rounded bg-black text-white text-xs opacity-0 group-hover/icon:opacity-100 whitespace-nowrap">
-            Search
+            Quick View
           </span>
         </div>
-
-        {/* Wishlist */}
         <div className="relative group/icon">
           <button
-            onClick={() => setIsWishlisted(!isWishlisted)}
             className="text-xl text-primary hover:text-secandari duration-200 cursor-pointer"
           >
-            {isWishlisted ? <FaHeart className="text-red-500" /> : <FaRegHeart />}
+            <IoCartOutline />
           </button>
-          <span className="absolute right-full top-1/2 -translate-y-1/2 mr-2 px-2 py-1 rounded bg-black text-white text-xs opacity-0 group-hover/icon:opacity-100 transition whitespace-nowrap font-Lato font-normal">
-            Wishlist
+          <span className="absolute right-full top-1/2 -translate-y-1/2 mr-2 px-2 py-1 rounded bg-black text-white text-xs opacity-0 group-hover/icon:opacity-100 whitespace-nowrap">
+            Add To Cart
           </span>
         </div>
       </div>

@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from "react";
 
 const OrderHistory = () => {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   const [orders, setOrders] = useState([]);
   const [grandTotal, setGrandTotal] = useState(0);
 

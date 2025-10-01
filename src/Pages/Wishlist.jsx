@@ -1,12 +1,14 @@
 import { AiOutlineShoppingCart } from "react-icons/ai";
 import { LuSearch } from "react-icons/lu";
 import { Link } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ProductQuickView from "../Components/Home/ProductQuickView";
 
 const Wishlist = () => {
     const [quickcart, setQuickcart] = useState(false);
-
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
     const posts = [
         // { title: "Creative water features and exterior", price: 99.00, img: "home.jpg" },
     ];

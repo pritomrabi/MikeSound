@@ -8,7 +8,7 @@ const CheckoutBanner = () => {
       <div className="sm:p-6 p-0 rounded-lg relative z-10 flex gap-2 sm:gap-5 items-center justify-center ">
         <Link
           to="/viewcart"
-          className="sm:text-3xl text-base font-bold text-secandari hover:text-white duration-300  font-Lato"
+          className="sm:text-3xl text-sm font-bold text-secandari hover:text-white duration-300  font-Lato"
         >
           Shopping cart
         </Link>

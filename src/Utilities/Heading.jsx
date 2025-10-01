@@ -1,7 +1,7 @@
 
 const Heading = ({  Head }) => {
   return (
-    <div className="container px-5 md:py-4 sm:py-2 py-0 text-start">
+    <div className="container px-5 py-6 text-start">
       <h3 className="lg:text-3xl text-2xl text-primary-default dark:text-primary-dark font-medium font-Roboto py-2">
         {Head}
       </h3>

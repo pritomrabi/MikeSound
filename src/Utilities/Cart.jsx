@@ -116,11 +116,10 @@ const Cart = ({ setIsOpen }) => {
                 {results.map((item, index) => (
                   <li
                     key={item.id}
-                    className={`p-3 rounded-lg cursor-pointer ${
-                      index === activeIndex
+                    className={`p-3 rounded-lg cursor-pointer ${index === activeIndex
                         ? "bg-gray-300 dark:bg-gray-600"
                         : "bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700"
-                    }`}
+                      }`}
                   >
                     {item.name}
                   </li>
@@ -140,7 +139,7 @@ const Cart = ({ setIsOpen }) => {
               <li key={idx} className="w-full">
                 <button
                   onClick={() => toggleCategory(cat)}
-                  className="flex justify-between items-center w-full hover:text-brand duration-100"
+                  className="flex justify-between items-center w-full hover:text-brand duration-100 cursor-pointer"
                 >
                   {cat.charAt(0).toUpperCase() + cat.slice(1)}
                   {openCategory === cat ? <FiChevronUp /> : <FiChevronDown />}
@@ -153,7 +152,7 @@ const Cart = ({ setIsOpen }) => {
                         <Link
                           to={`/${cat}/${sub.toLowerCase().replace(/\s+/g, "-")}`}
                           onClick={() => setIsOpen(true)}
-                          className="block hover:text-brand duration-100"
+                          className="block hover:text-brand duration-100 "
                         >
                           {sub}
                         </Link>
@@ -166,9 +165,6 @@ const Cart = ({ setIsOpen }) => {
 
             <Link to="/shop" onClick={() => setIsOpen(true)} className="hover:text-brand duration-100">
               Shop
-            </Link>
-            <Link to="/support" onClick={() => setIsOpen(true)} className="hover:text-brand duration-100">
-              Support
             </Link>
           </ul>
         </div>

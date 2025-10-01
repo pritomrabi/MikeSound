@@ -7,7 +7,7 @@ const CheckoutRight = () => {
   const [method, setMethod] = useState("bkash");
 
   return (
-    <div className="lg:w-[50%] w-full sm:px-4 px-0 py-10 font-Lato">
+    <div className="lg:w-[50%] w-full sm:px-4 px-0 font-Lato">
       <div class="bg-white shadow rounded-xl p-6 mt-6">
         <h3 class="text-lg font-semibold mb-4 text-center">Your Order</h3>
         <div class=" rounded-lg overflow-hidden">
@@ -15,10 +15,9 @@ const CheckoutRight = () => {
             <span>Product</span>
             <span>Subtotal</span>
           </div>
-          <div class="flex justify-between items-start px-4 py-3 border-b border-secandari">
-
+          <div class="flex justify-between items-start sm:px-4 px-1 py-3 border-b border-secandari">
             <div className="items-center flex gap-2">
-              <img src="home.jpg" alt="home" className="object-cover h-20 w-20 rounded-xl" />
+              <img src="home.jpg" alt="home" className="object-cover sm:h-20 h-16 sm:w-20 w-16 rounded-xl" />
               <p class="font-medium text-gray-800 font-Lato text-base">Netflix Subscription × 2</p>
             </div>
             <span class="text-gray-700">৳ 2,580.00</span>

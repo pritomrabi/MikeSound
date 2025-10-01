@@ -82,11 +82,11 @@ const ViewLeftCart = () => {
               placeholder="Coupon code"
               value={coupon}
               onChange={(e) => setCoupon(e.target.value)}
-              className="border border-gray-300 px-3 py-2 rounded w-48 outline-none font-Monrope font-medium text-sm"
+              className="border border-gray-300 px-3 sm:py-2 py-1 rounded sm:w-48 w-10 outline-none font-Monrope font-medium text-sm"
             />
             <button
               type="submit"
-              className="bg-brand cursor-pointer text-white text-base px-4 py-2 rounded "
+              className="bg-brand cursor-pointer text-white text-xs sm:text-base px-4 py-2 rounded "
             >
               Apply Coupon
             </button>

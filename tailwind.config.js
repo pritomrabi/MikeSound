@@ -17,19 +17,16 @@ export default {
           dark: "#f5f5f5", // Light text in dark mode
         },
         secandari: {
-          DEFAULT: "#767676",
+          DEFAULT: "#aaaaaa",
           dark: "#bab5b5", // Light gray for dark mode
         },
         brand: "#FF0000",
         Green: "#FF0000",
       },
       fontFamily: {
-        Popins: ["Poppins", "sans-serif"],
         NunitoFont: ["Nunito", "sans-serif"],
-        Opensans: ["Open Sans", "sans-serif"],
         Monrope: ["Manrope", "serif"],
         Lato: ["Lato", "sans-serif"],
-        Roboto: ["Roboto", "sans-serif"],
       },
     },
   },

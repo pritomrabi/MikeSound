@@ -80,27 +80,26 @@ const ViewShopping = () => {
         <div className="w-full lg:w-2/3">
           <div className="bg-white rounded-2xl shadow p-4 max-h-[400px] overflow-y-auto">
             {/* Desktop Table Header */}
-            <div className="hidden md:flex items-center border-b pb-3 font-Nunito-font font-semibold text-gray-600">
-              <div className="w-1/12 text-center">Remove</div>
+            <div className="flex items-center border-b pb-3 font-Nunito-font text-[10px] sm:text-sm md:text-lg font-semibold text-gray-600">
+              <div className="w-1/12 hidden sm:block text-center">Remove</div>
               <div className="w-2/12 text-center">Thumbnail</div>
               <div className="w-4/12">Product</div>
               <div className="w-2/12 text-center">Price</div>
               <div className="w-2/12 text-center">Quantity</div>
               <div className="w-2/12 text-center">Subtotal</div>
             </div>
-
             {/* Product Rows */}
             {cartItems.map((item) => (
               <div
                 key={item.id}
-                className="flex flex-col md:flex-row md:items-center py-4 border-b last:border-b-0 gap-4 font-Nunito-font"
+                className="flex flex-row md:flex-row items-center py-4 border-b last:border-b-0 gap-4 text-[10px] sm:text-xs md:text-base font-Nunito-font"
               >
                 {/* Remove */}
                 <div
                   onClick={() => removeItem(item.id)}
                   className="md:w-1/12 text-red-500 cursor-pointer hover:text-red-700 flex justify-center"
                 >
-                  <MdDelete size={22} />
+                  <MdDelete className="text-xs sm:text-sm md:text-base" />
                 </div>
 
                 {/* Thumbnail */}
@@ -108,28 +107,27 @@ const ViewShopping = () => {
                   <img
                     src={item.image}
                     alt={item.name}
-                    className="w-24 h-24 object-cover rounded-lg"
+                    className="md:w-24 sm:w-20 w-14 h-14 sm:h-20 md:h-24 object-cover rounded-lg"
                   />
                 </div>
 
                 {/* Product Info */}
-                <div className="md:w-4/12 text-sm">
-                  <p className="font-medium text-gray-800">{item.name}</p>
+                <div className="md:w-4/12">
+                  <p className="font-medium text-gray-800 text-[9px] sm:text-xs md:text-base">{item.name.substring(0, 30)}...</p>
 
                 </div>
 
                 {/* Price */}
                 <div className="md:w-2/12 text-gray-700 md:text-center">
-                  <span className="md:hidden font-semibold">Price: </span>
                   ৳ {item.price.toFixed(2)}
                 </div>
 
                 {/* Quantity */}
-                <div className="md:w-2/12 flex md:justify-center">
+                <div className="md:w-fit flex md:justify-center">
                   <div className="flex items-center border rounded">
                     <button
                       onClick={() => decreaseQty(item.id)}
-                      className="px-2 text-gray-600 hover:text-black"
+                      className="md:px-2 px-1 text-gray-600 hover:text-black "
                     >
                       -
                     </button>
@@ -137,11 +135,11 @@ const ViewShopping = () => {
                       type="number"
                       value={item.quantity}
                       readOnly
-                      className="w-12 text-center border-x"
+                      className="md:w-12 w-6 text-center border-x"
                     />
                     <button
                       onClick={() => increaseQty(item.id)}
-                      className="px-2 text-gray-600 hover:text-black"
+                      className="md:px-2 px-1 text-gray-600 hover:text-black"
                     >
                       +
                     </button>
@@ -150,7 +148,7 @@ const ViewShopping = () => {
 
                 {/* Subtotal */}
                 <div className="md:w-2/12 font-semibold text-green-600 md:text-center">
-                  <span className="md:hidden font-semibold">Subtotal: </span>
+
                   ৳ {(item.price * item.quantity).toFixed(2)}
                 </div>
               </div>

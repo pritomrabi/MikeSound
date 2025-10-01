@@ -1,46 +1,43 @@
 import React, { useState } from 'react'
 
 const Description = () => {
-    const [activeTab, setActiveTab] = useState("specs");
+  const [activeTab, setActiveTab] = useState("specs");
   return (
     <div className=" py-10 px-6 font-Lato">
       <div className=" mx-auto  shadow-sm rounded-xl p-6">
         {/* Header */}
         <h1 className="text-2xl font-bold text-center font-Nunito-font text-black mb-6">
-          iPad Air M3 - 2025
+          Arabic Aura Watch
         </h1>
 
         {/* Tabs */}
-        <div className="flex justify-center gap-4 mb-6 font-Nunito-font">
+        <div className="flex justify-center gap-4 mb-6 font-Nunito-font text-sm">
           <button
             onClick={() => setActiveTab("specs")}
-            className={`px-4 py-2 rounded-lg font-semibold cursor-pointer ${
-              activeTab === "specs"
-                ? "bg-brand text-white"
-                : "bg-gray-200 text-gray-800"
-            }`}
+            className={`px-4 py-2 shadow-sm rounded-lg font-medium cursor-pointer ${activeTab === "specs"
+              ? "bg-brand text-white"
+              : "bg-gray-50 text-gray-800"
+              }`}
           >
             Specification
           </button>
           <button
             onClick={() => setActiveTab("desc")}
-            className={`px-4 py-2 rounded-lg font-semibold cursor-pointer ${
-              activeTab === "desc"
-                ? "bg-brand text-white"
-                : "bg-gray-200 text-gray-800"
-            }`}
+            className={`px-4 py-2 shadow-sm rounded-lg font-medium cursor-pointer ${activeTab === "desc"
+              ? "bg-brand text-white"
+              : "bg-gray-50 text-gray-800"
+              }`}
           >
             Description
           </button>
           <button
-            onClick={() => setActiveTab("warranty")}
-            className={`px-4 py-2 rounded-lg font-semibold cursor-pointer ${
-              activeTab === "warranty"
-                ? "bg-brand text-white"
-                : "bg-gray-200 text-gray-800"
-            }`}
+            onClick={() => setActiveTab("review")}
+            className={`px-4 py-2 shadow-sm rounded-lg font-medium cursor-pointer ${activeTab === "review"
+              ? "bg-brand text-white"
+              : "bg-gray-50 text-gray-800"
+              }`}
           >
-            Warranty
+            Review
           </button>
         </div>
         {/* Tab Content */}
@@ -114,15 +111,57 @@ const Description = () => {
             </ul>
           </div>
         )}
-        {activeTab === "warranty" && (
-          <div>
-            <h2 className="text-xl font-bold mb-3 font-Nunito-font">Warranty</h2>
-            <p className="text-gray-700 leading-relaxed">
-              Explore our
-              page for detailed information about our warranty coverage.
-            </p>
+        {activeTab === "review" && (
+          <div className="font-Nunito-font">
+            <h2 className="text-xl font-bold mb-4 border-b border-secandari pb-2">Customer Reviews</h2>
+
+            {/* Review List */}
+            <div className="space-y-4 h-60 overflow-y-scroll px-5 mb-6">
+              {/* Single Review */}
+              <div className="p-4 rounded-lg shadow-sm bg-gray-50">
+                <div className="flex items-center gap-2 mb-1">
+                  <span className="text-green-500">★★★★★</span>
+                  <p className="text-sm text-gray-600">By Riyadh · May, 2025</p>
+                </div>
+                <p className="text-gray-800">
+                  Best Gamepad, it's been 6 years still running solid.
+                </p>
+              </div>
+            </div>
+
+            {/* Review Form */}
+            <h3 className="text-xl font-bold mb-3">Your Review</h3>
+            <form className="space-y-4">
+              {/* Rating Stars */}
+              <div className="flex gap-1 text-2xl text-gray-400 cursor-pointer">
+                ★ ★ ★ ★ ★
+              </div>
+
+              {/* Name Input */}
+              <input
+                type="text"
+                placeholder="Name"
+                className="w-full p-3 border border-secandari rounded-lg outline-none"
+              />
+
+              {/* Review Textarea */}
+              <textarea
+                rows="4"
+                placeholder="Write your review..."
+                className="w-full p-3 border border-secandari rounded-lg outline-none"
+              ></textarea>
+
+              {/* Submit Button */}
+              <button
+                type="submit"
+                className="bg-brand cursor-pointer text-white px-5 py-2 rounded-lg hover:bg-brand/90"
+              >
+                Submit Review
+              </button>
+            </form>
           </div>
         )}
+
       </div>
     </div>
   )

@@ -9,7 +9,7 @@ import Search from "./Utilities/Search";
 import ShoppingCart from "./Utilities/ShoppingCart";
 import Cart from "./Utilities/Cart";
 import ThemeToggle from "./Utilities/ThemeToggle";
-import Header from "./Header";
+// import Header from "./Header";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(true);
@@ -25,22 +25,21 @@ const Navbar = () => {
 
   // === Menus with subcategories ===
   const menuItems = [
-    { title: "Home", path: "/" },
     { title: "Headphone", path: "headphone", sub: ["Wireless Headphones", "Noise Cancelling", "Over-Ear", "On-Ear"] },
     { title: "Speakers", path: "speakers", sub: ["Bluetooth Speakers", "Home Theater", "Portable", "Smart Speakers"] },
     { title: "Earbud", path: "earbud", sub: ["Wireless Earbuds", "Gaming Earbuds", "Noise Cancelling"] },
     { title: "Gaming", path: "gaming", sub: ["Gaming Headset", "Gaming Chair", "Accessories"] },
     { title: "Shop", path: "shop" },
-    { title: "Support", path: "support" },
+    // { title: "Support", path: "support" },
   ];
 
   return (
     <section className="shadow w-full fixed top-0 z-50 bg-[#fdfeff] dark:bg-[#1a1a1a]">
-      <Header />
+      {/* <Header /> */}
       <div className="p-6">
         <div className="container mx-auto flex overflow-visible">
           <div className="flex items-center justify-between w-full">
-            
+
             {/* Logo */}
             <Link to="/" className="sm:text-2xl text-xl font-bold text-brand font-Lato">
               Mike Sound
@@ -79,7 +78,6 @@ const Navbar = () => {
 
             {/* ===== Right Section ===== */}
             <div className="flex items-center space-x-2 sm:space-x-4">
-              <Link to={"/wishlist"}><FaRegHeart /></Link>
               <ThemeToggle />
 
               {search ? (

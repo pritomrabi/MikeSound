@@ -2,13 +2,15 @@ import { useState } from "react";
 import { PiMinusThin } from "react-icons/pi";
 import { HiOutlinePlusSmall } from "react-icons/hi2";
 import { AiFillStar } from "react-icons/ai";
+import { motion, AnimatePresence } from "framer-motion";
 
 const ProductPage = () => {
   const [quantity, setQuantity] = useState(1);
-  const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [selectedVariation, setSelectedVariation] = useState(null);
+  const [selectedIndex, setSelectedIndex] = useState(0);
+  const [isZooming, setIsZooming] = useState(false);
+  const [zoomPosition, setZoomPosition] = useState({ x: 50, y: 50 });
 
-  // Local Product Data
   const product = {
     title: "Arabic Aura Watch",
     category: "Watches",
@@ -20,113 +22,111 @@ const ProductPage = () => {
     discount: 86,
     rating: 4,
     sold: 321,
-    warranty_period: 12, // months
+    warranty_period: 12,
     model_number: "AAW-2025",
     power_type: "Battery",
     connector_type: "USB-C",
     variations: [
       { id: 1, color: "Black", price: 289, stock: 50 },
       { id: 2, color: "Silver", price: 310, stock: 20 },
-      { id: 3, color: "Gold", price: 350, stock: 10 }
+      { id: 3, color: "Gold", price: 350, stock: 10 },
     ],
-    images: ["home.jpg", "home.jpg", "home.jpg"]
+    images: [
+      "home.jpg",
+      "contact-2.jpg",
+      "contact-1.jpg",
+      "home.jpg",
+      "home.jpg",
+    ],
   };
 
-  const handleVariationSelect = (variation) => {
-    setSelectedVariation(variation);
-  };
+  const handleVariationSelect = (variation) => setSelectedVariation(variation);
+  const totalPrice = selectedVariation ? selectedVariation.price * quantity : product.price * quantity;
 
-  const totalPrice = selectedVariation
-    ? selectedVariation.price * quantity
-    : product.price * quantity;
+  const handleMouseMove = (e) => {
+    const { left, top, width, height } = e.currentTarget.getBoundingClientRect();
+    const x = ((e.clientX - left) / width) * 100;
+    const y = ((e.clientY - top) / height) * 100;
+    setZoomPosition({ x, y });
+  };
 
   return (
-    <div className="container mx-auto md:px-4 px-2 md:py-8 py-2">
-      <div className="flex flex-col lg:flex-row gap-8">
+    <div className="max-w-[1200px] mx-auto px-4 py-6">
+      <div className="flex flex-col lg:flex-row gap-6">
         {/* Image Section */}
-        <div className="w-full md:w-1/2 md:p-5 p-3 flex flex-col md:flex-row gap-3">
-          {/* Thumbnails */}
-          <div className="flex md:flex-col gap-2 overflow-x-auto md:overflow-y-auto md:h-[450px] md:w-[100px] order-2 md:order-1 justify-center">
-            {product.images.map((img, idx) => (
-              <img
-                key={idx}
-                src={img}
-                onClick={() => setCurrentImageIndex(idx)}
-                className={`w-[80px] h-[80px] md:w-[100px] md:h-[100px] object-cover border-2 cursor-pointer ${
-                  idx === currentImageIndex
-                    ? "border-yellow-600"
-                    : "border-gray-300 hover:border-yellow-500 transition"
-                }`}
-                alt={`Thumbnail ${idx + 1}`}
+        <div className="w-full lg:w-1/2">
+          <div
+            className="relative w-full h-[300px] sm:h-[400px] md:h-[450px] rounded overflow-hidden cursor-grab"
+            onMouseMove={handleMouseMove}
+            onMouseEnter={() => setIsZooming(true)}
+            onMouseLeave={() => setIsZooming(false)}
+          >
+            <AnimatePresence mode="wait">
+              <motion.img
+                key={selectedIndex}
+                src={product.images[selectedIndex]}
+                alt="Product"
+                className="w-full h-full object-cover"
+                initial={{ opacity: 0, scale: 1 }}
+                animate={{ opacity: 1, scale: isZooming ? 2 : 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.2 }}
+                style={{ transformOrigin: `${zoomPosition.x}% ${zoomPosition.y}%`, transition: "transform 0.4s ease-out" }}
               />
-            ))}
+            </AnimatePresence>
           </div>
 
-          {/* Main Image */}
-          <div className="relative overflow-hidden rounded-md flex justify-center items-center flex-1 order-1 md:order-2">
-            <img
-              src={product.images[currentImageIndex]}
-              alt={`Product ${currentImageIndex + 1}`}
-              className="w-full max-h-[350px] sm:max-h-[450px] object-cover rounded-md"
-            />
+          {/* Thumbnails */}
+          <div className="flex gap-2 mt-3 overflow-x-auto scrollbar-hide">
+            {product.images.map((img, i) => (
+              <img
+                key={i}
+                src={img}
+                alt={`Thumb-${i}`}
+                className={`w-20 h-20 p-1.5 sm:w-24 sm:h-24 flex-shrink-0 object-cover rounded border cursor-pointer ${selectedIndex === i ? "border-orange-500" : "border-gray-300"}`}
+                onClick={() => setSelectedIndex(i)}
+              />
+            ))}
           </div>
         </div>
 
         {/* Product Details */}
-        <div className="w-full md:w-1/2 md:p-6 p-0 px-4 md:px-0">
-          <p className="text-sm text-black mb-2">
+        <div className="w-full lg:w-1/2 flex flex-col gap-3">
+          <p className="text-sm text-black">
             {product.category} / {product.subcategory} / {product.title}
           </p>
-          <h2 className="text-2xl text-primary font-medium mb-2">
-            {product.title}
-          </h2>
+          <h2 className="text-xl sm:text-2xl font-medium text-primary">{product.title}</h2>
 
-          <p className="text-xl font-semibold text-red-600 mb-2">
+          <p className="text-lg sm:text-xl font-semibold text-red-600">
             ৳{selectedVariation ? selectedVariation.price : product.price}
-            <span className="line-through text-gray-400 text-sm ml-2">
-              ৳{product.oldPrice}
-            </span>
+            <span className="line-through text-gray-400 text-sm ml-2">৳{product.oldPrice}</span>
             <span className="ml-2 text-green-600">-{product.discount}%</span>
           </p>
 
-          <div className="flex items-center gap-1 mb-2">
-            {[...Array(product.rating)].map((_, i) => (
-              <AiFillStar key={i} className="text-yellow-400" />
-            ))}
-            <span className="text-xs text-gray-500 ml-2">
-              ({product.sold} sold)
-            </span>
+          <div className="flex items-center gap-1 mb-1">
+            {[...Array(product.rating)].map((_, i) => <AiFillStar key={i} className="text-yellow-400" />)}
+            <span className="text-xs text-gray-500 ml-2">({product.sold} sold)</span>
           </div>
 
-          <p className="text-gray-600 text-sm mb-2">
-            Brand: <span className="text-blue-600 cursor-pointer">{product.brand}</span>
-          </p>
+          <p className="text-gray-600 text-sm">Brand: <span className="text-blue-600">{product.brand}</span></p>
+          <p className="text-secandari text-sm">{product.description}</p>
 
-          <p className="text-secandari text-sm mb-4">{product.description}</p>
-
-          {/* Warranty, Model, Power, Connector */}
-          <div className="text-gray-600 text-sm mb-4 space-y-1">
-            {product.warranty_period > 0 && (
-              <p>Warranty: <span className="font-medium">{product.warranty_period} months</span></p>
-            )}
+          <div className="text-gray-600 text-sm space-y-1">
+            {product.warranty_period > 0 && <p>Warranty: <span className="font-medium">{product.warranty_period} months</span></p>}
             <p>Model Number: <span className="font-medium">{product.model_number}</span></p>
             <p>Power Type: <span className="font-medium">{product.power_type}</span></p>
             <p>Connector Type: <span className="font-medium">{product.connector_type}</span></p>
           </div>
 
           {/* Color Selection */}
-          <div className="mb-4 flex gap-3 flex-wrap items-center">
-            <p className="font-medium text-base mb-1">Color:</p>
-            <div className="flex gap-2 flex-wrap">
+          <div className="flex flex-wrap items-center gap-2 mt-2">
+            <p className="font-medium text-base mb-1 w-full">Color:</p>
+            <div className="flex flex-wrap gap-2">
               {product.variations.map((variation) => (
                 <button
                   key={variation.id}
                   onClick={() => handleVariationSelect(variation)}
-                  className={`px-2.5 py-1.5 text-xs rounded font-medium cursor-pointer ${
-                    selectedVariation?.id === variation.id
-                      ? "bg-yellow-600 text-white border-yellow-600"
-                      : "border border-gray-300 text-gray-700 bg-gray-100"
-                  }`}
+                  className={`px-3 py-1 text-xs rounded font-medium cursor-pointer ${selectedVariation?.id === variation.id ? "bg-yellow-600 text-white border-yellow-600" : "border border-gray-300 text-gray-700 bg-gray-100"}`}
                 >
                   {variation.color}
                 </button>
@@ -134,39 +134,34 @@ const ProductPage = () => {
             </div>
           </div>
 
-          {/* Quantity & Total Price */}
-          <div className="flex flex-col sm:flex-row sm:items-center gap-4 mb-4 border-b pb-4 border-gray-300">
-            <div className="flex border rounded w-fit border-gray-300 items-center gap-4">
-              <button
-                className="p-2 cursor-pointer"
-                onClick={() => setQuantity(Math.max(1, quantity - 1))}
-              >
-                <PiMinusThin size={14} />
-              </button>
+          {/* Quantity & Total */}
+          <div className="flex flex-col sm:flex-row sm:items-center gap-3 mt-3 border-b pb-3 border-gray-300">
+            <div className="flex items-center border rounded w-fit border-gray-300">
+              <button className="p-2 cursor-pointer" onClick={() => setQuantity(Math.max(1, quantity - 1))}><PiMinusThin size={14} /></button>
               <div className="px-4 py-2 font-medium text-sm">{quantity}</div>
-              <button
-                className="p-2 cursor-pointer"
-                onClick={() => setQuantity(quantity + 1)}
-              >
-                <HiOutlinePlusSmall size={14} />
-              </button>
+              <button className="p-2 cursor-pointer" onClick={() => setQuantity(quantity + 1)}><HiOutlinePlusSmall size={14} /></button>
             </div>
-              <p className="text-lg font- font-semibold text-black ml-4">
-                Total: ৳{totalPrice}
-              </p>
+            <p className="text-lg font-semibold text-black ml-0 sm:ml-4">Total: ৳{totalPrice}</p>
           </div>
 
           {/* Buttons */}
-          <div className="flex gap-4 mt-4">
-            <button className="bg-orange-500 hover:bg-orange-600 text-white px-6 py-2 rounded cursor-pointer">
-              Add to Cart
-            </button>
-            <button className="bg-green-500 hover:bg-green-600 text-white px-6 py-2 rounded cursor-pointer">
-              WhatsAPP
-            </button>
+          <div className="flex flex-col sm:flex-row gap-3 mt-4">
+            <button className="bg-orange-500 cursor-pointer hover:bg-orange-600 text-white px-6 py-2 rounded">Add to Cart</button>
+            <button className="bg-brand cursor-pointer text-white px-6 py-2 rounded">Shop Now</button>
+            <button className="bg-green-500 hover:bg-green-600 cursor-pointer text-white px-6 py-2 rounded">WhatsApp</button>
           </div>
         </div>
       </div>
+
+      <style jsx>{`
+        .scrollbar-hide::-webkit-scrollbar {
+          display: none;
+        }
+        .scrollbar-hide {
+          -ms-overflow-style: none;
+          scrollbar-width: none;
+        }
+      `}</style>
     </div>
   );
 };

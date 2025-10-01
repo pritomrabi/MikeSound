@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import ProductQuickView from "../Components/Home/ProductQuickView";
 import ProductCard from "../Components/ProductCard";
@@ -6,7 +6,9 @@ import ProductCard from "../Components/ProductCard";
 const Categories = () => {
   const { slug } = useParams();
   const [quickView, setQuickView] = useState(false);
-
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   const allProducts = [
     { title: "Wooden Chair", price: 99, oldPrice: 195, img: "home.jpg", category: "furniture" },
     { title: "Wall Clock", price: 120, oldPrice: 195, img: "https://via.placeholder.com/300x300", category: "clocks" },
@@ -32,7 +34,7 @@ const Categories = () => {
           </h3>
         </div>
 
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-1 md:gap-3 mt-8">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5  gap-4 mt-8">
           {products.length > 0 ? (
             products.map((product, idx) => (
               <ProductCard

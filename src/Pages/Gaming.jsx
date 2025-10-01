@@ -1,11 +1,13 @@
 import Heading from "../Utilities/Heading";
 import ProductQuickView from "../Components/Home/ProductQuickView";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ProductCard from "../Components/ProductCard";
 
 const Gaming = () => {
   const [quickView, setQuickView] = useState(false);
-
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   const products = [
     { title: "Creative water features and exterior", price: 99.0, oldPrice: 129, img: "home.jpg" },
     { title: "Creative water features and exterior", price: 99.0, oldPrice: 129, img: "home.jpg" },
@@ -18,10 +20,10 @@ const Gaming = () => {
   ];
 
   return (
-    <section className="dark:bg-[#212020] py-16 md:py-24">
+    <section className="dark:bg-[#212020] py-16 sm:py-20">
       <div className="container mx-auto md:px-4 px-1">
         <Heading Head="Gaming" />
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4 mt-8">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5  gap-4 ">
           {products.map((product, idx) => (
             <ProductCard
               key={idx}

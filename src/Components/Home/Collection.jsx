@@ -3,7 +3,7 @@ import Heading from "../../Utilities/Heading";
 import ProductCard from "../ProductCard";
 import ProductQuickView from "./ProductQuickView";
 
-const Discount = () => {
+const Collection = () => {
   const [quickView, setQuickView] = useState(false);
 
   const products = [
@@ -16,10 +16,10 @@ const Discount = () => {
   ];
 
   return (
-    <section className="py-12 bg-[#f5f5f5] dark:bg-[#1b1b1b]">
-      <div className="container mx-auto px-1 md:px-4">
-        <Heading Head="Discount Products" />
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 md:gap-3 gap-1 mt-8">
+    <section className="md:py-12 py-6 bg-[#f5f5f5] dark:bg-[#1b1b1b]">
+      <div className="container mx-auto px-2 md:px-4">
+        <Heading Head="Collections" />
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5  gap-4 mt-8">
           {products.map((product, idx) => (
             <ProductCard
               key={idx}
@@ -34,4 +34,4 @@ const Discount = () => {
   );
 };
 
-export default Discount;
+export default Collection;

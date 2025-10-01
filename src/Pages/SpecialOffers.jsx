@@ -1,13 +1,15 @@
 import { AiOutlineShoppingCart } from "react-icons/ai";
 import { LuSearch } from "react-icons/lu";
 import { Link } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ProductQuickView from "../Components/Home/ProductQuickView";
 
 const SpecialOffers = () => {
     const [quickcart, setQuickcart] = useState(false);
     const [showPercentage, setShowPercentage] = useState(50);
-
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
     const allProducts = [
         { title: "Wooden Chair", price: "$99.00", img: "home.jpg", discount: 50 },
         { title: "Wall Clock", price: "$120.00", img: "https://via.placeholder.com/300x300", discount: 30 },
