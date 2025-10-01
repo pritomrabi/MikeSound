@@ -35,9 +35,9 @@ const Footer = () => {
           <div>
             <h4 className="text-2xl font-semibold font-Nunito-font mb-4">Contact</h4>
             <ul className="text-secandari text-sm font-Monrope space-y-2">
-              <li>Email: <Link className="hover:text-brand" to="mailto:eurosespabd@gmail.com">eurosespabd@gmail.com</Link></li>
-              <li>Phone: <Link className="hover:text-brand" to="tel:+8801911552077">+880 1911-552077</Link></li>
-              <li>Location: Gulshan 2, Road 41, House 7/a, Dhaka 1212, Bangladesh.</li>
+              <li>Email: <Link className="hover:text-brand" to="mailto:eurosespabd@gmail.com"></Link></li>
+              <li>Phone: <Link className="hover:text-brand" to="tel:+8801911552077"></Link></li>
+              <li>Location:</li>
             </ul>
           </div>
           {/* Social Links */}
@@ -45,7 +45,7 @@ const Footer = () => {
             <h4 className="text-2xl font-semibold font-Nunito-font mb-4">Follow Us</h4>
             <div className="flex space-x-4 text-secandari">
               <Link
-                to="https://www.facebook.com/share/16A3MYTHnv"
+                to="https://www.facebook.com"
                 aria-label="Facebook"
                 className="hover:text-[#1877F2]" // Facebook Blue
               >
@@ -53,7 +53,7 @@ const Footer = () => {
               </Link>
 
               <Link
-                to="https://wa.me/+8801911552077"
+                to="https://wa.me/+880"
                 aria-label="WhatsApp"
                 className="hover:text-[#25D366]" // WhatsApp Green
               >
@@ -61,7 +61,7 @@ const Footer = () => {
               </Link>
 
               <Link
-                to="https://m.me/EuRose.Spa"
+                to="https://m.me/"
                 aria-label="Messenger"
                 className="hover:text-[#0084FF]" // Messenger Blue
               >
