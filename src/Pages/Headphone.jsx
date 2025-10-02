@@ -21,10 +21,10 @@ const Headphone = () => {
 
   return (
     <section className="dark:bg-[#212020] py-16 sm:py-20">
-      <div className="container mx-auto md:px-4 px-1">
+      <div className="container mx-auto md:px-4 px-2">
         <Heading Head="Headphone" />
         <div className="w-full sm:px-6 px-0">
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5  gap-4 ">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2.5 sm:gap-4 ">
             {products.map((product, idx) => (
               <ProductCard
                 key={idx}

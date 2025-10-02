@@ -79,3 +79,6 @@ html {
 }
 
 /* Filter Slider End */
+.group:hover .absolute {
+  z-index: 9999;
+}

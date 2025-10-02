@@ -9,7 +9,6 @@ import Search from "./Utilities/Search";
 import ShoppingCart from "./Utilities/ShoppingCart";
 import Cart from "./Utilities/Cart";
 import ThemeToggle from "./Utilities/ThemeToggle";
-// import Header from "./Header";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(true);

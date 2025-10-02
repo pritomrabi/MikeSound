@@ -117,8 +117,8 @@ const Cart = ({ setIsOpen }) => {
                   <li
                     key={item.id}
                     className={`p-3 rounded-lg cursor-pointer ${index === activeIndex
-                        ? "bg-gray-300 dark:bg-gray-600"
-                        : "bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700"
+                      ? "bg-gray-300 dark:bg-gray-600"
+                      : "bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700"
                       }`}
                   >
                     {item.name}
@@ -133,26 +133,37 @@ const Cart = ({ setIsOpen }) => {
             <Link to="/" onClick={() => setIsOpen(true)} className="hover:text-brand duration-100">
               Home
             </Link>
-
             {/* Loop categories */}
             {Object.keys(categories).map((cat, idx) => (
-              <li key={idx} className="w-full">
-                <button
-                  onClick={() => toggleCategory(cat)}
-                  className="flex justify-between items-center w-full hover:text-brand duration-100 cursor-pointer"
-                >
-                  {cat.charAt(0).toUpperCase() + cat.slice(1)}
-                  {openCategory === cat ? <FiChevronUp /> : <FiChevronDown />}
-                </button>
+              <li key={idx} className="w-full flex flex-col">
+                <div className="flex justify-between items-center w-full">
+                  {/* Main category text - navigates */}
+                  <Link
+                    to={`/${cat.toLowerCase()}`}
+                    onClick={() => setIsOpen(true)}
+                    className="hover:text-brand duration-100"
+                  >
+                    {cat.charAt(0).toUpperCase() + cat.slice(1)}
+                  </Link>
 
+                  {/* Chevron icon - toggles dropdown */}
+                  <button
+                    onClick={() => toggleCategory(cat)}
+                    className="ml-2"
+                  >
+                    {openCategory === cat ? <FiChevronUp /> : <FiChevronDown />}
+                  </button>
+                </div>
+
+                {/* Dropdown */}
                 {openCategory === cat && (
                   <ul className="ml-4 mt-2 space-y-2 text-sm">
                     {categories[cat].map((sub, subIdx) => (
                       <li key={subIdx}>
                         <Link
-                          to={`/${cat}/${sub.toLowerCase().replace(/\s+/g, "-")}`}
+                          to={`/${cat.toLowerCase()}/${sub.toLowerCase().replace(/\s+/g, "-")}`}
                           onClick={() => setIsOpen(true)}
-                          className="block hover:text-brand duration-100 "
+                          className="block hover:text-brand duration-100"
                         >
                           {sub}
                         </Link>
@@ -162,7 +173,6 @@ const Cart = ({ setIsOpen }) => {
                 )}
               </li>
             ))}
-
             <Link to="/shop" onClick={() => setIsOpen(true)} className="hover:text-brand duration-100">
               Shop
             </Link>

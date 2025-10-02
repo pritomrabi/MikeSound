@@ -54,12 +54,12 @@ const ShopPage = () => {
 
   return (
     <section className="dark:bg-[#1b1b1b]">
-      <div className="container mx-auto md:px-4 px-1 py-8">
+      <div className="container mx-auto md:px-4 px-2 py-8">
         {/* Breadcrumb */}
         <div className="flex border-b border-gray-300 mb-6">
           <Link
             to="/"
-            className="text-secandari cursor-pointer text-base font-Lato font-normal mb-4 inline-block pr-1 hover:underline duration-300"
+            className="text-secandari hover:text-Green cursor-pointer text-base font-Lato font-normal mb-4 inline-block pr-1 hover:underline duration-300"
           >
             Home
           </Link>
@@ -93,7 +93,7 @@ const ShopPage = () => {
         {/* Products Grid */}
         <div className="flex">
           <div className="flex-1">
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2.5 sm:gap-4">
               {currentItems.map((product) => (
                 <div
                   key={product.id}
@@ -109,7 +109,7 @@ const ShopPage = () => {
                       <img
                         src={product.image}
                         alt={product.title}
-                        className="w-full h-48 sm:h-68 md:h-64 lg:h-68 object-cover transform transition-transform duration-500 group-hover:scale-105"
+                        className="w-full h-40 sm:h-68 md:h-64 lg:h-68 object-cover transform transition-transform duration-500 group-hover:scale-105"
                       />
                     </div>
                   </Link>

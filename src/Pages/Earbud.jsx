@@ -19,9 +19,9 @@ const Earbud = () => {
 
   return (
     <section className="dark:bg-[#212020] py-16 sm:py-20">
-      <div className="container mx-auto px-1 md:px-4">
+      <div className="container mx-auto px-2 md:px-4">
         <Heading Head="Earbud" />
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5  gap-4 ">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2.5 sm:gap-4 ">
           {products.map((product, idx) => (
             <ProductCard
               key={idx}

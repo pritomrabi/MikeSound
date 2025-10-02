@@ -18,12 +18,12 @@ const ProductCard = ({ product, onQuickView }) => {
           <img
             src={product.img}
             alt={product.title || "Product Image"}
-            className="w-full h-48 sm:h-68 md:h-64 lg:h-68 object-cover transform transition-transform duration-500 group-hover:scale-105"
+            className="w-full h-40 sm:h-68 md:h-64 lg:h-68 object-cover transform transition-transform duration-500 group-hover:scale-105"
           />
 
           {/* Discount Badge */}
           {product.oldPrice && (
-            <span className="absolute top-2 left-2 bg-red-500 text-white text-xs font-Monrope font-bold px-2 py-3.5 rounded-full">
+            <span className="absolute top-2 left-2 bg-red-500 text-white text-[10px] sm:text-xs font-Monrope font-bold px-2 py-1 rounded ">
               -{Math.round(((product.oldPrice - product.price) / product.oldPrice) * 100)}%
             </span>
           )}

@@ -80,7 +80,7 @@ const Footer = () => {
           </div>
         </div>
         <div className="mt-8 border-t border-secandari pt-6 text-center">
-          <p className="text-secandari font-Nunito-font text-sm">
+          <p className="text-secandari font-Nunito-font text-xs sm:text-sm">
             © 2025 Mike Sound. All Rights Reserved.
           </p>
         </div>
