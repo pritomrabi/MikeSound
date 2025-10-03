@@ -20,6 +20,3 @@ class CustomUser(AbstractUser):
         colors = ["#FF5733", "#33FF57", "#3357FF", "#FF33A1", "#FFC300"]
         color = random.choice(colors)
         return {"letter": first_letter, "color": color}
-
-
-

@@ -25,6 +25,10 @@ CORS_ALLOWED_ORIGINS = [
 ]
 CORS_ALLOW_ALL_ORIGINS = True
 
+AUTHENTICATION_BACKENDS = [
+    'accounts.backends.EmailBackend',  # email login
+    'django.contrib.auth.backends.ModelBackend',  # fallback username login
+]
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',

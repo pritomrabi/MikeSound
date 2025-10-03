@@ -4,7 +4,7 @@ from .models import CustomUser
 class EmailBackend(ModelBackend):
     def authenticate(self, request, username=None, password=None, **kwargs):
         email = kwargs.get('email')
-        if email is None:
+        if not email:
             return None
         try:
             user = CustomUser.objects.get(email=email)
