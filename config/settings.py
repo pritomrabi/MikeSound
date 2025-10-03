@@ -30,6 +30,7 @@ AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',  # fallback username login
 ]
 INSTALLED_APPS = [
+    "jazzmin"
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -37,8 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     # third-party
-    'rest_framework',
     'corsheaders',
+    'rest_framework',
     'django_extensions',
     # local apps
     'accounts',
