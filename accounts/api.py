@@ -7,6 +7,7 @@ from .serializers import UserSerializer
 import random
 from django.core.mail import send_mail
 from django.conf import settings
+from django.db import IntegrityError
 
 def send_otp_email(email, otp):
     try:
@@ -15,7 +16,6 @@ def send_otp_email(email, otp):
         send_mail(subject, message, settings.EMAIL_HOST_USER, [email])
     except Exception as e:
         print(f"Email error: {e}")
-
 
 @api_view(['POST'])
 @permission_classes([AllowAny])
@@ -35,10 +35,15 @@ def register_api(request):
         return Response({'error': 'Email already registered.'}, status=400)
 
     otp = random.randint(1000, 9999)
-    user = CustomUser.objects.create_user(username=name, email=email, phone=phone, password=password, otp=otp)
-    user.save()
+    try:
+        user = CustomUser.objects.create_user(username=name, email=email, phone=phone, password=password, otp=otp)
+        user.save()
+    except IntegrityError:
+        return Response({'error': 'Username already exists.'}, status=400)
+
     send_otp_email(email, otp)
     return Response({'message': 'Registration successful. OTP sent to email.', 'user_id': user.id})
+
 
 
 @api_view(['POST'])
