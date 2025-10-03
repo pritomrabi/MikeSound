@@ -13,6 +13,13 @@
 
 <p><strong>Brand:</strong> {{ product.brand.name }}</p>
 <p><strong>Description:</strong> {{ product.description }}</p>
+<p><strong>Warranty:</strong> {{ product.warranty_period }} months</p>
+<p><strong>Model Number:</strong> {{ product.model_number }}</p>
+<p><strong>Body:</strong> {{ product.body }}</p>
+<p><strong>Sound:</strong> {{ product.sound }}</p>
+<p><strong>Battery:</strong> {{ product.battery }}</p>
+<p><strong>Power Type:</strong> {{ product.power_type }}</p>
+<p><strong>Connector Type:</strong> {{ product.connector_type }}</p>
 
 {% if product.sold_count > 0 %}
 <p><strong>Sold:</strong> {{ product.sold_count }}</p>
@@ -26,9 +33,7 @@
         {% for var in product.variations.all %}
             {% with price=product|get_discounted_price:var %}
                 <option value="{{ var.id }}">
-                    {{ var.size }} -
-                    {% if var.color %}{{ var.color.name }}{% else %}No Color{% endif %}
-                    - ${{ price|floatformat:2 }}
+                    {% if var.color %}{{ var.color.name }}{% else %}No Color{% endif %} - ${{ price|floatformat:2 }}
                 </option>
             {% endwith %}
         {% endfor %}

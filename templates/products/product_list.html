@@ -40,7 +40,7 @@
 <h2>Product List</h2>
 
 <form method="get">
-    <input type="text" name="q" placeholder="Search by title or brand" value="{{ query }}">
+    <input type="text" name="q" placeholder="Search products" value="{{ query }}">
     <button type="submit">Search</button>
 </form>
 
@@ -53,6 +53,13 @@
     <th>Price</th>
     <th>Brand</th>
     <th>Color</th>
+    <th>Model</th>
+    <th>Body</th>
+    <th>Sound</th>
+    <th>Battery</th>
+    <th>Power Type</th>
+    <th>Connector</th>
+    <th>Warranty</th>
     <th>Sold</th>
     <th>Wishlist</th>
 </tr>
@@ -90,15 +97,18 @@
             -
         {% endif %}
     </td>
-    <td>
-        {% if product.sold_count > 0 %}
-            {{ product.sold_count }}
-        {% endif %}
-    </td>
+    <td>{{ product.model_number }}</td>
+    <td>{{ product.body }}</td>
+    <td>{{ product.sound }}</td>
+    <td>{{ product.battery }}</td>
+    <td>{{ product.power_type }}</td>
+    <td>{{ product.connector_type }}</td>
+    <td>{{ product.warranty_period }} months</td>
+    <td>{{ product.sold_count }}</td>
     <td>{{ product.users_wishlist.count }}</td>
 </tr>
 {% empty %}
-<tr><td colspan="8">No products found</td></tr>
+<tr><td colspan="15">No products found</td></tr>
 {% endfor %}
 </tbody>
 </table>

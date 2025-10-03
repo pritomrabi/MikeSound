@@ -20,7 +20,6 @@ class CartItem(models.Model):
 
     @property
     def discount_amount(self):
-        # Product এ discount field ধরছি percentage
         if self.product.discount:
             return self.unit_price * self.quantity * self.product.discount / 100
         return 0

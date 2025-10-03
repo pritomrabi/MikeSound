@@ -4,12 +4,24 @@ from .models import Product, Slider, AdsBanner, ProductVariation
 from django.db.models import Q
 from django.contrib.auth.decorators import login_required
 
+
 def product_list(request):
     query = request.GET.get('q', '')
     products = Product.objects.filter(status=True)
+
     if query:
-        products = products.filter(Q(title__icontains=query) | Q(brand__name__icontains=query))
-    products = products.prefetch_related('images', 'brand', 'variations')
+        products = products.filter(
+            Q(title__icontains=query) |
+            Q(brand__name__icontains=query) |
+            Q(model_number__icontains=query) |
+            Q(body__icontains=query) |
+            Q(sound__icontains=query) |
+            Q(battery__icontains=query) |
+            Q(power_type__icontains=query) |
+            Q(connector_type__icontains=query)
+        )
+
+    products = products.select_related('brand').prefetch_related('images', 'variations')
     sliders = Slider.objects.filter(status=True)
     ads = AdsBanner.objects.filter(status=True)
     return render(request, 'products/product_list.html', {
@@ -19,16 +31,25 @@ def product_list(request):
         'ads': ads
     })
 
+
 def product_detail(request, product_id):
-    product = get_object_or_404(Product.objects.prefetch_related('variations__color', 'images'), id=product_id, status=True)
+    product = get_object_or_404(
+        Product.objects.prefetch_related('variations__color', 'images'),
+        id=product_id,
+        status=True
+    )
     sliders = Slider.objects.filter(status=True)
     ads = AdsBanner.objects.filter(status=True)
+
+    # Increment views
     product.views_count += 1
     product.save(update_fields=['views_count'])
+
+    # Variations
     variations = []
     out_of_stock = True
     for var in product.variations.all():
-        price = product.get_discounted_price(var) if product.discount > 0 else var.price
+        price = product.get_discounted_price(var)
         color_name = var.color.name if var.color else None
         available = var.stock > 0
         if available:
@@ -40,7 +61,6 @@ def product_detail(request, product_id):
             message = 'Color not available'
         variations.append({
             'id': var.id,
-            'size': var.size,
             'color': color_name,
             'price': price,
             'stock': var.stock,
@@ -54,17 +74,25 @@ def product_detail(request, product_id):
     elif out_of_stock:
         product_message = 'All variations are out of stock'
 
+    # JSON Response
     if request.GET.get('format') == 'json':
-        # API response
         return JsonResponse({
             'product_id': product.id,
             'title': product.title,
             'variations': variations,
             'views_count': product.views_count,
             'sold_count': product.sold_count,
+            'warranty_period': product.warranty_period,
+            'model_number': product.model_number,
+            'body': product.body,
+            'sound': product.sound,
+            'battery': product.battery,
+            'power_type': product.power_type,
+            'connector_type': product.connector_type,
             'message': product_message
         })
 
+    # Template Response
     return render(request, 'products/product_detail.html', {
         'product': product,
         'sliders': sliders,
@@ -77,7 +105,7 @@ def product_detail(request, product_id):
 @login_required
 def add_to_wishlist(request, product_id):
     product = get_object_or_404(Product, id=product_id)
-    if request.user in product.users_wishlist.all():
+    if product.users_wishlist.filter(id=request.user.id).exists():
         product.users_wishlist.remove(request.user)
         status = 'removed'
     else:

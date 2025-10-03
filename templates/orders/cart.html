@@ -1,43 +1,39 @@
 <h2>My Cart</h2>
 <table border="1" cellspacing="0" cellpadding="5">
 <tr>
-    <th>Image</th>
-    <th>Product</th>
-    <th>Variation</th>
-    <th>Qty</th>
-    <th>Price</th>
-    <th>Discount %</th>
-    <th>Total</th>
-    <th>Action</th>
+<th>Image</th>
+<th>Product</th>
+<th>Variation</th>
+<th>Qty</th>
+<th>Price</th>
+<th>Discount %</th>
+<th>Total</th>
+<th>Action</th>
 </tr>
 {% for item in items %}
 <tr>
-    <td>
-        {% if item.product.images.first %}
-            <img src="{{ item.product.images.first.image.url }}" width="80">
-        {% endif %}
-    </td>
-    <td>{{ item.product.title }}</td>
-    <td>
-        <form method="post" action="{% url 'update_cart' item.id %}">{% csrf_token %}
-        <select name="variation_id">
-            <option value="">Default</option>
-            {% for var in item.product.variations.all %}
-                <option value="{{ var.id }}" {% if item.variation and item.variation.id == var.id %}selected{% endif %}>
-                    {{ var.size }} - {{ var.price }}
-                </option>
-            {% endfor %}
-        </select>
-    </td>
-    <td>
-        <input type="number" name="quantity" value="{{ item.quantity }}" min="0">
-        <button type="submit">Update</button>
-        </form>
-    </td>
-    <td>{{ item.unit_price }}</td>
-    <td>{{ item.discount_percent }}%</td>
-    <td>{{ item.line_total }}</td>
-    <td><a href="{% url 'remove_cart_item' item.id %}">Remove</a></td>
+<td>{% if item.product.images.first %}<img src="{{ item.product.images.first.image.url }}" width="80">{% endif %}</td>
+<td>{{ item.product.title }}</td>
+<td>
+<form method="post" action="{% url 'update_cart' item.id %}">{% csrf_token %}
+<select name="variation_id">
+<option value="">Default</option>
+{% for var in item.product.variations.all %}
+<option value="{{ var.id }}" {% if item.variation and item.variation.id == var.id %}selected{% endif %}>
+{{ var.size }} - {{ var.price }}
+</option>
+{% endfor %}
+</select>
+</td>
+<td>
+<input type="number" name="quantity" value="{{ item.quantity }}" min="0">
+<button type="submit">Update</button>
+</form>
+</td>
+<td>{{ item.unit_price }}</td>
+<td>{{ item.discount_percent }}%</td>
+<td>{{ item.line_total }}</td>
+<td><a href="{% url 'remove_cart_item' item.id %}">Remove</a></td>
 </tr>
 {% endfor %}
 </table>

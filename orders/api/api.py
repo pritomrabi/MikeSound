@@ -3,10 +3,9 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework import status
 from django.shortcuts import get_object_or_404
-from ..models import *
-from ..serializers import *
+from ..models import Cart, CartItem, Order, OrderItem
+from ..serializers import CartSerializer, OrderSerializer
 from products.models import ProductVariation
-from inventory.models import Inventory
 
 # Cart APIs
 @api_view(['GET'])
@@ -23,15 +22,13 @@ def cart_add_item_api(request):
     variation_id = request.data.get('variation_id')
     quantity = int(request.data.get('quantity', 1))
 
-    # Validate variation and stock
+    variation = None
     if variation_id:
         variation = get_object_or_404(ProductVariation, id=variation_id)
         if variation.stock < quantity:
             return Response({
                 "error": f"{variation.size} {variation.color.name if variation.color else 'No Color'} has only {variation.stock} items in stock"
             }, status=status.HTTP_400_BAD_REQUEST)
-    else:
-        variation = None
 
     cart, _ = Cart.objects.get_or_create(user=request.user)
     cart_item, created = CartItem.objects.get_or_create(
@@ -104,7 +101,6 @@ def place_order_api(request):
             "details": out_of_stock_items
         }, status=status.HTTP_400_BAD_REQUEST)
 
-    # If all items available, create order
     order = Order.objects.create(
         user=request.user,
         subtotal=sum([item.line_total for item in cart.items.all()]),
@@ -123,7 +119,6 @@ def place_order_api(request):
             quantity=item.quantity,
             unit_price=item.unit_price
         )
-        # Deduct inventory
         if item.variation:
             item.variation.stock -= item.quantity
             if item.variation.stock < 0:

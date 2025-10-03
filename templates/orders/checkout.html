@@ -15,20 +15,15 @@
 </table>
 
 <h3>Apply Coupon</h3>
-<form method="POST" action="{% url 'apply_coupon' %}">
-{% csrf_token %}
+<form method="POST" action="{% url 'apply_coupon' %}">{% csrf_token %}
 <input name="code" placeholder="Enter Coupon Code" required>
 <button type="submit">Apply</button>
-{% if coupon %}
-<p>Applied Coupon: {{ coupon.code }} - Discount: {{ discount }}</p>
-{% endif %}
+{% if coupon %}<p>Applied Coupon: {{ coupon.code }} - Discount: {{ discount }}</p>{% endif %}
 </form>
 
 <h3>Shipping Address</h3>
-<form method="POST" action="{% url 'place_order' %}">
-{% csrf_token %}
+<form method="POST" action="{% url 'place_order' %}">{% csrf_token %}
 <input name="name" placeholder="Full Name" required>
-<input name="email" placeholder="Email" required>
 <input name="phone" placeholder="Phone" required>
 <input name="country" placeholder="Country" required>
 <input name="city" placeholder="City" required>
@@ -39,9 +34,9 @@
 <p>Shipping Fee: {{ shipping_fee }}</p>
 <p>Discount: {{ discount }}</p>
 <p><strong>Grand Total: {{ grand_total }}</strong></p>
-
 <button type="submit">Place Order</button>
 </form>
+
 
 <h3>Payment Methods</h3>
 {% if order %}

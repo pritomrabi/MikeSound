@@ -43,14 +43,13 @@ def register(request):
 
 def send_registration_email(email, otp):
     try:
-        subject = 'Welcome to FashionFlat'
+        subject = 'Welcome to MikeSound'
         message = f'Thank you for registering. Your OTP code is {otp}.'
         send_email = settings.EMAIL_HOST_USER
         recipients_list = [email]
         send_mail(subject, message, send_email, recipients_list)
     except Exception as e:
         print(f"Error sending email: {e}")
-
 
 def verify_otp(request):
     if request.method == 'POST':
@@ -76,7 +75,7 @@ def verify_otp(request):
     return render(request, 'accounts/otp_verify.html')
 
 
-def login(request):
+def login_view(request):
     if request.method == 'POST':
         email = request.POST.get('email')
         password = request.POST.get('password')
@@ -102,6 +101,7 @@ def login(request):
             messages.error(request, 'Invalid email or password.')
 
     return render(request, 'accounts/login.html')
+
 
 
 def logout_view(request):

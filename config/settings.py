@@ -25,6 +25,7 @@ AUTH_USER_MODEL = 'accounts.CustomUser'
 # Application definition
 
 INSTALLED_APPS = [
+    # 'grappelli',
     'jazzmin',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -47,6 +48,7 @@ INSTALLED_APPS = [
     'import_export',
     'rest_framework',
     'corsheaders',
+    'ckeditor',
 ]
 
 
@@ -90,8 +92,8 @@ DATABASES = {
     'ENGINE': 'django.db.backends.postgresql',
     'NAME': 'neondb',
     'USER': 'neondb_owner',
-    'PASSWORD': 'npg_DBEs8ygIc1bH',
-    'HOST': 'ep-wandering-scene-a1x47ora-pooler.ap-southeast-1.aws.neon.tech',
+    'PASSWORD': 'npg_I3qeQ4gWksAy',
+    'HOST': 'ep-curly-band-a1ri0nk0-pooler.ap-southeast-1.aws.neon.tech',
     'PORT':  "5432",
     'OPTIONS': {
       'sslmode': 'require',

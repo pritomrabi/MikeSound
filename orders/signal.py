@@ -39,3 +39,27 @@ def handle_order_cancellation(sender, instance, **kwargs):
             if item.product and item.product.sold_count >= item.quantity:
                 item.product.sold_count -= item.quantity
                 item.product.save(update_fields=['sold_count'])
+
+@receiver(post_save, sender=Order)
+def handle_order_confirmation(sender, instance, **kwargs):
+    if instance.status == 'confirmed' and instance.payment_status == 'paid':
+        # Inventory adjust
+        for item in instance.items.all():
+            try:
+                inventory = Inventory.objects.get(product=item.product)
+                inventory.current_stock -= item.quantity
+                if inventory.current_stock < 0:
+                    inventory.current_stock = 0
+                inventory.save()
+            except Inventory.DoesNotExist:
+                pass
+
+            # Product sold count
+            if item.product:
+                item.product.sold_count += item.quantity
+                item.product.save(update_fields=['sold_count'])
+
+        # Clear user's cart
+        cart = getattr(instance.user, 'cart', None)
+        if cart:
+            cart.items.all().delete()

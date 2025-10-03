@@ -224,3 +224,11 @@ def order_detail(request, order_id):
     order = get_object_or_404(Order, id=order_id)
     items = order.items.select_related('product', 'variation').prefetch_related('product__images')
     return render(request, 'orders/order_detail.html', {'order': order, 'items': items})
+
+@login_required
+def order_history(request):
+    """
+    Show orders that are confirmed by admin.
+    """
+    orders = Order.objects.filter(user=request.user, status='confirmed').order_by('-created_at')
+    return render(request, 'orders/order_history.html', {'orders': orders})

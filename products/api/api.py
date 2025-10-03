@@ -8,15 +8,26 @@ from ..serializers import ProductSerializer, SliderSerializer, AdsBannerSerializ
 def product_list_api(request):
     query = request.GET.get('q', '')
     products = Product.objects.filter(status=True)
+
     if query:
-        products = products.filter(Q(title__icontains=query) | Q(brand__name__icontains=query))
-    products = products.prefetch_related('images', 'variations', 'brand')
+        products = products.filter(
+            Q(title__icontains=query) |
+            Q(brand__name__icontains=query) |
+            Q(model_number__icontains=query) |
+            Q(body__icontains=query) |
+            Q(sound__icontains=query) |
+            Q(battery__icontains=query) |
+            Q(power_type__icontains=query) |
+            Q(connector_type__icontains=query)
+        )
+
+    products = products.select_related('brand', 'category', 'subcategory').prefetch_related('images', 'variations__color')
     serializer = ProductSerializer(products, many=True, context={'request': request})
 
     sliders = Slider.objects.filter(status=True)
     ads = AdsBanner.objects.filter(status=True)
-    sliders_serializer = SliderSerializer(sliders, many=True)
-    ads_serializer = AdsBannerSerializer(ads, many=True)
+    sliders_serializer = SliderSerializer(sliders, many=True, context={'request': request})
+    ads_serializer = AdsBannerSerializer(ads, many=True, context={'request': request})
 
     return Response({
         'products': serializer.data,
@@ -24,19 +35,22 @@ def product_list_api(request):
         'ads': ads_serializer.data
     })
 
+
 @api_view(['GET'])
 def product_detail_api(request, product_id):
     try:
-        product = Product.objects.prefetch_related('images', 'variations__color', 'brand').get(id=product_id, status=True)
+        product = Product.objects.select_related('brand', 'category', 'subcategory') \
+                                 .prefetch_related('images', 'variations__color') \
+                                 .get(id=product_id, status=True)
     except Product.DoesNotExist:
         return Response({'error': 'Product not found'}, status=404)
 
-    serializer = ProductSerializer(product)
+    serializer = ProductSerializer(product, context={'request': request})
 
     sliders = Slider.objects.filter(status=True)
     ads = AdsBanner.objects.filter(status=True)
-    sliders_serializer = SliderSerializer(sliders, many=True)
-    ads_serializer = AdsBannerSerializer(ads, many=True)
+    sliders_serializer = SliderSerializer(sliders, many=True, context={'request': request})
+    ads_serializer = AdsBannerSerializer(ads, many=True, context={'request': request})
 
     return Response({
         'product': serializer.data,
@@ -44,15 +58,17 @@ def product_detail_api(request, product_id):
         'ads': ads_serializer.data
     })
 
+
 @api_view(['GET'])
 def category_list_with_count_api(request):
     categories = Category.objects.all()
     serializer = CategoryWithCountSerializer(categories, many=True)
     return Response(serializer.data)
 
+
 @api_view(['GET'])
 def latest_products_api(request):
     limit = int(request.GET.get('limit', 10))
     latest_products = Product.objects.filter(status=True).order_by('-created_at')[:limit]
-    serializer = ProductSerializer(latest_products, many=True)
+    serializer = ProductSerializer(latest_products, many=True, context={'request': request})
     return Response(serializer.data)

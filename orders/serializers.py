@@ -8,7 +8,7 @@ class ProductImageSerializer(serializers.ModelSerializer):
         model = ProductImage
         fields = ['id', 'image']
 
-# Product Variation with stock, color, price
+# Product Variation
 class ProductVariationSerializer(serializers.ModelSerializer):
     color_name = serializers.SerializerMethodField()
     color_hex = serializers.SerializerMethodField()
@@ -23,7 +23,7 @@ class ProductVariationSerializer(serializers.ModelSerializer):
     def get_color_hex(self, obj):
         return obj.color.hex_code if obj.color else None
 
-# Product with variations and discount
+# Product
 class ProductSerializer(serializers.ModelSerializer):
     images = ProductImageSerializer(many=True, read_only=True)
     variations = ProductVariationSerializer(many=True, read_only=True)
@@ -35,16 +35,16 @@ class ProductSerializer(serializers.ModelSerializer):
         fields = ['id', 'title', 'slug', 'price', 'discount_percent', 'images', 'variations']
 
     def get_price(self, obj):
+        # Use lowest variation price if exists
         variations = obj.variations.all()
         if variations.exists():
-            # Average price calculation
-            return sum(v.price for v in variations) / variations.count()
+            return min(v.price for v in variations)
         return 0
 
     def get_discount_percent(self, obj):
-        return float(obj.discount)
+        return float(obj.discount or 0)
 
-# CartItem with product + variation
+# CartItem
 class CartItemSerializer(serializers.ModelSerializer):
     product = ProductSerializer(read_only=True)
     variation = ProductVariationSerializer(read_only=True)
@@ -55,23 +55,25 @@ class CartItemSerializer(serializers.ModelSerializer):
         fields = ['id', 'product', 'variation', 'quantity', 'unit_price', 'line_total']
 
     def get_line_total(self, obj):
-        return obj.line_total
+        price = obj.unit_price
+        discount = obj.product.discount or 0
+        return round(price * obj.quantity * (1 - discount / 100), 2)
 
-# Cart with items
+# Cart
 class CartSerializer(serializers.ModelSerializer):
     items = CartItemSerializer(many=True, read_only=True)
 
     class Meta:
         model = Cart
-        fields = ['id', 'user', 'items']
+        fields = ['items']
 
-# Address serializer
+# Address
 class AddressSerializer(serializers.ModelSerializer):
     class Meta:
         model = Address
-        fields = '__all__'
+        exclude = ['user']
 
-# OrderItem with product + variation
+# OrderItem
 class OrderItemSerializer(serializers.ModelSerializer):
     product = ProductSerializer(read_only=True)
     variation = ProductVariationSerializer(read_only=True)
@@ -82,9 +84,11 @@ class OrderItemSerializer(serializers.ModelSerializer):
         fields = ['id', 'product', 'variation', 'quantity', 'unit_price', 'line_total']
 
     def get_line_total(self, obj):
-        return obj.line_total
+        price = obj.unit_price
+        discount = obj.product.discount or 0
+        return round(price * obj.quantity * (1 - discount / 100), 2)
 
-# Order with items + address
+# Order
 class OrderSerializer(serializers.ModelSerializer):
     items = OrderItemSerializer(many=True, read_only=True)
     address = AddressSerializer(read_only=True)
@@ -92,6 +96,6 @@ class OrderSerializer(serializers.ModelSerializer):
     class Meta:
         model = Order
         fields = [
-            'id', 'user', 'status', 'payment_status', 'subtotal', 
+            'id', 'status', 'payment_status', 'subtotal', 
             'shipping_fee', 'discount', 'grand_total', 'items', 'address', 'created_at'
         ]
