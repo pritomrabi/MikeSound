@@ -11,28 +11,27 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
 from pathlib import Path
+import os
+from decouple import config, Csv
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = 'django-insecure-y&w&&as(&q0(@$ptcu4%i#)wbjov(l@8$g4amj_^!(j+06wl!p'
-
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
-ALLOWED_HOSTS = ["*"]
-AUTH_USER_MODEL = 'accounts.CustomUser'
-
-# Application definition
+SECRET_KEY = config("SECRET_KEY")
+DEBUG = config("DEBUG", default=False, cast=bool)
+ALLOWED_HOSTS = config("ALLOWED_HOSTS", cast=Csv())
 
 INSTALLED_APPS = [
-    # 'grappelli',
-    'jazzmin',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    # third-party
+    'rest_framework',
+    'corsheaders',
+    'django_extensions',
+    # local apps
     'accounts',
     'products',
     'inventory',
@@ -44,14 +43,7 @@ INSTALLED_APPS = [
     'customers',
     'reviews',
     'pages',
-    'django_extensions',
-    'import_export',
-    'rest_framework',
-    'corsheaders',
-    'ckeditor',
 ]
-
-
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -63,7 +55,6 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'corsheaders.middleware.CorsMiddleware',
     "whitenoise.middleware.WhiteNoiseMiddleware",
-
 ]
 
 ROOT_URLCONF = 'config.urls'
@@ -71,10 +62,11 @@ ROOT_URLCONF = 'config.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ['templates'],
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
+                'django.template.context_processors.debug',
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
@@ -85,101 +77,70 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'config.wsgi.application'
 
-
-
 DATABASES = {
-  'default': {
-    'ENGINE': 'django.db.backends.postgresql',
-    'NAME': 'neondb',
-    'USER': 'neondb_owner',
-    'PASSWORD': 'npg_I3qeQ4gWksAy',
-    'HOST': 'ep-curly-band-a1ri0nk0-pooler.ap-southeast-1.aws.neon.tech',
-    'PORT':  "5432",
-    'OPTIONS': {
-      'sslmode': 'require',
-    },
-    'DISABLE_SERVER_SIDE_CURSORS': True,
-  }
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': config("DB_NAME"),
+        'USER': config("DB_USER"),
+        'PASSWORD': config("DB_PASSWORD"),
+        'HOST': config("DB_HOST"),
+        'PORT': config("DB_PORT"),
+        'OPTIONS': {
+            'sslmode': 'require',
+        },
+        'DISABLE_SERVER_SIDE_CURSORS': True,
+    }
 }
 
-
-# Password validation
-# https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
-
-AUTH_PASSWORD_VALIDATORS = [
-    {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
-    },
-]
-
-# Internationalization
-# https://docs.djangoproject.com/en/5.2/topics/i18n/
-
 LANGUAGE_CODE = 'en-us'
-
 TIME_ZONE = 'UTC'
-
 USE_I18N = True
-
 USE_TZ = True
 
-import os
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [
-    BASE_DIR / 'static',
-]
+STATICFILES_DIRS = [BASE_DIR / "static"]
+STATIC_ROOT = BASE_DIR / "staticfiles"
+
 MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / 'media'
-# Default primary key field type
-# https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
+MEDIA_ROOT = BASE_DIR / "media"
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-
-STRIPE_SECRET_KEY="sk_test_..."
-STRIPE_PUBLISHABLE_KEY="pk_test_..."
-STRIPE_WEBHOOK_SECRET="whsec_..."
-
-SSLCOMMERZ_URL="https://sandbox.sslcommerz.com/gwprocess/v4/api.php"
-SSLCOMMERZ_STORE_ID="store_id"
-SSLCOMMERZ_STORE_PASS="store_pass"
-SSLCOMMERZ_SECRET="ssl_secret"
-
-BKASH_URL="https://tokenized.bka.sh/checkout/payment"
-BKASH_MERCHANT="merchant_msisdn"
-BKASH_SECRET="bkash_secret"
-
-NOGOD_URL="https://sandbox.nagad.com/merchant-pay"
-NOGOD_MERCHANT_NUMBER="merchant_no"
-NOGOD_SECRET="nogod_secret"
-
-
-# Manual accounts
-MANUAL_PAYMENT_ACCOUNTS = {
-    "bkash": "017XXXXXXXX",
-    "nagad": "018XXXXXXXX",
-    "rocket": "019XXXXXXXX"
-}
-
-LOGIN_URL = '/accounts/login/'
-
-# Gmail Email Setup
+# Email
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'pritomrabidas102@gmail.com'          
-EMAIL_HOST_PASSWORD = 'lsvr vstt qhde hrpe'        
+EMAIL_HOST_USER = config("EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD = config("EMAIL_HOST_PASSWORD")
+
+# Auth
+AUTH_USER_MODEL = 'accounts.CustomUser'
+LOGIN_URL = '/accounts/login/'
+
+# Payments
+STRIPE_SECRET_KEY = config("STRIPE_SECRET_KEY")
+STRIPE_PUBLISHABLE_KEY = config("STRIPE_PUBLISHABLE_KEY")
+STRIPE_WEBHOOK_SECRET = config("STRIPE_WEBHOOK_SECRET")
+
+SSLCOMMERZ_URL = config("SSLCOMMERZ_URL")
+SSLCOMMERZ_STORE_ID = config("SSLCOMMERZ_STORE_ID")
+SSLCOMMERZ_STORE_PASS = config("SSLCOMMERZ_STORE_PASS")
+SSLCOMMERZ_SECRET = config("SSLCOMMERZ_SECRET")
+
+BKASH_URL = config("BKASH_URL")
+BKASH_MERCHANT = config("BKASH_MERCHANT")
+BKASH_SECRET = config("BKASH_SECRET")
+
+NOGOD_URL = config("NOGOD_URL")
+NOGOD_MERCHANT_NUMBER = config("NOGOD_MERCHANT_NUMBER")
+NOGOD_SECRET = config("NOGOD_SECRET")
+
+MANUAL_PAYMENT_ACCOUNTS = {
+    "bkash": config("MANUAL_BKASH"),
+    "nagad": config("MANUAL_NAGAD"),
+    "rocket": config("MANUAL_ROCKET"),
+}
 
 
 # python manage.py runserver_plus 127.0.0.1:8000 --cert-file cert.pem --key-file key.pem
