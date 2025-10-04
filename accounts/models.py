@@ -5,7 +5,6 @@ import random
 class CustomUser(AbstractUser):
     email = models.EmailField(unique=True)
     phone = models.CharField(max_length=11, blank=True, null=True)
-    image = models.ImageField(upload_to='profile_images/', blank=True, null=True)
     is_verified = models.BooleanField(default=False)
     otp = models.CharField(max_length=4, blank=True, null=True)
 
