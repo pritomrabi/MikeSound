@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Range } from "react-range";
 import { FiX } from "react-icons/fi";
+import { getProducts } from "../api/api";
 
 const colors = [
   { name: "Black", code: "#000000" },
@@ -22,6 +23,7 @@ const Filter = ({
   categories,
   topRated,
   setTopRated,
+  setFilteredProducts, // new prop
 }) => {
   const [isPriceChanged, setIsPriceChanged] = useState(false);
   const [tempPriceRange, setTempPriceRange] = useState([0, 1000]);
@@ -51,6 +53,34 @@ const Filter = ({
     if (showSidebar) setTempCategory(category);
   }, [showSidebar]);
 
+  const applyFilter = async () => {
+    setPriceRange(tempPriceRange);
+    setCategory(tempCategory);
+
+    const res = await getProducts(); // API থেকে সব প্রোডাক্ট নাও
+    if (!res.error && res.products) {
+      const filtered = res.products.filter((product) => {
+        const price = product.variations?.[0]?.price || product.price;
+        const withinPrice = price >= tempPriceRange[0] && price <= tempPriceRange[1];
+
+        const matchCategory =
+          tempCategory === "All" ||
+          product.subcategory_name?.toLowerCase() === tempCategory.toLowerCase();
+
+        const matchColor =
+          selectedColors.length === 0 ||
+          product.variations?.some((v) => selectedColors.includes(v.color_name));
+
+        const matchRating = !topRated || product.rating >= 4.5;
+
+        return withinPrice && matchCategory && matchColor && matchRating;
+      });
+      setFilteredProducts(filtered);
+    }
+    setIsPriceChanged(false);
+    setShowSidebar(false);
+  };
+
   if (!showSidebar) return null;
 
   return (
@@ -63,7 +93,6 @@ const Filter = ({
           <FiX className="text-lg" /> close
         </div>
 
-        {/* Price Filter */}
         <h4 className="font-normal font-Roboto text-xl text-primary dark:text-white mb-2">
           Filter by Price
         </h4>
@@ -101,14 +130,12 @@ const Filter = ({
             />
           )}
         />
-
         <div className="justify-between items-center flex pt-4">
           <p className="text-sm text-primary dark:text-white font-Monrope font-normal">
             Price $ {tempPriceRange[0]} - $ {tempPriceRange[1]}
           </p>
         </div>
 
-        {/* Color Filter */}
         <h4 className="font-normal font-Roboto text-xl text-primary dark:text-white mt-6 mb-2">
           Filter by Colour
         </h4>
@@ -120,9 +147,8 @@ const Filter = ({
               onClick={() => toggleColor(color.name)}
             >
               <div
-                className={`w-8 h-8 rounded-full border ${
-                  color.border ? "border-black" : ""
-                }`}
+                className={`w-8 h-8 rounded-full border ${color.border ? "border-black" : ""
+                  }`}
                 style={{ backgroundColor: color.code }}
               >
                 {selectedColors.includes(color.name) && (
@@ -134,7 +160,6 @@ const Filter = ({
           ))}
         </div>
 
-        {/* Category Filter */}
         <div className="mt-6">
           <h4 className="font-normal font-Roboto text-xl text-primary dark:text-white mb-2">
             Filter by Category
@@ -146,8 +171,8 @@ const Filter = ({
                 id={cat}
                 name="category"
                 value={cat}
-                checked={category === cat}
-                onChange={() => setCategory(cat)}
+                checked={tempCategory === cat}
+                onChange={() => setTempCategory(cat)}
                 className="mr-2"
               />
               <label
@@ -160,7 +185,6 @@ const Filter = ({
           ))}
         </div>
 
-        {/* Rating Filter */}
         <div className="mt-6">
           <h4 className="font-normal font-Roboto text-xl text-primary dark:text-white mb-2">
             Top Rated
@@ -176,21 +200,15 @@ const Filter = ({
           </label>
         </div>
 
-        {/* Apply Filter Button */}
         <div className="flex justify-end mt-4">
           <button
-            disabled={
-              !isPriceChanged &&
-              tempCategory === category &&
-              selectedColors.length === 0
-            }
-            onClick={() => {
-              setPriceRange(tempPriceRange);
-              setIsPriceChanged(false);
-              setCategory(tempCategory);
-              console.log("Selected Colors:", selectedColors);
-              setShowSidebar(false);
-            }}
+            disabled={false}
+            // disabled={
+            //   !isPriceChanged &&
+            //   tempCategory === category &&
+            //   selectedColors.length === 0
+            // }
+            onClick={applyFilter}
             className="mt-2 text-xs px-5 py-1.5 rounded cursor-pointer transition bg-brand text-white"
           >
             FILTER

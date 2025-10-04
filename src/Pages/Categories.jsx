@@ -2,22 +2,26 @@ import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import ProductQuickView from "../Components/Home/ProductQuickView";
 import ProductCard from "../Components/ProductCard";
+import { getProductsByCategory } from "../api/api";
 
 const Categories = () => {
   const { slug } = useParams();
+  const [products, setProducts] = useState([]);
   const [quickView, setQuickView] = useState(false);
+  const [loading, setLoading] = useState(true);
+
   useEffect(() => {
     window.scrollTo(0, 0);
-  }, []);
-  const allProducts = [
-    { title: "Wooden Chair", price: 99, oldPrice: 195, img: "home.jpg", category: "furniture" },
-    { title: "Wall Clock", price: 120, oldPrice: 195, img: "https://via.placeholder.com/300x300", category: "clocks" },
-    { title: "Sunglasses", price: 75, oldPrice: 150, img: "https://via.placeholder.com/300x300", category: "accessories" },
-    { title: "Cooking Pan", price: 89, oldPrice: 140, img: "https://via.placeholder.com/300x300", category: "cooking" },
-    { title: "Table Lamp", price: 110, oldPrice: 160, img: "https://via.placeholder.com/300x300", category: "lighting" },
-  ];
-
-  const products = allProducts.filter(item => item.category === slug);
+    const fetchProducts = async () => {
+      setLoading(true);
+      const res = await getProductsByCategory(slug);
+      if (!res.error && res.products) {
+        setProducts(res.products);
+      }
+      setLoading(false);
+    };
+    fetchProducts();
+  }, [slug]);
 
   return (
     <section className="md:pt-28 pt-16 pb-6 dark:bg-[#1b1b1b]">
@@ -34,20 +38,32 @@ const Categories = () => {
           </h3>
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5  gap-4 mt-8">
-          {products.length > 0 ? (
-            products.map((product, idx) => (
-              <ProductCard
-                key={idx}
-                product={product}
-                onQuickView={() => setQuickView(true)}
-              />
-            ))
-          ) : (
-            <p>No products found in this category.</p>
-          )}
-        </div>
-        {quickView && <ProductQuickView setQuickView={setQuickView} />}
+        {loading ? (
+          <p className="text-center py-10 text-white">Loading products...</p>
+        ) : (
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 mt-8">
+            {products.length > 0 ? (
+              products.map((product, idx) => (
+                <ProductCard
+                  key={idx}
+                  product={{
+                    id: product.id,
+                    title: product.title,
+                    img: product.images?.[0]?.image || "https://via.placeholder.com/300x300",
+                    price: product.variations?.[0]?.discounted_price || product.variations?.[0]?.price || 0,
+                    oldPrice: product.variations?.[0]?.price || null,
+                    rating: product.rating,
+                    sold: product.sold_count
+                  }}
+                  onQuickView={() => setQuickView(product.id)}
+                />
+              ))
+            ) : (
+              <p className="text-center py-10 text-white">No products found in this category.</p>
+            )}
+          </div>
+        )}
+        {quickView && <ProductQuickView setQuickView={() => setQuickView(null)} />}
       </div>
     </section>
   );

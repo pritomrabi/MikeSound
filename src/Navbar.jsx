@@ -1,5 +1,5 @@
 import { Link, useLocation } from "react-router-dom";
-import { FaRegHeart } from "react-icons/fa";
+// import { FaRegUserCircle } from "react-icons/fa";
 import { PiShoppingCartSimpleLight } from "react-icons/pi";
 import { IoSearchOutline } from "react-icons/io5";
 import { useEffect, useState } from "react";
@@ -82,22 +82,24 @@ const Navbar = () => {
               {search ? (
                 <RxCross2
                   onClick={() => setSearch(false)}
-                  className="text-2xl cursor-pointer md:block hidden"
+                  className="sm:text-2xl text-xl cursor-pointer md:block hidden"
                 />
               ) : (
                 <IoSearchOutline
                   onClick={() => setSearch(true)}
-                  className="text-2xl cursor-pointer md:block hidden"
+                  className="sm:text-3xl text-xl cursor-pointer md:block hidden"
                 />
               )}
 
               <div onClick={() => setShop(true)} className="relative inline-block">
-                <PiShoppingCartSimpleLight className="sm:text-xl text-lg cursor-pointer" />
+                <PiShoppingCartSimpleLight className="sm:text-2xl text-xl cursor-pointer" />
                 <span className="bg-brand text-white text-[8px] rounded-full w-3 h-3 absolute -top-1 -left-1 flex items-center justify-center">
                   0
                 </span>
               </div>
-
+              {/* <Link to="/login">
+                <FaRegUserCircle className="sm:text-2xl text-xl cursor-pointer" />
+              </Link> */}
               {isOpen ? (
                 <FiAlignRight
                   onClick={() => setIsOpen(false)}

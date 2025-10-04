@@ -1,25 +1,18 @@
-// AdBanner.jsx
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-
+import { getProducts } from "../../api/api";
 const AdBanner = () => {
-  const ads = [
-    {
-      id: 1,
-      title: "BLOCK THE NOISE, FEEL EVERY BEAT.",
-      subtitle: "Weekend Gift Offer",
-      image: "https://i.ibb.co.com/Z2sQKc5/banner1.jpg",
-      link: "/offers/weekend",
-      type: "weekend"
-    },
-    {
-      id: 2,
-      title: "WHAT'S NEW?",
-      subtitle: "Holiday Gift",
-      image: "https://i.ibb.co.com/Jp7Z5Vg/banner2.jpg",
-      link: "/offers/holiday",
-      type: "holiday"
-    }
-  ];
+  const [ads, setAds] = useState([]);
+
+  useEffect(() => {
+    const fetchAds = async () => {
+      const res = await getProducts();
+      if (!res.error && res.ads) {
+        setAds(res.ads);
+      }
+    };
+    fetchAds();
+  }, []);
 
   return (
     <div className="container mx-auto md:px-4 sm:px-2 px-4 my-12">

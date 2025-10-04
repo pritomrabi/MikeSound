@@ -1,30 +1,28 @@
-// ProductCard.jsx
 import { Link } from "react-router-dom";
 import { AiFillStar } from "react-icons/ai";
 import { LuSearch } from "react-icons/lu";
 import { IoCartOutline } from "react-icons/io5";
 
 const ProductCard = ({ product, onQuickView }) => {
+  if (!product || !product.title) return null;
 
-  if (!product.title && !product.rating && !product.description) {
-    return null;
-  }
+  const discount = product.oldPrice
+    ? Math.round(((product.oldPrice - product.price) / product.oldPrice) * 100)
+    : 0;
 
   return (
     <div className="relative group bg-white dark:bg-[#2a2a2a] rounded-md shadow-md overflow-hidden">
       {/* Image */}
-      <Link to="/singleproduct">
+      <Link to={`/singleproduct/${product.id}`}>
         <div className="relative overflow-hidden rounded-t-md">
           <img
             src={product.img}
             alt={product.title || "Product Image"}
             className="w-full h-40 sm:h-68 md:h-64 lg:h-68 object-cover transform transition-transform duration-500 group-hover:scale-105"
           />
-
-          {/* Discount Badge */}
-          {product.oldPrice && (
-            <span className="absolute top-2 left-2 bg-red-500 text-white text-[10px] sm:text-xs font-Monrope font-bold px-2 py-1 rounded ">
-              -{Math.round(((product.oldPrice - product.price) / product.oldPrice) * 100)}%
+          {discount > 0 && (
+            <span className="absolute top-2 left-2 bg-red-500 text-white text-[10px] sm:text-xs font-Monrope font-bold px-2 py-1 rounded">
+              -{discount}%
             </span>
           )}
         </div>
@@ -32,18 +30,21 @@ const ProductCard = ({ product, onQuickView }) => {
 
       {/* Info */}
       <div className="md:p-4 p-4">
-        <Link to="/singleproduct">
-          {product.title && (
-            <h3 className="text-base font-medium font-Lato text-primary-default dark:text-primary-dark font-Roboto">
-              {product.title.substring(0, 25)}...
-            </h3>
-          )}
-          <p className="text-md font-bold text-brand font-Monrope text-start">৳{product.price}</p>
+        <Link to={`/singleproduct/${product.id}`}>
+          <h3 className="text-base font-medium font-Lato text-primary-default dark:text-primary-dark">
+            {product.title.length > 25
+              ? product.title.substring(0, 25) + "..."
+              : product.title}
+          </h3>
+
+          <p className="text-md font-bold text-brand font-Monrope text-start">
+            ৳{product.price}
+          </p>
 
           {product.oldPrice && (
-            <div className="flex gap-2">
-              <p className="text-md font-normal text-secandari line-through font-Monrope">৳{product.oldPrice}</p>
-            </div>
+            <p className="text-md font-normal text-secandari line-through font-Monrope">
+              ৳{product.oldPrice}
+            </p>
           )}
 
           {product.rating && (
@@ -52,7 +53,9 @@ const ProductCard = ({ product, onQuickView }) => {
                 <AiFillStar key={i} className="text-yellow-400" />
               ))}
               {product.rating % 1 !== 0 && <AiFillStar className="text-yellow-400 opacity-50" />}
-              {product.sold && <span className="text-xs text-gray-500 ml-2">({product.sold} sold)</span>}
+              {product.sold && (
+                <span className="text-xs text-gray-500 ml-2">({product.sold} sold)</span>
+              )}
             </div>
           )}
         </Link>
@@ -60,10 +63,9 @@ const ProductCard = ({ product, onQuickView }) => {
 
       {/* Overlay Icons */}
       <div className="absolute top-[25%] right-2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition flex flex-col gap-4 bg-white py-2.5 px-3 rounded shadow z-10">
-        {/* Quick View */}
         <div className="relative group/icon">
           <button
-            onClick={onQuickView}
+            onClick={() => onQuickView(product.id)}
             className="text-xl text-primary hover:text-secandari duration-200 cursor-pointer"
           >
             <LuSearch />

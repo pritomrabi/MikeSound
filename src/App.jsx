@@ -27,6 +27,7 @@ import Headphone from "./Pages/Headphone";
 import Speakers from "./Pages/Speakers";
 import Gaming from "./Pages/Gaming";
 import Earbud from "./Pages/Earbud";
+import ResetPassword from "./Auth/ResetPassword";
 
 function App() {
   const [darkMode, setDarkMode] = useState(
@@ -65,7 +66,7 @@ function App() {
           <Route path="/earbud" element={<Earbud />} />
           <Route path="/support" element={<Support />} />
           <Route path="/shop" element={<Shop />} />
-          <Route path="/singleproduct" element={<SingleProduct />} />
+          <Route path="/singleproduct/:id" element={<SingleProduct />} />
           <Route path="/SpecialOffers" element={<SpecialOffers />} />
           <Route path="/offers/:type" element={<Discount />} />
           <Route path="/orderhistory" element={<OrderHistory />} />
@@ -79,6 +80,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/forgot" element={<Forgot />} />
         <Route path="/otp" element={<OTP />} />
+        <Route path="//reset-password" element={<ResetPassword />} />
       </Route>
     )
   );

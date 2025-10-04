@@ -1,34 +1,66 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Heading from "../../Utilities/Heading";
 import ProductCard from "../ProductCard";
 import ProductQuickView from "./ProductQuickView";
+import { getProducts } from "../../api/api";
 
 const Collection = () => {
-  const [quickView, setQuickView] = useState(false);
+  const [quickView, setQuickView] = useState(null);
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  const products = [
-    { title: "Creative water features", price: 99, oldPrice: 129, img: "home.jpg", discount: "23%" },
-    { title: "Colored garden seats", price: 120, oldPrice: 150, img: "https://via.placeholder.com/300x300", discount: "20%" },
-    { title: "Wall design pictures", price: 75, oldPrice: 95, img: "https://via.placeholder.com/300x300", discount: "21%" },
-    { title: "Functional IT seat", price: 89, oldPrice: 110, img: "https://via.placeholder.com/300x300", discount: "19%" },
-    { title: "Modern desk lamp", price: 45, oldPrice: 60, img: "https://via.placeholder.com/300x300", discount: "25%" },
-    { title: "Office chair ergonomic", price: 130, oldPrice: 160, img: "https://via.placeholder.com/300x300", discount: "18%" },
-  ];
+  useEffect(() => {
+    const fetchProducts = async () => {
+      setLoading(true);
+      const res = await getProducts();
+      console.log("Raw API response:", res); // raw response check
+
+      if (!res.error && res.products) {
+        console.log("All products:", res.products); // all products check
+        setProducts(res.products); // set all products
+      } else {
+        console.log("Error fetching products:", res.error);
+      }
+      setLoading(false);
+    };
+    fetchProducts();
+  }, []);
 
   return (
     <section className="md:py-12 py-0 bg-[#f5f5f5] dark:bg-[#1b1b1b]">
       <div className="container mx-auto px-2 md:px-4">
         <Heading Head="Collections" />
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2.5 sm:gap-4 mt-8">
-          {products.map((product, idx) => (
-            <ProductCard
-              key={idx}
-              product={product}
-              onQuickView={() => setQuickView(true)}
-            />
-          ))}
-        </div>
-        {quickView && <ProductQuickView setQuickView={setQuickView} />}
+
+        {loading ? (
+          <p className="text-center py-10">Loading products...</p>
+        ) : products.length === 0 ? (
+          <p className="text-center py-10">No products available.</p>
+        ) : (
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2.5 sm:gap-4 mt-8">
+            {products.map(product => (
+              <ProductCard
+                key={product.id}
+                product={{
+                  id: product.id,
+                  title: product.title,
+                  img: product.images?.[0]?.image || "https://via.placeholder.com/300x300",
+                  price: product.variations?.[0]?.discounted_price || 0,
+                  oldPrice: product.variations?.[0]?.price || null,
+                  rating: product.rating,
+                  sold: product.sold_count
+                }}
+                onQuickView={() => setQuickView(product.id)} // id pass করা
+              />
+            ))}
+
+            {quickView && (
+              <ProductQuickView
+                productId={quickView} // এখানে productId পাঠানো হচ্ছে
+                setQuickView={() => setQuickView(null)} // close করার জন্য
+              />
+            )}
+          </div>
+        )}
       </div>
     </section>
   );

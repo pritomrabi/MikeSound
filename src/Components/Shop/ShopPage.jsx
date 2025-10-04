@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { FiAlignLeft } from "react-icons/fi";
 import { AiFillStar } from "react-icons/ai";
 import { LuSearch } from "react-icons/lu";
@@ -7,41 +7,49 @@ import ReactPaginate from "react-paginate";
 import { Link } from "react-router-dom";
 import ProductQuickView from "../Home/ProductQuickView";
 import Filter from "../../Utilities/Filter";
+import { getProducts } from "../../api/api";
 
 const ShopPage = () => {
-  const allProducts = [
-    { id: 1, title: "Balai Sports", category: "Blackfriday", price: 269, rating: 4, image: "home.jpg" },
-    { id: 2, title: "Nerd wooden chair", category: "Furniture", price: 599, rating: 4, discount: 25, image: "home.jpg" },
-    { id: 3, title: "iPhone Dock", category: "Accessories", price: 399, rating: 4, image: "home.jpg" },
-    { id: 4, title: "Pendant Light", category: "Lighting", price: 169, rating: 4, image: "home.jpg" },
-    { id: 5, title: "Balai Sports 2", category: "Blackfriday", price: 269, rating: 4, image: "home.jpg" },
-    { id: 6, title: "Nerd wooden chair 2", category: "Furniture", price: 599, rating: 4, discount: 25, image: "home.jpg" },
-    { id: 7, title: "iPhone Dock 2", category: "Accessories", price: 399, rating: 5, image: "home.jpg" },
-    { id: 8, title: "Pendant Light 2", category: "Lighting", price: 169, rating: 4, image: "home.jpg" },
-  ];
-
-  const categories = ["All", "Blackfriday", "Furniture", "Accessories", "Lighting"];
+  const categories = ["All", "Headphone", "Speakers", "Earbud", "Gaming"];
+  const [products, setProducts] = useState([]);
   const [showSidebar, setShowSidebar] = useState(false);
   const [topRated, setTopRated] = useState(false);
   const [itemOffset, setItemOffset] = useState(0);
-  const [quickView, setQuickView] = useState(false);
-
-  const [priceRange, setPriceRange] = useState([0, 1000]);
+  const [quickView, setQuickView] = useState(null);
+  const [priceRange, setPriceRange] = useState([0, 1000000]);
   const [category, setCategory] = useState("All");
+  const [loading, setLoading] = useState(true);
 
   const itemsPerPage = 6;
 
+  useEffect(() => {
+    const fetchProducts = async () => {
+      setLoading(true);
+      const res = await getProducts();
+      if (!res.error && res.products) {
+        setProducts(res.products);
+      }
+      setLoading(false);
+    };
+    fetchProducts();
+  }, []);
+
   const toggleSidebar = () => setShowSidebar(!showSidebar);
 
-  // optimized filter with memo
+  // Filter products
   const filteredProducts = useMemo(() => {
-    return allProducts.filter((product) => {
-      const withinPrice = product.price >= priceRange[0] && product.price <= priceRange[1];
-      const matchCategory = category === "All" || product.category === category;
-      const matchRating = !topRated || product.rating >= 4.5;
+    return products.filter((product) => {
+      const price = Number(product.variations?.[0]?.price ?? 0);
+      const withinPrice = price >= priceRange[0] && price <= priceRange[1];
+      const productCategory = product.subcategory_name || product.category || "All";
+      const matchCategory = category === "All" || productCategory.toLowerCase() === category.toLowerCase();
+      const matchRating = !topRated || (product.rating ?? 0) >= 4.5;
+
       return withinPrice && matchCategory && matchRating;
     });
-  }, [allProducts, priceRange, category, topRated]);
+  }, [products, category, topRated]);
+
+
 
   const endOffset = itemOffset + itemsPerPage;
   const currentItems = filteredProducts.slice(itemOffset, endOffset);
@@ -77,7 +85,7 @@ const ShopPage = () => {
           <h2>Show sidebar</h2>
         </div>
 
-        {/* Sidebar with Filter */}
+        {/* Sidebar Filter */}
         <Filter
           priceRange={priceRange}
           setPriceRange={setPriceRange}
@@ -91,93 +99,115 @@ const ShopPage = () => {
         />
 
         {/* Products Grid */}
-        <div className="flex">
-          <div className="flex-1">
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2.5 sm:gap-4">
-              {currentItems.map((product) => (
-                <div
-                  key={product.id}
-                  className="group relative rounded-md shadow-sm bg-white dark:bg-[#2a2a2a] transition overflow-hidden"
-                >
-                  {product.discount && (
-                    <span className="absolute top-2 left-2 bg-brand text-white text-xs w-10 h-10 rounded-full justify-center flex items-center font-Monrope font-normal">
-                      -{product.discount}%
-                    </span>
-                  )}
-                  <Link to="/singleproduct">
-                    <div className="relative overflow-hidden rounded-t-md">
-                      <img
-                        src={product.image}
-                        alt={product.title}
-                        className="w-full h-40 sm:h-68 md:h-64 lg:h-68 object-cover transform transition-transform duration-500 group-hover:scale-105"
-                      />
-                    </div>
-                  </Link>
-                  <div className="text-start space-y-1 p-3">
-                    <Link to="/singleproduct">
-                      <h3 className="text-sm font-medium text-primary-default dark:text-primary-dark font-Roboto">
-                        {product.title.substring(0, 20)}..
-                      </h3>
-                      <p className="text-md font-bold text-brand font-Monrope">
-                        ${product.price.toFixed(2)}
-                      </p>
-                      <p className="text-yellow-600 text-sm flex">
-                        {[...Array(Math.floor(product.rating))].map((_, i) => (
-                          <AiFillStar key={i} className="text-yellow-400" />
-                        ))}
-                        {product.rating % 1 !== 0 && (
-                          <AiFillStar className="text-yellow-400 opacity-50" />
-                        )}
-                      </p>
+        {loading ? (
+          <p className="text-center py-10 text-white">Loading products...</p>
+        ) : filteredProducts.length === 0 ? (
+          <p className="text-center py-10 text-white">
+            No products found for this filter
+          </p>
+        ) : (
+          <div className="flex">
+            <div className="flex-1">
+              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2.5 sm:gap-4">
+                {currentItems.map((product) => (
+                  <div
+                    key={product.id}
+                    className="group relative rounded-md shadow-sm bg-white dark:bg-[#2a2a2a] transition overflow-hidden"
+                  >
+                    {product.variations?.[0]?.discount && (
+                      <span className="absolute top-2 left-2 bg-brand text-white text-xs w-10 h-10 rounded-full justify-center flex items-center font-Monrope font-normal">
+                        -{product.variations[0].discount}%
+                      </span>
+                    )}
+                    <Link to={`/product/${product.id}`}>
+                      <div className="relative overflow-hidden rounded-t-md">
+                        <img
+                          src={
+                            product.images?.[0]?.image ||
+                            "https://via.placeholder.com/300x300"
+                          }
+                          alt={product.title}
+                          className="w-full h-40 sm:h-68 md:h-64 lg:h-68 object-cover transform transition-transform duration-500 group-hover:scale-105"
+                        />
+                      </div>
                     </Link>
-                  </div>
+                    <div className="text-start space-y-1 p-3">
+                      <Link to={`/product/${product.id}`}>
+                        <h3 className="text-sm font-medium text-primary-default dark:text-primary-dark font-Roboto">
+                          {product.title.substring(0, 20)}..
+                        </h3>
+                        <p className="text-md font-bold text-brand font-Monrope">
+                          ${Number(product.variations?.[0]?.price ?? 0).toFixed(2)}
+                        </p>
 
-                  {/* Product Actions */}
-                  <div className="absolute top-[25%] right-2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition flex flex-col gap-4 bg-white py-2.5 px-3 rounded shadow z-10">
-                    <div className="relative group/icon">
-                      <button
-                        onClick={() => setQuickView(true)}
-                        className="text-xl text-primary hover:text-secandari duration-200 cursor-pointer"
-                      >
-                        <LuSearch />
-                      </button>
-                      <span className="absolute right-full top-1/2 -translate-y-1/2 mr-2 px-2 py-1 rounded bg-black text-white text-xs opacity-0 group-hover/icon:opacity-100 whitespace-nowrap">
-                        Quick View
-                      </span>
+                        <p className="text-yellow-600 text-sm flex">
+                          {[...Array(Math.floor(product.rating || 0))].map(
+                            (_, i) => (
+                              <AiFillStar
+                                key={i}
+                                className="text-yellow-400"
+                              />
+                            )
+                          )}
+                          {product.rating % 1 !== 0 && (
+                            <AiFillStar className="text-yellow-400 opacity-50" />
+                          )}
+                        </p>
+                      </Link>
                     </div>
-                    <div className="relative group/icon">
-                      <button className="text-xl text-primary hover:text-secandari duration-200 cursor-pointer">
-                        <IoCartOutline />
-                      </button>
-                      <span className="absolute right-full top-1/2 -translate-y-1/2 mr-2 px-2 py-1 rounded bg-black text-white text-xs opacity-0 group-hover/icon:opacity-100 whitespace-nowrap">
-                        Add To Cart
-                      </span>
+
+                    {/* Quick view & cart */}
+                    <div className="absolute top-[25%] right-2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition flex flex-col gap-4 bg-white py-2.5 px-3 rounded shadow z-10">
+                      <div className="relative group/icon">
+                        <button
+                          onClick={() => setQuickView(product.id)}
+                          className="text-xl text-primary hover:text-secandari duration-200 cursor-pointer"
+                        >
+                          <LuSearch />
+                        </button>
+                        <span className="absolute right-full top-1/2 -translate-y-1/2 mr-2 px-2 py-1 rounded bg-black text-white text-xs opacity-0 group-hover/icon:opacity-100 whitespace-nowrap">
+                          Quick View
+                        </span>
+                      </div>
+                      <div className="relative group/icon">
+                        <button className="text-xl text-primary hover:text-secandari duration-200 cursor-pointer">
+                          <IoCartOutline />
+                        </button>
+                        <span className="absolute right-full top-1/2 -translate-y-1/2 mr-2 px-2 py-1 rounded bg-black text-white text-xs opacity-0 group-hover/icon:opacity-100 whitespace-nowrap">
+                          Add To Cart
+                        </span>
+                      </div>
                     </div>
                   </div>
-                </div>
-              ))}
-            </div>
+                ))}
+              </div>
 
-            {/* Pagination */}
-            <div className="flex justify-center mt-8">
-              <ReactPaginate
-                breakLabel="..."
-                nextLabel=""
-                previousLabel=""
-                onPageChange={handlePageClick}
-                pageRangeDisplayed={2}
-                pageCount={pageCount}
-                containerClassName="flex justify-center items-center space-x-2 mt-4"
-                pageClassName="text-primary border border-gray-300 rounded-lg px-3 py-1 transition duration-200 hover:bg-gray-100 cursor-pointer"
-                activeClassName="bg-yellow-600 text-white border-blue-500"
-                breakClassName="text-gray-500 px-2"
-              />
+              {/* Pagination */}
+              <div className="flex justify-center mt-8">
+                <ReactPaginate
+                  breakLabel="..."
+                  nextLabel=""
+                  previousLabel=""
+                  onPageChange={handlePageClick}
+                  pageRangeDisplayed={2}
+                  pageCount={pageCount}
+                  containerClassName="flex justify-center items-center space-x-2 mt-4"
+                  pageClassName="text-primary border border-gray-300 rounded-lg px-3 py-1 transition duration-200 hover:bg-gray-100 cursor-pointer"
+                  activeClassName="bg-yellow-600 text-white border-blue-500"
+                  breakClassName="text-gray-500 px-2"
+                />
+              </div>
             </div>
           </div>
-        </div>
-      </div>
+        )}
 
-      {quickView && <ProductQuickView setQuickView={setQuickView} />}
+        {quickView && (
+          <ProductQuickView
+            productId={quickView}
+            setQuickView={() => setQuickView(null)}
+          />
+        )}
+      </div>
     </section>
   );
 };

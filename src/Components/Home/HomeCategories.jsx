@@ -1,13 +1,29 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Heading from "../../Utilities/Heading";
 import { Link } from "react-router-dom";
+import { getCategoriesWithCount } from "../../api/api";
 
 const HomeCategories = () => {
-  const categories = [
-    { title: "Furniture", slug: "furniture", image: "https://woodmart.xtemos.com/wp-content/uploads/2017/01/cat-img-kids-4.jpg", total: "20 Products" },
-    { title: "Clocks", slug: "clocks", image: "https://woodmart.xtemos.com/wp-content/uploads/2017/01/cat-img-woman.jpg", total: "15 Products" },
-    { title: "Accessories", slug: "accessories", image: "https://woodmart.xtemos.com/wp-content/uploads/2017/01/cat-img-glass.jpg", total: "10 Products" },
-  ];
+  const [categories, setCategories] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      setLoading(true);
+      const res = await getCategoriesWithCount();
+      console.log("Categories API response:", res); // console log
+      if (!res.error && res.categories) {
+        setCategories(res.categories);
+      }
+      setLoading(false);
+    };
+    fetchCategories();
+  }, []);
+
+
+  if (loading) {
+    return <p className="text-center py-10 text-white">Loading categories...</p>;
+  }
 
   return (
     <section className="py-12 dark:bg-[#212020]">
@@ -15,14 +31,22 @@ const HomeCategories = () => {
         <Heading Head="Shop By Categories" />
         <div className="grid grid-cols-2 md:grid-cols-3 gap-4 auto-rows-[250px]">
           {categories.map((cat, idx) => (
-            <Link 
-              key={idx} 
-              to={`/categories/${cat.slug}`} 
-              className={`relative overflow-hidden rounded-md group ${cat.colSpan || ""}`}
+            <Link
+              key={idx}
+              to={`/categories/${cat.slug}`}
+              className="relative overflow-hidden rounded-md group"
             >
-              <img src={cat.image} alt={cat.title} className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110" />
-              <p className="absolute left-4 bottom-6 text-lg font-Opensans font-semibold text-primary bg-opacity-60 px-3 py-1 rounded-sm backdrop-blur-sm">{cat.title}</p>
-              <p className="absolute left-7 bottom-2 text-secandari text-sm">{cat.total}</p>
+              <img
+                src={cat.image}
+                alt={cat.title}
+                className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
+              />
+              <p className="absolute left-4 bottom-6 text-lg font-Opensans font-semibold text-primary bg-opacity-60 px-3 py-1 rounded-sm backdrop-blur-sm">
+                {cat.title}
+              </p>
+              <p className="absolute left-7 bottom-2 text-secandari text-sm">
+                {cat.total} Products
+              </p>
             </Link>
           ))}
         </div>

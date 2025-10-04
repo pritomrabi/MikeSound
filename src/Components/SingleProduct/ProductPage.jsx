@@ -3,46 +3,21 @@ import { PiMinusThin } from "react-icons/pi";
 import { HiOutlinePlusSmall } from "react-icons/hi2";
 import { AiFillStar } from "react-icons/ai";
 import { motion, AnimatePresence } from "framer-motion";
-import { FaFacebookF, FaTwitter, FaWhatsapp } from "react-icons/fa";
+import { FaFacebookF, FaTwitter } from "react-icons/fa";
 
-const ProductPage = () => {
+const ProductPage = ({ product }) => {
   const [quantity, setQuantity] = useState(1);
-  const [selectedVariation, setSelectedVariation] = useState(null);
+  const [selectedVariation, setSelectedVariation] = useState(
+    product.variations ? product.variations[0] : null
+  );
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [isZooming, setIsZooming] = useState(false);
   const [zoomPosition, setZoomPosition] = useState({ x: 50, y: 50 });
 
-  const product = {
-    title: "Arabic Aura Watch",
-    category: "Watches",
-    subcategory: "Casual",
-    brand: "No Brand",
-    description: "Simple and stylish Arabic aura watch with black dial and Arabic numerals.",
-    price: 289,
-    oldPrice: 1999,
-    discount: 86,
-    rating: 4,
-    sold: 321,
-    warranty_period: 12,
-    model_number: "AAW-2025",
-    power_type: "Battery",
-    connector_type: "USB-C",
-    variations: [
-      { id: 1, color: "Black", price: 289, stock: 50 },
-      { id: 2, color: "Silver", price: 310, stock: 20 },
-      { id: 3, color: "Gold", price: 350, stock: 10 },
-    ],
-    images: [
-      "home.jpg",
-      "contact-2.jpg",
-      "contact-1.jpg",
-      "home.jpg",
-      "home.jpg",
-    ],
-  };
-
   const handleVariationSelect = (variation) => setSelectedVariation(variation);
-  const totalPrice = selectedVariation ? selectedVariation.price * quantity : product.price * quantity;
+  const totalPrice = selectedVariation
+    ? selectedVariation.price * quantity
+    : product.price * quantity;
 
   const handleMouseMove = (e) => {
     const { left, top, width, height } = e.currentTarget.getBoundingClientRect();
@@ -50,6 +25,9 @@ const ProductPage = () => {
     const y = ((e.clientY - top) / height) * 100;
     setZoomPosition({ x, y });
   };
+  const textDescription = product.description
+  ? product.description.replace(/<[^>]+>/g, "").substring(0, 200)
+  : "";
 
   return (
     <div className="max-w-[1200px] mx-auto px-4 py-6">
@@ -62,16 +40,17 @@ const ProductPage = () => {
             onMouseEnter={() => setIsZooming(true)}
             onMouseLeave={() => setIsZooming(false)}
           >
-            {/* Discount badge fixed */}
-            <span className="absolute top-2 left-2 z-20 bg-red-600 text-white text-sm px-2 py-1 rounded">
-              -{product.discount}%
-            </span>
+            {product.discount > 0 && (
+              <span className="absolute top-2 left-2 z-20 bg-red-600 text-white text-sm px-2 py-1 rounded">
+                -{product.discount}%
+              </span>
+            )}
 
             <AnimatePresence mode="wait">
               <motion.img
                 key={selectedIndex}
-                src={product.images[selectedIndex]}
-                alt="Product"
+                src={product.images[selectedIndex]?.image || "https://via.placeholder.com/300x300"}
+                alt={product.title}
                 className="w-full h-full object-cover"
                 initial={{ opacity: 0, scale: 1 }}
                 animate={{ opacity: 1, scale: isZooming ? 2 : 1 }}
@@ -85,31 +64,27 @@ const ProductPage = () => {
             </AnimatePresence>
           </div>
 
-          {/* Thumbnails */}
           <div className="flex gap-2 mt-3 overflow-x-auto scrollbar-hide">
-            {product.images.map((img, i) => (
+            {product.images.map((imgObj, i) => (
               <img
                 key={i}
-                src={img}
+                src={imgObj.image || "https://via.placeholder.com/300x300"}
                 alt={`Thumb-${i}`}
-                className={`w-20 h-20 p-1.5 sm:w-24 sm:h-24 flex-shrink-0 object-cover rounded border cursor-pointer ${selectedIndex === i ? "border-orange-500" : "border-gray-300"
-                  }`}
+                className={`w-20 h-20 p-1.5 sm:w-24 sm:h-24 flex-shrink-0 object-cover rounded border cursor-pointer ${selectedIndex === i ? "border-orange-500" : "border-gray-300"}`}
                 onClick={() => setSelectedIndex(i)}
               />
             ))}
           </div>
         </div>
-
         {/* Product Details */}
         <div className="w-full lg:w-1/2 flex flex-col gap-3">
           <p className="text-sm text-black">
-            {product.category} / {product.subcategory} / {product.title}
+            {product.category_name} / {product.subcategory_name} / {product.title}
           </p>
           <h2 className="text-xl sm:text-2xl font-medium text-primary">
             {product.title}
           </h2>
 
-          {/* Only current price */}
           <p className="text-lg sm:text-xl font-semibold text-red-600">
             ৳{selectedVariation ? selectedVariation.price : product.price}
           </p>
@@ -118,39 +93,32 @@ const ProductPage = () => {
             {[...Array(product.rating)].map((_, i) => (
               <AiFillStar key={i} className="text-yellow-400" />
             ))}
-            <span className="text-xs text-gray-500 ml-2">
-              ({product.sold} sold)
-            </span>
+            <span className="text-xs text-gray-500 ml-2">({product.sold} sold)</span>
           </div>
 
           <p className="text-gray-600 text-sm">
-            Brand: <span className="text-blue-600">{product.brand}</span>
+            Brand: <span className="text-blue-600">{product?.brand_name}</span>
           </p>
-          <p className="text-secandari text-sm">{product.description}</p>
-
+          <p className="text-secandari text-sm">
+            Description: <span className="text-primary">{textDescription}</span>
+          </p>
           <div className="text-gray-600 text-sm space-y-1">
             {product.warranty_period > 0 && (
               <p>
-                Warranty:{" "}
-                <span className="font-medium">
-                  {product.warranty_period} months
-                </span>
+                Warranty: <span className="font-medium">{product.warranty_period} months</span>
               </p>
             )}
             <p>
-              Model Number:{" "}
-              <span className="font-medium">{product.model_number}</span>
+              Model Number: <span className="font-medium">{product.model_number}</span>
             </p>
             <p>
               Power Type: <span className="font-medium">{product.power_type}</span>
             </p>
             <p>
-              Connector Type:{" "}
-              <span className="font-medium">{product.connector_type}</span>
+              Connector Type: <span className="font-medium">{product.connector_type}</span>
             </p>
           </div>
 
-          {/* Color Selection */}
           <div className="flex flex-wrap items-center gap-2 mt-2">
             <p className="font-medium text-base mb-1 w-full">Color:</p>
             <div className="flex flex-wrap gap-2">
@@ -159,17 +127,16 @@ const ProductPage = () => {
                   key={variation.id}
                   onClick={() => handleVariationSelect(variation)}
                   className={`px-3 py-1 text-xs rounded font-medium cursor-pointer ${selectedVariation?.id === variation.id
-                      ? "bg-yellow-600 text-white border-yellow-600"
-                      : "border border-gray-300 text-gray-700 bg-gray-100"
+                    ? "bg-yellow-600 text-white border-yellow-600"
+                    : "border border-gray-300 text-gray-700 bg-gray-100"
                     }`}
                 >
-                  {variation.color}
+                  {variation.color_name}
                 </button>
               ))}
             </div>
           </div>
 
-          {/* Quantity & Total */}
           <div className="flex flex-col sm:flex-row sm:items-center gap-3 mt-3 border-b pb-3 border-gray-300">
             <div className="flex items-center border rounded w-fit border-gray-300">
               <button
@@ -191,13 +158,18 @@ const ProductPage = () => {
             </p>
           </div>
 
-          {/* Buttons */}
           <div className="flex flex-col sm:flex-row gap-3 mt-4">
-            <button className="bg-orange-500 cursor-pointer hover:bg-orange-600 text-white px-6 py-2 rounded">Add to Cart</button>
-            <button className="bg-brand cursor-pointer text-white px-6 py-2 rounded">Shop Now</button>
-            <button className="bg-green-500 hover:bg-green-600 cursor-pointer text-white px-6 py-2 rounded">WhatsApp</button>
+            <button className="bg-orange-500 hover:bg-orange-600 text-white px-6 py-2 rounded">
+              Add to Cart
+            </button>
+            <button className="bg-brand text-white px-6 py-2 rounded">
+              Shop Now
+            </button>
+            <button className="bg-green-500 hover:bg-green-600 text-white px-6 py-2 rounded">
+              WhatsApp
+            </button>
           </div>
-          {/* Share Section */}
+
           <div className="flex items-center gap-4 mt-4">
             <span className="font-medium text-sm text-gray-700">Share:</span>
             <a

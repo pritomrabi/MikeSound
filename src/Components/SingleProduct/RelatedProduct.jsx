@@ -6,7 +6,7 @@ import Heading from "../../Utilities/Heading";
 import ProductCard from "../ProductCard";
 import ProductQuickView from "../Home/ProductQuickView";
 
-const RelatedProduct = () => {
+const RelatedProduct = ({ currentProduct, allProducts = [] }) => {
   const [quickView, setQuickView] = useState(false);
 
   const settings = {
@@ -25,26 +25,43 @@ const RelatedProduct = () => {
     ],
   };
 
-  const products = [
-    { title: "Creative water features", price: 99, oldPrice: 129, img: "home.jpg" },
-    { title: "Colored garden seats", price: 120, oldPrice: 150, img: "https://via.placeholder.com/300x300" },
-    { title: "Wall design pictures", price: 75, oldPrice: 95, img: "https://via.placeholder.com/300x300" },
-    { title: "Functional IT seat", price: 89, oldPrice: 110, img: "https://via.placeholder.com/300x300" },
-    { title: "Modern desk lamp", price: 45, oldPrice: 60, img: "https://via.placeholder.com/300x300" },
-    { title: "Office chair ergonomic", price: 130, oldPrice: 160, img: "https://via.placeholder.com/300x300" },
-  ];
+  let relatedProducts = [];
+  if (currentProduct) {
+    relatedProducts = allProducts.filter(
+      (p) =>
+        p.subcategory_name === currentProduct.subcategory_name &&
+        p.id !== currentProduct.id
+    );
+
+    if (relatedProducts.length === 0) {
+      relatedProducts = allProducts.filter(
+        (p) =>
+          p.category_name === currentProduct.category_name &&
+          p.id !== currentProduct.id
+      );
+    }
+  }
 
   return (
     <section className="py-12 bg-[#f5f5f5] dark:bg-[#1b1b1b]">
       <div className="container mx-auto px-1 md:px-4">
         <Heading Head="Related Products" />
-        <Slider {...settings}>
-          {products.map((product, idx) => (
-            <div key={idx} className="md:px-2 px-1 pt-5">
-              <ProductCard product={product} onQuickView={() => setQuickView(true)} />
-            </div>
-          ))}
-        </Slider>
+        {relatedProducts.length > 0 ? (
+          <Slider {...settings}>
+            {relatedProducts.map((product, idx) => (
+              <div key={idx} className="md:px-2 px-1 pt-5">
+                <ProductCard
+                  product={product}
+                  onQuickView={() => setQuickView(true)}
+                />
+              </div>
+            ))}
+          </Slider>
+        ) : (
+          <p className="text-center text-gray-500 font-medium py-10">
+            Product not available
+          </p>
+        )}
         {quickView && <ProductQuickView setQuickView={setQuickView} />}
       </div>
     </section>

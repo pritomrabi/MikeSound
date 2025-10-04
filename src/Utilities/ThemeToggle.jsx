@@ -23,7 +23,7 @@ const ThemeToggle = () => {
       className=" text-white text-xl  hover:opacity-90 flex items-center justify-center cursor-pointer"
       aria-label="Toggle Dark Mode"
     >
-      {darkMode ? <FiSun className="text-sm" /> : <FiMoon className="text-lg text-brand" />}
+      {darkMode ? <FiSun className="sm:text-2xl text-xl" /> : <FiMoon className="sm:text-2xl text-xl text-brand" />}
     </button>
   );
 };

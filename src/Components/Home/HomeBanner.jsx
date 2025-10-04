@@ -1,32 +1,22 @@
+import { useEffect, useState } from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { Link } from "react-router-dom";
+import { getProducts } from "../../api/api";
 
 const HomeBanner = () => {
-  const slides = [
-    {
-      id: 1,
-      title: "New Elegant Evening Dresses",
-      button: "SHOP NOW",
-      background:
-        "https://woodmart.xtemos.com/wp-content/uploads/2024/02/fashion-flat-slide-2.jpg",
-    },
-    {
-      id: 2,
-      title: "Oversize Striped T-shirt",
-      button: "SHOP COLLECTION",
-      background:
-        "https://woodmart.xtemos.com/wp-content/uploads/2024/02/fashion-flat-slide-1.jpg",
-    },
-    {
-      id: 3,
-      title: "New Elegant Evening Dresses",
-      button: "SHOP NOW",
-      background:
-        "https://woodmart.xtemos.com/wp-content/uploads/2024/02/fashion-flat-slide-2.jpg",
-    },
-  ];
+  const [slides, setSlides] = useState([]);
+
+  useEffect(() => {
+    const fetchSlides = async () => {
+      const res = await getProducts();
+      if (!res.error && res.sliders) {
+        setSlides(res.sliders);
+      }
+    };
+    fetchSlides();
+  }, []);
 
   const settings = {
     autoplay: true,
@@ -49,18 +39,18 @@ const HomeBanner = () => {
           <div key={slide.id}>
             <div
               className="h-[40vh] sm:h-[50vh] md:h-[70vh] flex bg-cover bg-center items-center px-4 relative"
-              style={{ backgroundImage: `url(${slide.background})` }}
+              style={{ backgroundImage: `url(${slide.image})` }}
             >
               <div className="max-w-2xl text-start mx-auto text-white py-8 sm:py-12 md:py-16">
-                <h2 className="text-primary sm:text-3xl md:text-5xl lg:text-7xl font-semibold uppercase leading-tight">
+                <h2 className="text-primary sm:text-3xl md:text-5xl lg:text-7xl font-semibold uppercase leading-tight line-clamp-2">
                   {slide.title}
                 </h2>
                 <div className="mt-4 sm:mt-6">
                   <Link
-                    to="/shop"
+                    to='/shop'
                     className="md:px-6 px-4 md:py-2 py-2 rounded bg-brand text-white sm:text-sm text-xs font-medium"
                   >
-                    {slide.button}
+                    SHOP NOW
                   </Link>
                 </div>
               </div>
@@ -69,7 +59,6 @@ const HomeBanner = () => {
         ))}
       </Slider>
 
-      {/* dots styling */}
       <style>{`
         .slick-dots {
           position: absolute !important;
@@ -94,8 +83,6 @@ const HomeBanner = () => {
           background: red !important;
           transform: scale(1.2);
         }
-
-        /* responsive dots */
         @media (min-width: 768px) {
           .slick-dots li div {
             width: 16px;
