@@ -13,12 +13,15 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 from pathlib import Path
 import os
 from decouple import config, Csv
+from dotenv import load_dotenv
+load_dotenv()
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = config("SECRET_KEY")
 DEBUG = config("DEBUG", default=False, cast=bool)
-ALLOWED_HOSTS = config("ALLOWED_HOSTS", cast=Csv())
+ALLOWED_HOSTS = ["*"]
+
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5174",
@@ -41,6 +44,8 @@ INSTALLED_APPS = [
     'corsheaders',
     'rest_framework',
     'django_extensions',
+    'ckeditor',
+    'ckeditor_uploader',
     # local apps
     'accounts',
     'products',
@@ -100,6 +105,15 @@ DATABASES = {
         },
         'DISABLE_SERVER_SIDE_CURSORS': True,
     }
+}
+# CKEditor
+CKEDITOR_UPLOAD_PATH = "media/uploads/"
+CKEDITOR_CONFIGS = {
+    'default': {
+        'toolbar': 'full',
+        'height': 300,
+        'width': '100%',
+    },
 }
 
 LANGUAGE_CODE = 'en-us'

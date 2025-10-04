@@ -25,14 +25,16 @@ class ProductAdmin(admin.ModelAdmin):
         'sold_count',
         'model_number',
         'power_type',
-        'connector_type'
+        'connector_type',
+        'warranty_period'   # added here
     )
     list_filter = (
         'category',
         'brand',
         'status',
         'power_type',
-        'connector_type'
+        'connector_type',
+        'warranty_period'   # optional, if you want filter by warranty
     )
     search_fields = (
         'title',
@@ -42,7 +44,8 @@ class ProductAdmin(admin.ModelAdmin):
         'sound',
         'battery',
         'power_type',
-        'connector_type'
+        'connector_type',
+        'warranty_period'   # optional
     )
     inlines = [ProductImageInline, ProductVariationInline]
     prepopulated_fields = {'slug': ('title',)}
