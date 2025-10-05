@@ -221,7 +221,6 @@ class AdsBanner(models.Model):
     title = models.CharField(max_length=255, blank=True, null=True)
     subtitle = models.CharField(max_length=255, blank=True, null=True)
     image = models.ImageField(upload_to='ads/')
-    link = models.URLField(blank=True, null=True)
     offer_type = models.CharField(max_length=50, blank=True, null=True)  # offer_type থাকবে
     status = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)

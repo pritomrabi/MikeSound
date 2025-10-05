@@ -82,7 +82,6 @@ class SliderAdmin(admin.ModelAdmin):
 
 @admin.register(AdsBanner)
 class AdsBannerAdmin(admin.ModelAdmin):
-    list_display = ('title', 'type', 'status', 'created_at')  # 'position' সরানো হয়েছে
-    list_filter = ('type', 'status')  # 'position' সরানো হয়েছে
-    search_fields = ('title', 'link')
+    list_display = ['title', 'offer_type', 'status', 'created_at']
+    list_filter = ['offer_type', 'status']
 

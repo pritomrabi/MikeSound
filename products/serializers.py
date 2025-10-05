@@ -120,5 +120,5 @@ class SliderSerializer(serializers.ModelSerializer):
 class AdsBannerSerializer(serializers.ModelSerializer):
     class Meta:
         model = AdsBanner
-        fields = ['id', 'title', 'subtitle', 'image', 'link', 'offer_type', 'status', 'created_at', 'updated_at']
+        fields = ['id', 'title', 'subtitle', 'image', 'offer_type', 'status', 'created_at', 'updated_at']
 
