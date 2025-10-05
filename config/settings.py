@@ -107,7 +107,6 @@ DATABASES = {
     }
 }
 # CKEditor
-CKEDITOR_UPLOAD_PATH = "media/uploads/"
 CKEDITOR_CONFIGS = {
     'default': {
         'toolbar': 'full',
@@ -127,7 +126,7 @@ STATIC_ROOT = BASE_DIR / "staticfiles"
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / "media"
-
+CKEDITOR_UPLOAD_PATH = "uploads/"
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Email
