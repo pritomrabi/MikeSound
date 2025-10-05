@@ -17,18 +17,21 @@ class ProductImageSerializer(serializers.ModelSerializer):
 
 class ProductVariationSerializer(serializers.ModelSerializer):
     color_name = serializers.SerializerMethodField()
+    color_hex = serializers.SerializerMethodField()  # add this
     discounted_price = serializers.SerializerMethodField()
     available = serializers.SerializerMethodField()
     message = serializers.SerializerMethodField()
 
     class Meta:
         model = ProductVariation
-        fields = ['id', 'sku', 'stock', 'price', 'discounted_price', 'color_name','color_hex', 'available', 'message']
+        fields = ['id', 'sku', 'stock', 'price', 'discounted_price', 'color_name', 'color_hex', 'available', 'message']
 
     def get_color_name(self, obj):
         return obj.color.name if obj.color else None
+
     def get_color_hex(self, obj):
         return obj.color.hex_code if obj.color else None
+
     def get_discounted_price(self, obj):
         return obj.product.get_discounted_price(obj)
 
@@ -41,6 +44,7 @@ class ProductVariationSerializer(serializers.ModelSerializer):
         if obj.color is None:
             return "Color not available"
         return ""
+
 
 
 class ProductSerializer(serializers.ModelSerializer):
