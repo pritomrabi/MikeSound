@@ -21,17 +21,19 @@ class ProductAdmin(admin.ModelAdmin):
         'category',
         'status',
         'discount',
+        'offer_type',
         'views_count',
         'sold_count',
         'model_number',
         'power_type',
         'connector_type',
-        'warranty_period'   # added here
+        'warranty_period'   
     )
     list_filter = (
         'category',
         'brand',
         'status',
+        'offer_type',
         'power_type',
         'connector_type',
         'warranty_period'   # optional, if you want filter by warranty
@@ -80,6 +82,7 @@ class SliderAdmin(admin.ModelAdmin):
 
 @admin.register(AdsBanner)
 class AdsBannerAdmin(admin.ModelAdmin):
-    list_display = ('title', 'position', 'status', 'created_at')
-    list_filter = ('position', 'status')
+    list_display = ('title', 'type', 'status', 'created_at')  # 'position' সরানো হয়েছে
+    list_filter = ('type', 'status')  # 'position' সরানো হয়েছে
     search_fields = ('title', 'link')
+

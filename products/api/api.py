@@ -7,7 +7,11 @@ from ..serializers import ProductSerializer, SliderSerializer, AdsBannerSerializ
 @api_view(['GET'])
 def product_list_api(request):
     query = request.GET.get('q', '')
+    offer_type = request.GET.get('offer_type')
     products = Product.objects.filter(status=True)
+
+    if offer_type:
+        products = products.filter(offer_type=offer_type)
 
     if query:
         products = products.filter(

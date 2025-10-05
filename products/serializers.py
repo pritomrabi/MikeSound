@@ -23,11 +23,12 @@ class ProductVariationSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = ProductVariation
-        fields = ['id', 'sku', 'stock', 'price', 'discounted_price', 'color_name', 'available', 'message']
+        fields = ['id', 'sku', 'stock', 'price', 'discounted_price', 'color_name','color_hex', 'available', 'message']
 
     def get_color_name(self, obj):
         return obj.color.name if obj.color else None
-
+    def get_color_hex(self, obj):
+        return obj.color.hex_code if obj.color else None
     def get_discounted_price(self, obj):
         return obj.product.get_discounted_price(obj)
 
@@ -60,7 +61,7 @@ class ProductSerializer(serializers.ModelSerializer):
             'subcategory_name', 'images', 'variations', 'sold_count', 'views_count',
             'discount', 'is_featured', 'warranty_period',
             'model_number', 'body', 'sound', 'battery', 'power_type', 'connector_type',
-            'stock_by_color', 'wishlist_status', 'product_message'
+            'stock_by_color', 'wishlist_status', 'product_message','offer_type'
         ]
 
     def get_stock_by_color(self, obj):
@@ -96,10 +97,16 @@ class CategoryWithCountSerializer(serializers.ModelSerializer):
 class SliderSerializer(serializers.ModelSerializer):
     class Meta:
         model = Slider
-        fields = ['id', 'title', 'image', 'link', 'status']
+        fields = ['id', 'title', 'image', 'status']
 
 
+# Serializer এ (যদি API দিয়ে পাঠাও)
 class AdsBannerSerializer(serializers.ModelSerializer):
+    final_link = serializers.SerializerMethodField()
+
     class Meta:
         model = AdsBanner
-        fields = ['id', 'title', 'subtitle', 'image', 'link', 'type', 'position', 'status']
+        fields = ['title', 'subtitle', 'image', 'link', 'type', 'final_link']
+
+    def get_final_link(self, obj):
+        return obj.link or 'http://localhost:3000/'
