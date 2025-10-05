@@ -78,7 +78,7 @@ def categories_with_count_api(request):
     return Response(data)
 @api_view(['GET'])
 def latest_subcategories_api(request):
-    limit = int(request.GET.get('limit', 10))
+    limit = int(request.GET.get('limit', 100))
     subcategories = SubCategory.objects.filter(
         product__status=True
     ).distinct().order_by('-created_at')[:limit]

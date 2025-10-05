@@ -118,11 +118,7 @@ class SliderSerializer(serializers.ModelSerializer):
 
 
 class AdsBannerSerializer(serializers.ModelSerializer):
-    final_link = serializers.SerializerMethodField()
-
     class Meta:
         model = AdsBanner
-        fields = ['title', 'subtitle', 'image', 'link', 'type', 'final_link']
+        fields = ['id', 'title', 'subtitle', 'image', 'link', 'offer_type', 'status', 'created_at', 'updated_at']
 
-    def get_final_link(self, obj):
-        return obj.link or 'http://localhost:3000/discount'
