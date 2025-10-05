@@ -16,7 +16,6 @@ def get_cart(request):
         cart, _ = Cart.objects.get_or_create(session_key=session_key, user=None)
     return cart
 
-
 def cart_view(request):
     cart = get_cart(request)
     items = cart.items.select_related('product', 'variation').prefetch_related('product__images')
@@ -33,7 +32,6 @@ def cart_view(request):
         'grand_total': grand_total
     })
 
-
 def add_to_cart(request, product_id):
     product = get_object_or_404(Product, id=product_id)
     variation = None
@@ -42,13 +40,15 @@ def add_to_cart(request, product_id):
 
     quantity = int(request.POST.get('quantity', 1))
     cart = get_cart(request)
-    price = variation.price if variation else (product.variations.first().price if product.variations.exists() else 0)
-
+    
+    # discounted price
+    unit_price = variation.product.get_discounted_price(variation) if variation else product.get_discounted_price()
+    
     cart_item, created = CartItem.objects.get_or_create(
         cart=cart,
         product=product,
         variation=variation,
-        defaults={'unit_price': price, 'quantity': quantity}
+        defaults={'unit_price': unit_price, 'quantity': quantity}
     )
 
     if not created:
@@ -56,7 +56,6 @@ def add_to_cart(request, product_id):
         cart_item.save()
 
     return redirect('cart_view')
-
 
 def update_cart(request, item_id):
     cart = get_cart(request)
@@ -67,7 +66,8 @@ def update_cart(request, item_id):
         variation_id = request.POST.get('variation_id')
         variation = get_object_or_404(ProductVariation, id=variation_id)
         item.variation = variation
-        item.unit_price = variation.price
+        # update unit_price with discounted price
+        item.unit_price = variation.product.get_discounted_price(variation)
 
     if qty <= 0:
         item.delete()
@@ -76,7 +76,6 @@ def update_cart(request, item_id):
         item.save()
 
     return redirect('cart_view')
-
 
 def checkout_view(request):
     cart = get_cart(request)
@@ -107,7 +106,6 @@ def checkout_view(request):
         'coupon': coupon
     })
 
-
 def apply_coupon(request):
     if request.method == 'POST':
         code = request.POST.get('code').strip()
@@ -128,7 +126,6 @@ def apply_coupon(request):
 
     return redirect('checkout_view')
 
-
 def update_checkout_cart(request, item_id):
     cart = get_cart(request)
     item = get_object_or_404(CartItem, id=item_id, cart=cart)
@@ -147,20 +144,19 @@ def update_checkout_cart(request, item_id):
             variation_id = request.POST['variation_id']
             variation = get_object_or_404(ProductVariation, id=variation_id)
             item.variation = variation
-            item.unit_price = variation.price
+            # discounted price update
+            item.unit_price = variation.product.get_discounted_price(variation)
 
         item.quantity = qty
         item.save()
 
     return redirect('checkout_view')
 
-
 def remove_cart_item(request, item_id):
     cart = get_cart(request)
     item = get_object_or_404(CartItem, id=item_id, cart=cart)
     item.delete()
     return redirect('cart_view')
-
 
 def place_order(request):
     cart = get_cart(request)
@@ -214,7 +210,6 @@ def place_order(request):
 
         return redirect('order_detail', order_id=order.id)
 
-
 def order_list(request):
     from django.contrib.auth.decorators import login_required
     if request.user.is_staff:
@@ -223,12 +218,10 @@ def order_list(request):
         orders = Order.objects.filter(user=request.user).order_by('-created_at')
     return render(request, 'orders/order_list.html', {'orders': orders})
 
-
 def order_detail(request, order_id):
     order = get_object_or_404(Order, id=order_id)
     items = order.items.select_related('product', 'variation').prefetch_related('product__images')
     return render(request, 'orders/order_detail.html', {'order': order, 'items': items})
-
 
 def order_history(request):
     orders = []

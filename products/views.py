@@ -41,15 +41,17 @@ def product_detail(request, product_id):
     sliders = Slider.objects.filter(status=True)
     ads = AdsBanner.objects.filter(status=True)
 
-    # Increment views
+    # Increment view count
     product.views_count += 1
     product.save(update_fields=['views_count'])
 
-    # Variations
+    # Build variations with auto discount logic
     variations = []
     out_of_stock = True
     for var in product.variations.all():
-        price = product.get_discounted_price(var)
+        # Get final price using Product method
+        final_price = product.get_discounted_price(var)
+
         color_name = var.color.name if var.color else None
         available = var.stock > 0
         if available:
@@ -59,13 +61,18 @@ def product_detail(request, product_id):
             message = 'Out of stock'
         elif color_name is None:
             message = 'Color not available'
+
         variations.append({
             'id': var.id,
-            'color': color_name,
-            'price': price,
+            'sku': var.sku,
             'stock': var.stock,
+            'price': float(var.price),
+            'final_price': final_price,
+            'discounted_price': final_price,
+            'color_name': color_name,
+            'color_hex': var.color.hex_code if var.color else None,
             'available': available,
-            'message': message
+            'message': message,
         })
 
     product_message = ''
@@ -74,25 +81,36 @@ def product_detail(request, product_id):
     elif out_of_stock:
         product_message = 'All variations are out of stock'
 
-    # JSON Response
+    # JSON response
     if request.GET.get('format') == 'json':
         return JsonResponse({
-            'product_id': product.id,
-            'title': product.title,
-            'variations': variations,
-            'views_count': product.views_count,
-            'sold_count': product.sold_count,
-            'warranty_period': product.warranty_period,
-            'model_number': product.model_number,
-            'body': product.body,
-            'sound': product.sound,
-            'battery': product.battery,
-            'power_type': product.power_type,
-            'connector_type': product.connector_type,
-            'message': product_message
+            'product': {
+                'id': product.id,
+                'title': product.title,
+                'description': product.description,
+                'brand_name': product.brand.name if product.brand else None,
+                'category_name': product.category.name if product.category else None,
+                'subcategory_name': product.subcategory.name if product.subcategory else None,
+                'discount': float(product.discount) if product.discount else 0,
+                'images': [{'id': img.id, 'image': img.image.url} for img in product.images.all()],
+                'variations': variations,
+                'sold_count': product.sold_count,
+                'views_count': product.views_count,
+                'warranty_period': product.warranty_period,
+                'model_number': product.model_number,
+                'body': product.body,
+                'sound': product.sound,
+                'battery': product.battery,
+                'power_type': product.power_type,
+                'connector_type': product.connector_type,
+                'wishlist_status': False,
+                'product_message': product_message,
+            },
+            'sliders': [{'id': s.id, 'title': s.title, 'image': s.image.url} for s in sliders],
+            'ads': [{'title': ad.title, 'subtitle': ad.subtitle, 'image': ad.image.url, 'link': ad.link} for ad in ads],
         })
 
-    # Template Response
+    # Template response
     return render(request, 'products/product_detail.html', {
         'product': product,
         'sliders': sliders,
@@ -100,6 +118,7 @@ def product_detail(request, product_id):
         'variations': variations,
         'message': product_message
     })
+
 
 
 @login_required

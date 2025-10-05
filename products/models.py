@@ -43,6 +43,7 @@ class SubCategory(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='subcategories')
     name = models.CharField(max_length=100)
     slug = models.SlugField(max_length=100, unique=True, blank=True)
+    image = models.ImageField(upload_to='subcategories/', blank=True, null=True)  # subcategory image
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -116,10 +117,14 @@ class Product(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
-    def get_discounted_price(self, variation):
-        if self.discount > 0:
-            return variation.price - (variation.price * Decimal(self.discount) / Decimal(100))
-        return variation.price
+    def get_discounted_price(self, variation=None):
+        if variation:
+            price = variation.price
+        else:
+            price = self.price
+        if self.discount:
+            return round(price * (1 - self.discount / 100), 2)
+        return price
 
     @classmethod
     def latest_products(cls, limit=10):
@@ -211,6 +216,7 @@ class Slider(models.Model):
 # -------------------------
 # AdsBanner
 # -------------------------
+
 class AdsBanner(models.Model):
     title = models.CharField(max_length=255, blank=True, null=True)
     subtitle = models.CharField(max_length=255, blank=True, null=True)

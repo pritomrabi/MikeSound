@@ -1,8 +1,8 @@
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from django.db.models import Q
-from ..models import Product, Slider, AdsBanner, Category
-from ..serializers import ProductSerializer, SliderSerializer, AdsBannerSerializer, CategoryWithCountSerializer
+from ..models import *
+from ..serializers import *
 
 @api_view(['GET'])
 def product_list_api(request):
@@ -63,16 +63,12 @@ def product_detail_api(request, product_id):
     })
 
 
-@api_view(['GET'])
-def category_list_with_count_api(request):
-    categories = Category.objects.all()
-    serializer = CategoryWithCountSerializer(categories, many=True)
-    return Response(serializer.data)
-
 
 @api_view(['GET'])
-def latest_products_api(request):
+def latest_subcategories_api(request):
     limit = int(request.GET.get('limit', 10))
-    latest_products = Product.objects.filter(status=True).order_by('-created_at')[:limit]
-    serializer = ProductSerializer(latest_products, many=True, context={'request': request})
+    subcategories = SubCategory.objects.filter(
+        product__status=True
+    ).distinct().order_by('-created_at')[:limit]
+    serializer = SubCategorySerializer(subcategories, many=True, context={'request': request})
     return Response(serializer.data)

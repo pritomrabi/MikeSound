@@ -1,5 +1,6 @@
 from rest_framework import serializers
-from .models import Product, ProductImage, ProductVariation, Category, Slider, AdsBanner
+from .models import *
+
 
 class ProductImageSerializer(serializers.ModelSerializer):
     image = serializers.SerializerMethodField()
@@ -17,14 +18,17 @@ class ProductImageSerializer(serializers.ModelSerializer):
 
 class ProductVariationSerializer(serializers.ModelSerializer):
     color_name = serializers.SerializerMethodField()
-    color_hex = serializers.SerializerMethodField()  # add this
-    discounted_price = serializers.SerializerMethodField()
+    color_hex = serializers.SerializerMethodField()
+    final_price = serializers.SerializerMethodField()
     available = serializers.SerializerMethodField()
     message = serializers.SerializerMethodField()
 
     class Meta:
         model = ProductVariation
-        fields = ['id', 'sku', 'stock', 'price', 'discounted_price', 'color_name', 'color_hex', 'available', 'message']
+        fields = [
+            'id', 'sku', 'stock', 'price', 'final_price',
+            'color_name', 'color_hex', 'available', 'message'
+        ]
 
     def get_color_name(self, obj):
         return obj.color.name if obj.color else None
@@ -32,7 +36,7 @@ class ProductVariationSerializer(serializers.ModelSerializer):
     def get_color_hex(self, obj):
         return obj.color.hex_code if obj.color else None
 
-    def get_discounted_price(self, obj):
+    def get_final_price(self, obj):
         return obj.product.get_discounted_price(obj)
 
     def get_available(self, obj):
@@ -44,7 +48,6 @@ class ProductVariationSerializer(serializers.ModelSerializer):
         if obj.color is None:
             return "Color not available"
         return ""
-
 
 
 class ProductSerializer(serializers.ModelSerializer):
@@ -65,7 +68,7 @@ class ProductSerializer(serializers.ModelSerializer):
             'subcategory_name', 'images', 'variations', 'sold_count', 'views_count',
             'discount', 'is_featured', 'warranty_period',
             'model_number', 'body', 'sound', 'battery', 'power_type', 'connector_type',
-            'stock_by_color', 'wishlist_status', 'product_message','offer_type'
+            'stock_by_color', 'wishlist_status', 'product_message', 'offer_type'
         ]
 
     def get_stock_by_color(self, obj):
@@ -87,16 +90,26 @@ class ProductSerializer(serializers.ModelSerializer):
         return ""
 
 
-class CategoryWithCountSerializer(serializers.ModelSerializer):
-    product_count = serializers.SerializerMethodField()
+class SubCategorySerializer(serializers.ModelSerializer):
+    image = serializers.SerializerMethodField()
+    link = serializers.SerializerMethodField()
+    product_count = serializers.SerializerMethodField()  # add this
 
     class Meta:
-        model = Category
-        fields = ['id', 'name', 'product_count']
+        model = SubCategory
+        fields = ['id', 'name', 'slug', 'image', 'link', 'product_count']
+
+    def get_image(self, obj):
+        request = self.context.get('request')
+        if obj.image and request:
+            return request.build_absolute_uri(obj.image.url)
+        return obj.image.url if obj.image else None
+
+    def get_link(self, obj):
+        return f"/subcategory/{obj.slug}/"
 
     def get_product_count(self, obj):
-        return obj.product_set.count()
-
+        return obj.product_set.filter(status=True).count()  # only active products
 
 class SliderSerializer(serializers.ModelSerializer):
     class Meta:
@@ -104,7 +117,6 @@ class SliderSerializer(serializers.ModelSerializer):
         fields = ['id', 'title', 'image', 'status']
 
 
-# Serializer এ (যদি API দিয়ে পাঠাও)
 class AdsBannerSerializer(serializers.ModelSerializer):
     final_link = serializers.SerializerMethodField()
 
@@ -113,4 +125,4 @@ class AdsBannerSerializer(serializers.ModelSerializer):
         fields = ['title', 'subtitle', 'image', 'link', 'type', 'final_link']
 
     def get_final_link(self, obj):
-        return obj.link or 'http://localhost:3000/'
+        return obj.link or 'http://localhost:3000/discount'

@@ -56,8 +56,10 @@ class CartItemSerializer(serializers.ModelSerializer):
 
     def get_line_total(self, obj):
         price = obj.unit_price
-        discount = obj.product.discount or 0
-        return round(price * obj.quantity * (1 - discount / 100), 2)
+        if obj.variation:
+            price = obj.variation.product.get_discounted_price(obj.variation)
+        return round(price * obj.quantity, 2)
+
 
 # Cart
 class CartSerializer(serializers.ModelSerializer):
