@@ -6,14 +6,16 @@ from ..serializers import *
 
 @api_view(['GET'])
 def product_list_api(request):
-    query = request.GET.get('q', '')
+    query = request.GET.get('q', '').strip()
     offer_type = request.GET.get('offer_type')
+
     products = Product.objects.filter(status=True)
 
     if offer_type:
-        products = products.filter(offer_type=offer_type)
+        products = products.filter(offer_type__iexact=offer_type)
 
     if query:
+        # Partial match (icontains)
         products = products.filter(
             Q(title__icontains=query) |
             Q(brand__name__icontains=query) |
