@@ -18,17 +18,16 @@ const ShopPage = () => {
   const [quickView, setQuickView] = useState(null);
   const [priceRange, setPriceRange] = useState([0, 1000000]);
   const [category, setCategory] = useState("All");
+  const [selectedColor, setSelectedColor] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  const itemsPerPage = 6;
+  const itemsPerPage = 20;
 
   useEffect(() => {
     const fetchProducts = async () => {
       setLoading(true);
       const res = await getProducts();
-      if (!res.error && res.products) {
-        setProducts(res.products);
-      }
+      if (!res.error && res.products) setProducts(res.products);
       setLoading(false);
     };
     fetchProducts();
@@ -36,29 +35,25 @@ const ShopPage = () => {
 
   const toggleSidebar = () => setShowSidebar(!showSidebar);
 
-  // Filter products
   const filteredProducts = useMemo(() => {
     return products.filter((product) => {
       const price = Number(product.variations?.[0]?.price ?? 0);
       const withinPrice = price >= priceRange[0] && price <= priceRange[1];
-      const productCategory = product.subcategory_name || product.category || "All";
+      const productCategory = product.subcategory_name || product.category_name || "All";
       const matchCategory = category === "All" || productCategory.toLowerCase() === category.toLowerCase();
       const matchRating = !topRated || (product.rating ?? 0) >= 4.5;
+      const matchColor =
+        !selectedColor || product.variations.some(v => v.color_name === selectedColor);
 
-      return withinPrice && matchCategory && matchRating;
+      return withinPrice && matchCategory && matchRating && matchColor;
     });
-  }, [products, category, topRated]);
-
-
+  }, [products, category, topRated, priceRange, selectedColor]);
 
   const endOffset = itemOffset + itemsPerPage;
   const currentItems = filteredProducts.slice(itemOffset, endOffset);
   const pageCount = Math.ceil(filteredProducts.length / itemsPerPage);
 
-  const handlePageClick = (event) => {
-    const newOffset = event.selected * itemsPerPage;
-    setItemOffset(newOffset);
-  };
+  const handlePageClick = (event) => setItemOffset(event.selected * itemsPerPage);
 
   return (
     <section className="dark:bg-[#1b1b1b]">
@@ -91,20 +86,21 @@ const ShopPage = () => {
           setPriceRange={setPriceRange}
           category={category}
           setCategory={setCategory}
-          showSidebar={showSidebar}
-          setShowSidebar={setShowSidebar}
-          categories={categories}
           topRated={topRated}
           setTopRated={setTopRated}
+          selectedColor={selectedColor}
+          setSelectedColor={setSelectedColor}
+          categories={categories}
+          showSidebar={showSidebar}
+          setShowSidebar={setShowSidebar}
+          products={products} // products pass
         />
 
         {/* Products Grid */}
         {loading ? (
           <p className="text-center py-10 text-white">Loading products...</p>
         ) : filteredProducts.length === 0 ? (
-          <p className="text-center py-10 text-white">
-            No products found for this filter
-          </p>
+          <p className="text-center py-10 text-white">No products found for this filter</p>
         ) : (
           <div className="flex">
             <div className="flex-1">
@@ -119,20 +115,17 @@ const ShopPage = () => {
                         -{product.variations[0].discount}%
                       </span>
                     )}
-                    <Link to={`/product/${product.id}`}>
+                    <Link to={`/singleproduct/${product.id}`}>
                       <div className="relative overflow-hidden rounded-t-md">
                         <img
-                          src={
-                            product.images?.[0]?.image ||
-                            "https://via.placeholder.com/300x300"
-                          }
+                          src={product.images?.[0]?.image || "https://via.placeholder.com/300x300"}
                           alt={product.title}
                           className="w-full h-40 sm:h-68 md:h-64 lg:h-68 object-cover transform transition-transform duration-500 group-hover:scale-105"
                         />
                       </div>
                     </Link>
                     <div className="text-start space-y-1 p-3">
-                      <Link to={`/product/${product.id}`}>
+                      <Link to={`/singleproduct/${product.id}`}>
                         <h3 className="text-sm font-medium text-primary-default dark:text-primary-dark font-Roboto">
                           {product.title.substring(0, 20)}..
                         </h3>
@@ -141,14 +134,9 @@ const ShopPage = () => {
                         </p>
 
                         <p className="text-yellow-600 text-sm flex">
-                          {[...Array(Math.floor(product.rating || 0))].map(
-                            (_, i) => (
-                              <AiFillStar
-                                key={i}
-                                className="text-yellow-400"
-                              />
-                            )
-                          )}
+                          {[...Array(Math.floor(product.rating || 0))].map((_, i) => (
+                            <AiFillStar key={i} className="text-yellow-400" />
+                          ))}
                           {product.rating % 1 !== 0 && (
                             <AiFillStar className="text-yellow-400 opacity-50" />
                           )}
@@ -201,12 +189,7 @@ const ShopPage = () => {
           </div>
         )}
 
-        {quickView && (
-          <ProductQuickView
-            productId={quickView}
-            setQuickView={() => setQuickView(null)}
-          />
-        )}
+        {quickView && <ProductQuickView productId={quickView} setQuickView={() => setQuickView(null)} />}
       </div>
     </section>
   );

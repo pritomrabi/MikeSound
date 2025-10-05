@@ -19,40 +19,38 @@ export const apiRequest = async (method, url, data = null, token = null) => {
   }
 };
 
-// Register user
+// User APIs
 export const registerUser = (name, email, phone, password, confirm_password) =>
   apiRequest("post", "/accounts/api/register/", { name, email, phone, password, confirm_password });
 
-// Verify OTP
 export const verifyOtp = (otp, user_id) =>
   apiRequest("post", "/accounts/api/verify-otp/", { otp, user_id });
 
-// Login
 export const loginUser = (email, password) =>
   apiRequest("post", "/accounts/api/login/", { email, password });
 
-// Logout
 export const logoutUser = () =>
   apiRequest("post", "/accounts/api/logout/");
 
-// Forgot password
 export const forgotPassword = (email) =>
   apiRequest("post", "/accounts/api/forgot-password/", { email });
 
-// Verify forgot password OTP
 export const verifyForgotOtp = (otp, user_id) =>
   apiRequest("post", "/accounts/api/forgot-verify-otp/", { otp, user_id });
 
-// Reset password
 export const resetPassword = (user_id, new_password, confirm_password) =>
   apiRequest("post", "/accounts/api/reset-password/", { user_id, new_password, confirm_password });
 
-// Get all products
-export const getProducts = () => apiRequest("get", "/api/products/");
+// Product APIs
+export const getProducts = (offer_type = "") => {
+  const query = offer_type ? `?offer_type=${offer_type}` : "";
+  return apiRequest("get", `/api/products/${query}`);
+};
+
 export const getProductById = (id) => apiRequest("get", `/api/products/${id}/`);
 export const getLatestProducts = () => apiRequest("get", "/api/products/latest/");
-export const getCategoriesWithCount = () =>
-  apiRequest("get", "/api/categories-with-count/");
+export const getSubCategories = () => apiRequest("get", "/api/subcategories/latest/");
+
 export const getProductsByCategory = (slug) =>
   apiRequest("get", `/api/products/?category=${slug}`);
 

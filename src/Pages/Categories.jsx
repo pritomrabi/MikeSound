@@ -63,7 +63,12 @@ const Categories = () => {
             )}
           </div>
         )}
-        {quickView && <ProductQuickView setQuickView={() => setQuickView(null)} />}
+        {quickView && (
+          <ProductQuickView
+            productId={quickView}
+            setQuickView={() => setQuickView(null)}
+          />
+        )}
       </div>
     </section>
   );

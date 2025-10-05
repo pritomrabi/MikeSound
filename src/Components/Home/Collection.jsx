@@ -44,13 +44,14 @@ const Collection = () => {
                   id: product.id,
                   title: product.title,
                   img: product.images?.[0]?.image || "https://via.placeholder.com/300x300",
-                  price: product.variations?.[0]?.discounted_price || 0,
-                  oldPrice: product.variations?.[0]?.price || null,
+                  price: product.variations?.[0]?.final_price || 0, // final_price use
+                  oldPrice: product.variations?.[0]?.price || null, // original price
                   rating: product.rating,
                   sold: product.sold_count
                 }}
-                onQuickView={() => setQuickView(product.id)} // id pass করা
+                onQuickView={() => setQuickView(product.id)}
               />
+
             ))}
 
             {quickView && (

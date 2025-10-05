@@ -7,6 +7,7 @@ import { getProducts } from "../../api/api";
 
 const HomeBanner = () => {
   const [slides, setSlides] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchSlides = async () => {
@@ -14,6 +15,7 @@ const HomeBanner = () => {
       if (!res.error && res.sliders) {
         setSlides(res.sliders);
       }
+      setLoading(false);
     };
     fetchSlides();
   }, []);
@@ -31,6 +33,22 @@ const HomeBanner = () => {
       <div className="w-3 h-3 md:w-4 md:h-4 rounded-full bg-black transition" />
     ),
   };
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-[40vh]">
+        Loading...
+      </div>
+    );
+  }
+
+  if (!slides.length) {
+    return (
+      <div className="flex justify-center items-center h-[40vh]">
+        No products available
+      </div>
+    );
+  }
 
   return (
     <div className="relative">
@@ -58,7 +76,6 @@ const HomeBanner = () => {
           </div>
         ))}
       </Slider>
-
       <style>{`
         .slick-dots {
           position: absolute !important;

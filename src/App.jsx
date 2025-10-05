@@ -68,7 +68,7 @@ function App() {
           <Route path="/shop" element={<Shop />} />
           <Route path="/singleproduct/:id" element={<SingleProduct />} />
           <Route path="/SpecialOffers" element={<SpecialOffers />} />
-          <Route path="/offers/:type" element={<Discount />} />
+          <Route path="/discount/:type" element={<Discount />} />
           <Route path="/orderhistory" element={<OrderHistory />} />
           <Route path="/wishlist" element={<Wishlist />} />
           <Route path="/viewcart" element={<ViewCart />} />

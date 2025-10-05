@@ -16,7 +16,7 @@ const ProductPage = ({ product }) => {
 
   const handleVariationSelect = (variation) => setSelectedVariation(variation);
   const totalPrice = selectedVariation
-    ? selectedVariation.price * quantity
+    ? selectedVariation.final_price * quantity
     : product.price * quantity;
 
   const handleMouseMove = (e) => {
@@ -26,8 +26,8 @@ const ProductPage = ({ product }) => {
     setZoomPosition({ x, y });
   };
   const textDescription = product.description
-  ? product.description.replace(/<[^>]+>/g, "").substring(0, 200)
-  : "";
+    ? product.description.replace(/<[^>]+>/g, "").substring(0, 200)
+    : "";
 
   return (
     <div className="max-w-[1200px] mx-auto px-4 py-6">

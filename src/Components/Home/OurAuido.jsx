@@ -3,10 +3,10 @@ import Heading from "../../Utilities/Heading";
 import { GoArrowRight } from "react-icons/go";
 
 const categories = [
-    { name: "HeadPhone", path: "/headphone", img: "home.jpg" },
-    { name: "Speakers", path: "/speakers", img: "home.jpg" },
-    { name: "Earbud", path: "/earbud", img: "home.jpg" },
-    { name: "Gaming", path: "/gaming", img: "home.jpg" },
+    { name: "HeadPhone", path: "/headphone", img: "headphone.png" },
+    { name: "Speakers", path: "/speakers", img: "Speakers.png" },
+    { name: "Earbud", path: "/earbud", img: "Earbud.png" },
+    { name: "Gaming", path: "/gaming", img: "Gaming.png" },
 ];
 
 const OurAudio = () => {

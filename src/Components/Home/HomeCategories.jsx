@@ -1,51 +1,47 @@
 import React, { useEffect, useState } from "react";
 import Heading from "../../Utilities/Heading";
 import { Link } from "react-router-dom";
-import { getCategoriesWithCount } from "../../api/api";
+import { getSubCategories } from "../../api/api"; // API function for subcategories
 
-const HomeCategories = () => {
-  const [categories, setCategories] = useState([]);
+const HomeSubCategories = () => {
+  const [subcategories, setSubcategories] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchCategories = async () => {
+    const fetchSubCategories = async () => {
       setLoading(true);
-      const res = await getCategoriesWithCount();
-      console.log("Categories API response:", res); // console log
-      if (!res.error && res.categories) {
-        setCategories(res.categories);
+      const res = await getSubCategories();
+      if (!res.error && Array.isArray(res)) {
+        setSubcategories(res); // API returns list of subcategories
       }
       setLoading(false);
     };
-    fetchCategories();
+    fetchSubCategories();
   }, []);
 
-
-  if (loading) {
-    return <p className="text-center py-10 text-white">Loading categories...</p>;
-  }
+  if (loading) return <p className="text-center py-10 text-white">Loading subcategories...</p>;
 
   return (
     <section className="py-12 dark:bg-[#212020]">
       <div className="container mx-auto px-4">
-        <Heading Head="Shop By Categories" />
+        <Heading Head="Shop By Subcategories" />
         <div className="grid grid-cols-2 md:grid-cols-3 gap-4 auto-rows-[250px]">
-          {categories.map((cat, idx) => (
+          {subcategories.map((subcat, idx) => (
             <Link
               key={idx}
-              to={`/categories/${cat.slug}`}
+              to={`/${subcat.slug}`}
               className="relative overflow-hidden rounded-md group"
             >
               <img
-                src={cat.image}
-                alt={cat.title}
+                src={subcat.image}
+                alt={subcat.name}
                 className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
               />
               <p className="absolute left-4 bottom-6 text-lg font-Opensans font-semibold text-primary bg-opacity-60 px-3 py-1 rounded-sm backdrop-blur-sm">
-                {cat.title}
+                {subcat.name}
               </p>
               <p className="absolute left-7 bottom-2 text-secandari text-sm">
-                {cat.total} Products
+                {subcat.product_count} Products
               </p>
             </Link>
           ))}
@@ -55,4 +51,4 @@ const HomeCategories = () => {
   );
 };
 
-export default HomeCategories;
+export default HomeSubCategories;
