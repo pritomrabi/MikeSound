@@ -8,10 +8,12 @@ urlpatterns = [
     path('', product_list, name='product_list'),
     path('<int:product_id>/', product_detail, name='product_detail'),
     path('wishlist/<int:product_id>/', add_to_wishlist, name='add_to_wishlist'),
+
     # APIs
     path('api/products/', product_list_api, name='api_product_list'),
     path('api/products/<int:product_id>/', product_detail_api, name='api_product_detail'),
-    path('api/subcategories/latest/', latest_subcategories_api, name='api_latest_subcategories')
+    path('api/categories-with-count/', categories_with_count_api, name='api_categories_with_count'),
+
 ]
 
 if settings.DEBUG:
