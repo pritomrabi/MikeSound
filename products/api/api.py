@@ -76,3 +76,11 @@ def categories_with_count_api(request):
             'product_count': cat.product_set.filter(status=True).count()
         })
     return Response(data)
+@api_view(['GET'])
+def latest_subcategories_api(request):
+    limit = int(request.GET.get('limit', 10))
+    subcategories = SubCategory.objects.filter(
+        product__status=True
+    ).distinct().order_by('-created_at')[:limit]
+    serializer = SubCategorySerializer(subcategories, many=True, context={'request': request})
+    return Response(serializer.data)
