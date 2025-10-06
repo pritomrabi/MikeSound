@@ -3,12 +3,13 @@ from django.conf import settings
 from products.models import Product, ProductVariation
 from inventory.models import Inventory
 
+# Cart model
 class Cart(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True, blank=True)
     session_key = models.CharField(max_length=40, null=True, blank=True, db_index=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
-
+# Cart items
 class CartItem(models.Model):
     cart = models.ForeignKey(Cart, on_delete=models.CASCADE, related_name='items')
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
@@ -17,21 +18,15 @@ class CartItem(models.Model):
     unit_price = models.DecimalField(max_digits=10, decimal_places=2, default=0)
 
     @property
-    def discount_percent(self):
-        return self.product.discount if self.product.discount else 0
-
-    @property
-    def discount_amount(self):
-        if self.product.discount:
-            return self.unit_price * self.quantity * self.product.discount / 100
-        return 0
-
-    @property
     def line_total(self):
-        return self.quantity * self.unit_price - self.discount_amount
+        price = self.unit_price
+        if self.product.discount > 0:
+            price -= price * self.product.discount / 100
+        return self.quantity * price
 
+# Address
 class Address(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='addresses', null=True, blank=True)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True, blank=True, related_name='addresses')
     full_name = models.CharField(max_length=255)
     phone = models.CharField(max_length=20)
     line1 = models.CharField(max_length=255)
@@ -43,6 +38,7 @@ class Address(models.Model):
     is_billing = models.BooleanField(default=False)
     is_shipping = models.BooleanField(default=False)
 
+# Orders
 class Order(models.Model):
     STATUS_CHOICES = [
         ('pending','Pending'),
@@ -80,9 +76,8 @@ class OrderItem(models.Model):
     def line_total(self):
         price = self.unit_price
         if self.product.discount > 0:
-            price = price - (price * self.product.discount / 100)
+            price -= price * self.product.discount / 100
         return self.quantity * price
-
 
 class OrderAssignment(models.Model):
     order = models.ForeignKey(Order, on_delete=models.CASCADE)

@@ -1,10 +1,13 @@
 from django.contrib import admin
 from .models import *
-
+# -------------------------
+# Cart
+# -------------------------
 class CartItemInline(admin.TabularInline):
     model = CartItem
     extra = 0
     readonly_fields = ['product_title', 'variation_info', 'unit_price', 'quantity', 'line_total']
+
     def product_title(self, obj):
         return obj.product.title if obj.product else "-"
     product_title.short_description = "Product"
@@ -25,6 +28,9 @@ class CartAdmin(admin.ModelAdmin):
     list_display = ['user', 'created_at']
     inlines = [CartItemInline]
 
+# -------------------------
+# Order
+# -------------------------
 class OrderItemInline(admin.TabularInline):
     model = OrderItem
     extra = 0
@@ -74,14 +80,23 @@ class OrderAdmin(admin.ModelAdmin):
         ])
     products_info.short_description = "Products"
 
+# -------------------------
+# Order Assignment
+# -------------------------
 @admin.register(OrderAssignment)
 class OrderAssignmentAdmin(admin.ModelAdmin):
-    list_display = ['order', 'staff', 'assigned_at', 'auto_assigned']
+    list_display = ['order', 'staff', 'assigned_at', 'auto_assigned', 'remarks']
 
+# -------------------------
+# Shipment Tracking
+# -------------------------
 @admin.register(ShipmentTracking)
 class ShipmentTrackingAdmin(admin.ModelAdmin):
-    list_display = ['order', 'status', 'updated_at']
+    list_display = ['order', 'status', 'updated_at', 'remarks']
 
+# -------------------------
+# Address
+# -------------------------
 @admin.register(Address)
 class AddressAdmin(admin.ModelAdmin):
     list_display = ['user', 'full_name', 'city', 'country', 'is_billing', 'is_shipping']

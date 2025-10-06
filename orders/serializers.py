@@ -1,11 +1,8 @@
 from rest_framework import serializers
 from .models import Cart, CartItem, Order, OrderItem, Address
-from products.models import Product, ProductVariation, ProductImage
+from products.models import Product, ProductVariation
 
-class ProductImageSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = ProductImage
-        fields = ['id', 'image']
+# ------------------- PRODUCT -------------------
 
 class ProductVariationSerializer(serializers.ModelSerializer):
     color_name = serializers.SerializerMethodField()
@@ -21,27 +18,26 @@ class ProductVariationSerializer(serializers.ModelSerializer):
     def get_color_hex(self, obj):
         return getattr(obj.color, 'hex_code', None) if getattr(obj, 'color', None) else None
 
+
 class ProductSerializer(serializers.ModelSerializer):
-    images = ProductImageSerializer(many=True, read_only=True)
     variations = ProductVariationSerializer(many=True, read_only=True)
     price = serializers.SerializerMethodField()
     discount_percent = serializers.SerializerMethodField()
 
     class Meta:
         model = Product
-        fields = ['id', 'title', 'slug', 'price', 'discount_percent', 'images', 'variations']
+        fields = ['id', 'title', 'slug', 'price', 'discount_percent', 'variations']
 
     def get_price(self, obj):
-        try:
-            variations = obj.variations.all()
-            if variations.exists():
-                return min([v.price for v in variations])
-            return getattr(obj, 'price', 0)
-        except:
-            return 0
+        variations = obj.variations.all()
+        if variations.exists():
+            return min([v.price for v in variations])
+        return getattr(obj, 'price', 0)
 
     def get_discount_percent(self, obj):
         return float(getattr(obj, 'discount', 0) or 0)
+
+# ------------------- CART -------------------
 
 class CartItemSerializer(serializers.ModelSerializer):
     product = ProductSerializer(read_only=True)
@@ -54,12 +50,8 @@ class CartItemSerializer(serializers.ModelSerializer):
 
     def get_line_total(self, obj):
         price = getattr(obj, 'unit_price', 0)
-        if obj.variation:
-            try:
-                price = obj.variation.price
-            except:
-                price = getattr(obj, 'unit_price', 0)
         return round(price * getattr(obj, 'quantity', 1), 2)
+
 
 class CartSerializer(serializers.ModelSerializer):
     items = CartItemSerializer(many=True, read_only=True)
@@ -68,10 +60,13 @@ class CartSerializer(serializers.ModelSerializer):
         model = Cart
         fields = ['items']
 
+# ------------------- ORDER -------------------
+
 class AddressSerializer(serializers.ModelSerializer):
     class Meta:
         model = Address
         exclude = ['user']
+
 
 class OrderItemSerializer(serializers.ModelSerializer):
     product = ProductSerializer(read_only=True)
@@ -86,6 +81,7 @@ class OrderItemSerializer(serializers.ModelSerializer):
         price = getattr(obj, 'unit_price', 0)
         discount = getattr(getattr(obj, 'product', None), 'discount', 0) or 0
         return round(price * getattr(obj, 'quantity', 1) * (1 - discount / 100), 2)
+
 
 class OrderSerializer(serializers.ModelSerializer):
     items = OrderItemSerializer(many=True, read_only=True)

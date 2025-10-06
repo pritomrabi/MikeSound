@@ -3,23 +3,32 @@ from django.dispatch import receiver
 from .models import Order, OrderItem
 from inventory.models import Inventory
 
+# Adjust inventory when order confirmed
 @receiver(post_save, sender=Order)
 def adjust_inventory(sender, instance, created, **kwargs):
     if created and instance.status == 'confirmed':
         for item in instance.items.all():
-            inventory = Inventory.objects.get(product=item.product)
-            inventory.current_stock -= item.quantity
-            if inventory.current_stock < 0:
-                inventory.current_stock = 0
-            inventory.save()
+            try:
+                inventory = Inventory.objects.get(product=item.product)
+                inventory.current_stock -= item.quantity
+                if inventory.current_stock < 0:
+                    inventory.current_stock = 0
+                inventory.save()
+            except Inventory.DoesNotExist:
+                pass
 
+# Restore inventory on order deletion
 @receiver(pre_delete, sender=Order)
 def restore_inventory(sender, instance, **kwargs):
     for item in instance.items.all():
-        inventory = Inventory.objects.get(product=item.product)
-        inventory.current_stock += item.quantity
-        inventory.save()
+        try:
+            inventory = Inventory.objects.get(product=item.product)
+            inventory.current_stock += item.quantity
+            inventory.save()
+        except Inventory.DoesNotExist:
+            pass
 
+# Sold count
 @receiver(post_save, sender=OrderItem)
 def increase_sold_count(sender, instance, created, **kwargs):
     if created and instance.product:
@@ -31,6 +40,7 @@ def decrease_sold_count(sender, instance, **kwargs):
     if instance.product and instance.product.sold_count >= instance.quantity:
         instance.product.sold_count -= instance.quantity
         instance.product.save(update_fields=['sold_count'])
+
 
 @receiver(post_save, sender=Order)
 def handle_order_cancellation(sender, instance, **kwargs):
