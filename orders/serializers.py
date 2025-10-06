@@ -15,7 +15,7 @@ class ProductVariationSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = ProductVariation
-        fields = ['id', 'size', 'price', 'stock', 'color_name', 'color_hex']
+        fields = ['id', 'price', 'stock', 'color_name', 'color_hex']
 
     def get_color_name(self, obj):
         return obj.color.name if obj.color else "No Color"
