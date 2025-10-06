@@ -13,8 +13,7 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 from pathlib import Path
 import os
 from dotenv import load_dotenv
-
-load_dotenv()  # load .env file
+load_dotenv()
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -167,5 +166,6 @@ MANUAL_PAYMENT_ACCOUNTS = {
     "nagad": os.getenv("MANUAL_NAGAD"),
     "rocket": os.getenv("MANUAL_ROCKET"),
 }
+
 
 # python manage.py runserver_plus 127.0.0.1:8000 --cert-file cert.pem --key-file key.pem
