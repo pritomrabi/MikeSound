@@ -12,26 +12,32 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 
 from pathlib import Path
 import os
-from decouple import config, Csv
 from dotenv import load_dotenv
-load_dotenv()
+
+load_dotenv()  # load .env file
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = config("SECRET_KEY")
-DEBUG = config("DEBUG", default=False, cast=bool)
+# Secret & Debug
+SECRET_KEY = os.getenv("SECRET_KEY", "fallback-secret-key")
+DEBUG = os.getenv("DEBUG", "False").lower() in ("true", "1", "yes")
 ALLOWED_HOSTS = ["*"]
 
-
+# CORS
+CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
 ]
-CORS_ALLOW_ALL_ORIGINS = True
 
+# Auth
 AUTHENTICATION_BACKENDS = [
     'accounts.backends.EmailBackend',  # email login
-    'django.contrib.auth.backends.ModelBackend',  # fallback username login
+    'django.contrib.auth.backends.ModelBackend',  # username login fallback
 ]
+AUTH_USER_MODEL = 'accounts.CustomUser'
+LOGIN_URL = '/accounts/login/'
+
+# Installed apps
 INSTALLED_APPS = [
     "jazzmin",
     'django.contrib.admin',
@@ -44,8 +50,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'rest_framework',
     'django_extensions',
-    'ckeditor',
-    'ckeditor_uploader',
+    'django_ckeditor_5',
     # local apps
     'accounts',
     'products',
@@ -60,6 +65,7 @@ INSTALLED_APPS = [
     'pages',
 ]
 
+# Middleware
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
@@ -69,9 +75,9 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    "whitenoise.middleware.WhiteNoiseMiddleware",
 ]
 
+# URLs & Templates
 ROOT_URLCONF = 'config.urls'
 
 TEMPLATES = [
@@ -92,41 +98,42 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'config.wsgi.application'
 
+# Database (PostgreSQL, NeonDB)
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': config("DB_NAME"),
-        'USER': config("DB_USER"),
-        'PASSWORD': config("DB_PASSWORD"),
-        'HOST': config("DB_HOST"),
-        'PORT': config("DB_PORT"),
-        'OPTIONS': {
-            'sslmode': 'require',
-        },
-        'DISABLE_SERVER_SIDE_CURSORS': True,
+        'NAME': os.getenv("DB_NAME"),
+        'USER': os.getenv("DB_USER"),
+        'PASSWORD': os.getenv("DB_PASSWORD"),
+        'HOST': os.getenv("DB_HOST"),
+        'PORT': os.getenv("DB_PORT", 5432),
+        'OPTIONS': {'sslmode': 'require'},
     }
 }
-# CKEditor
-CKEDITOR_CONFIGS = {
+
+# CKEditor 5
+CKEDITOR_5_UPLOAD_PATH = "uploads/"
+CKEDITOR_5_CONFIGS = {
     'default': {
         'toolbar': 'full',
         'height': 300,
         'width': '100%',
-    },
+    }
 }
 
-LANGUAGE_CODE = 'en-us'
-TIME_ZONE = 'UTC'
-USE_I18N = True
-USE_TZ = True
-
+# Static & Media
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [BASE_DIR / "static"]
 STATIC_ROOT = BASE_DIR / "staticfiles"
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / "media"
-CKEDITOR_UPLOAD_PATH = "uploads/"
+
+# i18n
+LANGUAGE_CODE = 'en-us'
+TIME_ZONE = 'UTC'
+USE_I18N = True
+USE_TZ = True
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Email
@@ -134,36 +141,31 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = config("EMAIL_HOST_USER")
-EMAIL_HOST_PASSWORD = config("EMAIL_HOST_PASSWORD")
+EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
 
-# Auth
-AUTH_USER_MODEL = 'accounts.CustomUser'
-LOGIN_URL = '/accounts/login/'
+# Payments (Stripe / SSLCommerz / Bkash / Nogod)
+STRIPE_SECRET_KEY = os.getenv("STRIPE_SECRET_KEY")
+STRIPE_PUBLISHABLE_KEY = os.getenv("STRIPE_PUBLISHABLE_KEY")
+STRIPE_WEBHOOK_SECRET = os.getenv("STRIPE_WEBHOOK_SECRET")
 
-# Payments
-STRIPE_SECRET_KEY = config("STRIPE_SECRET_KEY")
-STRIPE_PUBLISHABLE_KEY = config("STRIPE_PUBLISHABLE_KEY")
-STRIPE_WEBHOOK_SECRET = config("STRIPE_WEBHOOK_SECRET")
+SSLCOMMERZ_URL = os.getenv("SSLCOMMERZ_URL")
+SSLCOMMERZ_STORE_ID = os.getenv("SSLCOMMERZ_STORE_ID")
+SSLCOMMERZ_STORE_PASS = os.getenv("SSLCOMMERZ_STORE_PASS")
+SSLCOMMERZ_SECRET = os.getenv("SSLCOMMERZ_SECRET")
 
-SSLCOMMERZ_URL = config("SSLCOMMERZ_URL")
-SSLCOMMERZ_STORE_ID = config("SSLCOMMERZ_STORE_ID")
-SSLCOMMERZ_STORE_PASS = config("SSLCOMMERZ_STORE_PASS")
-SSLCOMMERZ_SECRET = config("SSLCOMMERZ_SECRET")
+BKASH_URL = os.getenv("BKASH_URL")
+BKASH_MERCHANT = os.getenv("BKASH_MERCHANT")
+BKASH_SECRET = os.getenv("BKASH_SECRET")
 
-BKASH_URL = config("BKASH_URL")
-BKASH_MERCHANT = config("BKASH_MERCHANT")
-BKASH_SECRET = config("BKASH_SECRET")
-
-NOGOD_URL = config("NOGOD_URL")
-NOGOD_MERCHANT_NUMBER = config("NOGOD_MERCHANT_NUMBER")
-NOGOD_SECRET = config("NOGOD_SECRET")
+NOGOD_URL = os.getenv("NOGOD_URL")
+NOGOD_MERCHANT_NUMBER = os.getenv("NOGOD_MERCHANT_NUMBER")
+NOGOD_SECRET = os.getenv("NOGOD_SECRET")
 
 MANUAL_PAYMENT_ACCOUNTS = {
-    "bkash": config("MANUAL_BKASH"),
-    "nagad": config("MANUAL_NAGAD"),
-    "rocket": config("MANUAL_ROCKET"),
+    "bkash": os.getenv("MANUAL_BKASH"),
+    "nagad": os.getenv("MANUAL_NAGAD"),
+    "rocket": os.getenv("MANUAL_ROCKET"),
 }
-
 
 # python manage.py runserver_plus 127.0.0.1:8000 --cert-file cert.pem --key-file key.pem

@@ -13,6 +13,7 @@ def get_cart(request):
         session_key = request.session.session_key
         if not session_key:
             request.session.create()
+            session_key = request.session.session_key
         cart, _ = Cart.objects.get_or_create(session_key=session_key, user=None)
     return cart
 
@@ -37,24 +38,18 @@ def add_to_cart(request, product_id):
     variation = None
     if 'variation_id' in request.POST:
         variation = get_object_or_404(ProductVariation, id=request.POST['variation_id'])
-
     quantity = int(request.POST.get('quantity', 1))
     cart = get_cart(request)
-    
-    # discounted price
     unit_price = variation.product.get_discounted_price(variation) if variation else product.get_discounted_price()
-    
     cart_item, created = CartItem.objects.get_or_create(
         cart=cart,
         product=product,
         variation=variation,
         defaults={'unit_price': unit_price, 'quantity': quantity}
     )
-
     if not created:
         cart_item.quantity += quantity
         cart_item.save()
-
     return redirect('cart_view')
 
 def update_cart(request, item_id):

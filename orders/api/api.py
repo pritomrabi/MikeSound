@@ -1,5 +1,5 @@
 from rest_framework.decorators import api_view, permission_classes
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework import status
 from django.shortcuts import get_object_or_404
@@ -9,14 +9,14 @@ from products.models import ProductVariation
 
 # Cart APIs
 @api_view(['GET'])
-@permission_classes([IsAuthenticated])
+@permission_classes([AllowAny])
 def cart_detail_api(request):
     cart, _ = Cart.objects.get_or_create(user=request.user)
     serializer = CartSerializer(cart)
     return Response(serializer.data)
 
 @api_view(['POST'])
-@permission_classes([IsAuthenticated])
+@permission_classes([AllowAny])
 def cart_add_item_api(request):
     product_id = request.data.get('product_id')
     variation_id = request.data.get('variation_id')
@@ -50,7 +50,7 @@ def cart_add_item_api(request):
     return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 @api_view(['PUT', 'PATCH'])
-@permission_classes([IsAuthenticated])
+@permission_classes([AllowAny])
 def cart_update_item_api(request, item_id):
     item = get_object_or_404(CartItem, id=item_id, cart__user=request.user)
     quantity = int(request.data.get('quantity', item.quantity))
@@ -70,7 +70,7 @@ def cart_update_item_api(request, item_id):
     return Response(serializer.data)
 
 @api_view(['DELETE'])
-@permission_classes([IsAuthenticated])
+@permission_classes([AllowAny])
 def cart_remove_item_api(request, item_id):
     item = get_object_or_404(CartItem, id=item_id, cart__user=request.user)
     item.delete()
@@ -79,7 +79,7 @@ def cart_remove_item_api(request, item_id):
 
 # Order APIs
 @api_view(['POST'])
-@permission_classes([IsAuthenticated])
+@permission_classes([AllowAny])
 def place_order_api(request):
     cart = get_object_or_404(Cart, user=request.user)
     if not cart.items.exists():
@@ -133,7 +133,7 @@ def place_order_api(request):
     return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 @api_view(['GET'])
-@permission_classes([IsAuthenticated])
+@permission_classes([AllowAny])
 def order_list_api(request):
     if request.user.is_staff:
         orders = Order.objects.all().order_by('-created_at')
@@ -143,14 +143,14 @@ def order_list_api(request):
     return Response(serializer.data)
 
 @api_view(['GET'])
-@permission_classes([IsAuthenticated])
+@permission_classes([AllowAny])
 def order_detail_api(request, order_id):
     order = get_object_or_404(Order, id=order_id)
     serializer = OrderSerializer(order)
     return Response(serializer.data)
 
 @api_view(['DELETE'])
-@permission_classes([IsAuthenticated])
+@permission_classes([AllowAny])
 def order_delete_item_api(request, item_id):
     item = get_object_or_404(OrderItem, id=item_id)
     if item.order.user != request.user and not request.user.is_staff:
