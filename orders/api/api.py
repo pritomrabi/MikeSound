@@ -3,11 +3,10 @@ from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework import status
 from django.shortcuts import get_object_or_404
-from ..models import Cart, CartItem, Order, OrderItem
-from ..serializers import CartSerializer, OrderSerializer
-from products.models import Product, ProductVariation
+from ..models import *
+from ..serializers import *
+from products.models import *
 
-# Helper to get cart
 def get_cart_for_user(request):
     if request.user.is_authenticated:
         cart, _ = Cart.objects.get_or_create(user=request.user)
@@ -19,7 +18,8 @@ def get_cart_for_user(request):
         cart, _ = Cart.objects.get_or_create(session_key=session_key, user=None)
     return cart
 
-# Cart APIs
+# ------------------- CART APIs -------------------
+
 @api_view(['GET'])
 @permission_classes([AllowAny])
 def cart_detail_api(request):
@@ -36,12 +36,14 @@ def cart_add_item_api(request):
 
     product = get_object_or_404(Product, id=product_id)
     variation = None
+    unit_price = getattr(product, 'price', 0)
 
     if variation_id:
         variation = get_object_or_404(ProductVariation, id=variation_id)
-        if variation.stock < quantity:
+        unit_price = getattr(variation, 'price', unit_price)
+        if getattr(variation, 'stock', 0) < quantity:
             return Response({
-                "error": f"{variation.color.name if variation.color else 'No Color'} {variation.size if hasattr(variation, 'size') else ''} has only {variation.stock} in stock"
+                "error": f"{getattr(variation.color, 'name', 'No Color')} stock only {variation.stock}"
             }, status=status.HTTP_400_BAD_REQUEST)
 
     cart = get_cart_for_user(request)
@@ -49,16 +51,16 @@ def cart_add_item_api(request):
         cart=cart,
         product=product,
         variation=variation,
-        defaults={'quantity': quantity, 'unit_price': variation.price if variation else product.get_discounted_price()}
+        defaults={'quantity': quantity, 'unit_price': unit_price}
     )
 
     if not created:
-        new_quantity = cart_item.quantity + quantity
-        if variation and variation.stock < new_quantity:
+        new_qty = cart_item.quantity + quantity
+        if variation and getattr(variation, 'stock', 0) < new_qty:
             return Response({
-                "error": f"Cannot add {quantity} more. Available stock: {variation.stock - cart_item.quantity}"
+                "error": f"Cannot add {quantity} more. Available: {variation.stock - cart_item.quantity}"
             }, status=status.HTTP_400_BAD_REQUEST)
-        cart_item.quantity = new_quantity
+        cart_item.quantity = new_qty
         cart_item.save()
 
     serializer = CartSerializer(cart)
@@ -69,11 +71,11 @@ def cart_add_item_api(request):
 def cart_update_item_api(request, item_id):
     cart = get_cart_for_user(request)
     item = get_object_or_404(CartItem, id=item_id, cart=cart)
-    quantity = int(request.data.get('quantity', item.quantity))
+    quantity = int(request.data.get('quantity', getattr(item, 'quantity', 1)))
 
-    if item.variation and item.variation.stock < quantity:
+    if item.variation and getattr(item.variation, 'stock', 0) < quantity:
         return Response({
-            "error": f"Only {item.variation.stock} available for {item.variation.color.name if item.variation.color else 'No Color'} {item.variation.size if hasattr(item.variation, 'size') else ''}"
+            "error": f"Only {item.variation.stock} available"
         }, status=status.HTTP_400_BAD_REQUEST)
 
     if quantity <= 0:
@@ -94,7 +96,8 @@ def cart_remove_item_api(request, item_id):
     serializer = CartSerializer(cart)
     return Response(serializer.data)
 
-# Order APIs
+# ------------------- ORDER APIs -------------------
+
 @api_view(['POST'])
 @permission_classes([AllowAny])
 def place_order_api(request):
@@ -104,11 +107,11 @@ def place_order_api(request):
 
     out_of_stock = []
     for item in cart.items.all():
-        if item.variation and item.variation.stock < item.quantity:
+        if item.variation and getattr(item.variation, 'stock', 0) < item.quantity:
             out_of_stock.append({
-                "product": item.product.title,
-                "variation": f"{item.variation.color.name if item.variation.color else 'No Color'} {item.variation.size if hasattr(item.variation, 'size') else ''}",
-                "available_stock": item.variation.stock
+                "product": getattr(item.product, 'title', 'Unknown'),
+                "variation": f"{getattr(getattr(item.variation, 'color', None), 'name', 'No Color')}",
+                "available_stock": getattr(item.variation, 'stock', 0)
             })
 
     if out_of_stock:
@@ -117,7 +120,7 @@ def place_order_api(request):
             "details": out_of_stock
         }, status=status.HTTP_400_BAD_REQUEST)
 
-    subtotal = sum([item.line_total for item in cart.items.all()])
+    subtotal = sum([item.quantity * item.unit_price for item in cart.items.all()])
     shipping_fee = sum([item.quantity * 50 for item in cart.items.all()])
     discount = request.session.get('coupon_discount', 0)
     grand_total = subtotal + shipping_fee - discount
@@ -141,9 +144,7 @@ def place_order_api(request):
             unit_price=item.unit_price
         )
         if item.variation:
-            item.variation.stock -= item.quantity
-            if item.variation.stock < 0:
-                item.variation.stock = 0
+            item.variation.stock = max(getattr(item.variation, 'stock', 0) - item.quantity, 0)
             item.variation.save()
 
     cart.items.all().delete()
