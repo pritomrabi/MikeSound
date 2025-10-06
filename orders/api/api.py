@@ -5,7 +5,7 @@ from rest_framework import status
 from django.shortcuts import get_object_or_404
 from ..models import *
 from ..serializers import *
-
+from customers.models import Coupon
 # ------------------- HELPERS -------------------
 
 def get_cart_for_user(request):
@@ -85,3 +85,20 @@ def place_order_api(request):
 
     serializer = OrderSerializer(order)
     return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+
+@api_view(['POST'])
+@permission_classes([AllowAny])
+def apply_coupon_api(request):
+    code = request.data.get("code", "").strip().upper()
+    try:
+        coupon = Coupon.objects.get(code=code, active=True)
+        return Response({
+            "valid": True,
+            "discount_percent": coupon.discount_percent
+        })
+    except Coupon.DoesNotExist:
+        return Response({
+            "valid": False,
+            "error": "Coupon not match"
+        }, status=400)
