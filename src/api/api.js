@@ -20,9 +20,10 @@ export const apiRequest = async (method, url, data = null, token = null) => {
 
 
 // Product APIs
+
 export const getProducts = (offer_type = "") => {
   const query = offer_type ? `?offer_type=${offer_type}` : "";
-  return apiRequest("get", `/api/products/${query}`);
+  return apiRequest("get", `/api/products${query}`); // removed extra slash
 };
 
 export const getProductById = (id) => apiRequest("get", `/api/products/${id}/`);
