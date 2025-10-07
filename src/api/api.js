@@ -14,10 +14,25 @@ export const apiRequest = async (method, url, data = null, token = null) => {
     const res = await API({ method, url, data, ...config });
     return res.data;
   } catch (err) {
-    console.log("Error response:", err.response || err);
     return { error: err.response?.data?.error || "Server not reachable" };
   }
 };
+
+
+// Product APIs
+export const getProducts = (offer_type = "") => {
+  const query = offer_type ? `?offer_type=${offer_type}` : "";
+  return apiRequest("get", `/api/products/${query}`);
+};
+
+export const getProductById = (id) => apiRequest("get", `/api/products/${id}/`);
+// export const getLatestProducts = () => apiRequest("get", "/api/products/latest/");
+export const getSubCategories = () => apiRequest("get", "/api/subcategories/latest/");
+export const getProductsByCategory = (slug) =>
+  apiRequest("get", `/api/products/?category=${slug}`);
+
+// Cart APIs
+
 
 // User APIs
 export const registerUser = (name, email, phone, password, confirm_password) =>
@@ -40,17 +55,3 @@ export const verifyForgotOtp = (otp, user_id) =>
 
 export const resetPassword = (user_id, new_password, confirm_password) =>
   apiRequest("post", "/accounts/api/reset-password/", { user_id, new_password, confirm_password });
-
-// Product APIs
-export const getProducts = (offer_type = "") => {
-  const query = offer_type ? `?offer_type=${offer_type}` : "";
-  return apiRequest("get", `/api/products/${query}`);
-};
-
-export const getProductById = (id) => apiRequest("get", `/api/products/${id}/`);
-export const getLatestProducts = () => apiRequest("get", "/api/products/latest/");
-export const getSubCategories = () => apiRequest("get", "/api/subcategories/latest/");
-
-export const getProductsByCategory = (slug) =>
-  apiRequest("get", `/api/products/?category=${slug}`);
-

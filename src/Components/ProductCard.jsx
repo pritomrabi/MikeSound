@@ -2,7 +2,10 @@ import { Link } from "react-router-dom";
 import { AiFillStar } from "react-icons/ai";
 import { LuSearch } from "react-icons/lu";
 import { IoCartOutline } from "react-icons/io5";
-
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { useDispatch } from "react-redux";
+import { addtoCart } from "../redux/reducer/ProductSlice";
 const ProductCard = ({ product, onQuickView }) => {
   if (!product || !product.title) return null;
 
@@ -10,8 +13,21 @@ const ProductCard = ({ product, onQuickView }) => {
     ? Math.round(((product.oldPrice - product.price) / product.oldPrice) * 100)
     : 0;
 
+  const dispatch = useDispatch();
+  const handleAddToCart = (product) => {
+    dispatch(addtoCart({
+      id: product.id,
+      title: product.title,
+      price: product.price,
+      quantity: 1,
+      image: product.img || "https://via.placeholder.com/150",
+    }));
+    toast.success("Product added to cart successfully!");
+  };
+
   return (
     <div className="relative group bg-white dark:bg-[#2a2a2a] rounded-md shadow-md overflow-hidden">
+      <ToastContainer position="top-center" autoClose={2000} theme="colored" />
       {/* Image */}
       <Link to={`/singleproduct/${product.id}`}>
         <div className="relative overflow-hidden rounded-t-md">
@@ -76,10 +92,12 @@ const ProductCard = ({ product, onQuickView }) => {
         </div>
         <div className="relative group/icon">
           <button
+            onClick={() => handleAddToCart(product)}
             className="text-xl text-primary hover:text-secandari duration-200 cursor-pointer"
           >
             <IoCartOutline />
           </button>
+
           <span className="absolute right-full top-1/2 -translate-y-1/2 mr-2 px-2 py-1 rounded bg-black text-white text-xs opacity-0 group-hover/icon:opacity-100 whitespace-nowrap">
             Add To Cart
           </span>

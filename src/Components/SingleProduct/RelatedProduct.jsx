@@ -1,13 +1,48 @@
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Slider from "react-slick";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Heading from "../../Utilities/Heading";
 import ProductCard from "../ProductCard";
+import { getProducts } from "../../api/api";
 import ProductQuickView from "../Home/ProductQuickView";
 
-const RelatedProduct = ({ currentProduct, allProducts = [] }) => {
-  const [quickView, setQuickView] = useState(false);
+const RelatedProduct = ({ currentProduct }) => {
+  const [quickView, setQuickView] = useState(null);
+  const [allProducts, setAllProducts] = useState([]);
+  const [relatedProducts, setRelatedProducts] = useState([]);
+
+  // Fetch all products
+  useEffect(() => {
+    const fetchProducts = async () => {
+      const res = await getProducts();
+      if (!res.error && res.products) {
+        setAllProducts(res.products);
+      }
+    };
+    fetchProducts();
+  }, []);
+
+  // Filter related products based on subcategory or category
+  useEffect(() => {
+    if (!currentProduct || allProducts.length === 0) return;
+
+    let related = allProducts.filter(
+      (p) =>
+        p.subcategory_name === currentProduct.subcategory_name &&
+        p.id !== currentProduct.id
+    );
+
+    if (related.length === 0) {
+      related = allProducts.filter(
+        (p) =>
+          p.category_name === currentProduct.category_name &&
+          p.id !== currentProduct.id
+      );
+    }
+
+    setRelatedProducts(related);
+  }, [currentProduct, allProducts]);
 
   const settings = {
     dots: false,
@@ -25,44 +60,51 @@ const RelatedProduct = ({ currentProduct, allProducts = [] }) => {
     ],
   };
 
-  let relatedProducts = [];
-  if (currentProduct) {
-    relatedProducts = allProducts.filter(
-      (p) =>
-        p.subcategory_name === currentProduct.subcategory_name &&
-        p.id !== currentProduct.id
-    );
-
-    if (relatedProducts.length === 0) {
-      relatedProducts = allProducts.filter(
-        (p) =>
-          p.category_name === currentProduct.category_name &&
-          p.id !== currentProduct.id
-      );
-    }
-  }
-
   return (
     <section className="py-12 bg-[#f5f5f5] dark:bg-[#1b1b1b]">
       <div className="container mx-auto px-1 md:px-4">
         <Heading Head="Related Products" />
         {relatedProducts.length > 0 ? (
           <Slider {...settings}>
-            {relatedProducts.map((product, idx) => (
-              <div key={idx} className="md:px-2 px-1 pt-5">
-                <ProductCard
-                  product={product}
-                  onQuickView={() => setQuickView(true)}
-                />
-              </div>
-            ))}
+            {relatedProducts.map((product, idx) => {
+              const firstVariation = product.variations?.[0] || {};
+              const finalPrice = firstVariation.final_price || product.price;
+              const oldPrice = firstVariation.price || null;
+              const discount = oldPrice
+                ? Math.round(((oldPrice - finalPrice) / oldPrice) * 100)
+                : 0;
+              const image = product.images?.[0]?.image || "https://via.placeholder.com/300x300";
+
+              return (
+                <div key={idx} className="md:px-2 px-1 pt-5">
+                  <ProductCard
+                    product={{
+                      id: product.id,
+                      title: product.title,
+                      img: image,
+                      price: finalPrice,
+                      oldPrice: oldPrice,
+                      discount: discount,
+                      rating: product.rating,
+                      sold: product.sold
+                    }}
+                    onQuickView={() => setQuickView(product.id)}
+                  />
+                </div>
+              );
+            })}
           </Slider>
         ) : (
           <p className="text-center text-gray-500 font-medium py-10">
-            Product not available
+            Related products not available
           </p>
         )}
-        {quickView && <ProductQuickView setQuickView={setQuickView} />}
+        {quickView && (
+          <ProductQuickView
+            productId={quickView}
+            setQuickView={() => setQuickView(null)}
+          />
+        )}
       </div>
     </section>
   );

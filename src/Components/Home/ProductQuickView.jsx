@@ -5,8 +5,16 @@ import { AiFillStar } from "react-icons/ai";
 import { motion, AnimatePresence } from "framer-motion";
 import { IoClose } from "react-icons/io5";
 import { getProductById } from "../../api/api";
+import { addtoCart } from "../../redux/reducer/ProductSlice";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const ProductQuickView = ({ setQuickView, productId }) => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const [quantity, setQuantity] = useState(1);
@@ -30,6 +38,7 @@ const ProductQuickView = ({ setQuickView, productId }) => {
   }, [productId]);
 
   const handleVariationSelect = (variation) => setSelectedVariation(variation);
+
   const totalPrice = selectedVariation
     ? selectedVariation.price * quantity
     : product?.price * quantity;
@@ -39,6 +48,28 @@ const ProductQuickView = ({ setQuickView, productId }) => {
     const x = ((e.clientX - left) / width) * 100;
     const y = ((e.clientY - top) / height) * 100;
     setZoomPosition({ x, y });
+  };
+
+  const handleAddToCart = () => {
+    dispatch(addtoCart({
+      id: product.id,
+      title: product.title,
+      price: selectedVariation?.final_price || product.price,
+      quantity,
+      image: product.images[0]?.image || "https://via.placeholder.com/150",
+    }));
+    toast.success("Product added to cart successfully!");
+  };
+
+  const handleShopNow = () => {
+    dispatch(addtoCart({
+      id: product.id,
+      title: product.title,
+      price: selectedVariation?.final_price || product.price,
+      quantity,
+      image: product.images[0]?.image || "https://via.placeholder.com/150",
+    }));
+    navigate("/checkout");
   };
 
   if (loading) {
@@ -60,6 +91,7 @@ const ProductQuickView = ({ setQuickView, productId }) => {
       className="fixed top-0 inset-0 bg-[rgba(0,0,0,0.2)] z-50 h-full w-full overflow-auto px-4 py-5 md:py-20 flex items-start justify-center"
       onClick={setQuickView}
     >
+      <ToastContainer position="top-center" autoClose={2000} theme="colored" />
       <div
         className="bg-[#fdfeff] dark:bg-[#1a1a1a] w-full max-w-full md:max-w-3xl lg:max-w-5xl rounded-lg shadow-lg flex flex-col md:flex-row mt-5 relative"
         onClick={(e) => e.stopPropagation()}
@@ -155,10 +187,20 @@ const ProductQuickView = ({ setQuickView, productId }) => {
             <p className="text-lg font-semibold text-black sm:ml-4">Total: ৳{totalPrice}</p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-2 lg:grid-cols-3 gap-3 mt-4">
-            <button className="bg-orange-500 cursor-pointer hover:bg-orange-600 text-white px-6 py-2 rounded">Add to Cart</button>
-            <button className="bg-brand cursor-pointer text-white px-6 py-2 rounded">Shop Now</button>
-            <button className="bg-green-500 hover:bg-green-600 cursor-pointer text-white px-6 py-2 rounded">WhatsApp</button>
+          <div className="flex flex-col sm:flex-row gap-3 mt-4">
+            <button
+              className="bg-orange-500 hover:bg-orange-600 text-white px-6 py-2 rounded"
+              onClick={handleAddToCart}
+            >
+              Add to Cart
+            </button>
+            <button
+              className="bg-brand text-white px-6 py-2 rounded"
+              onClick={handleShopNow}
+            >
+              Shop Now
+            </button>
+            <button className="bg-green-500 hover:bg-green-600 text-white px-6 py-2 rounded">WhatsApp</button>
           </div>
         </div>
       </div>

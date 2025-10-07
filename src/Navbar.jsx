@@ -9,6 +9,7 @@ import Search from "./Utilities/Search";
 import ShoppingCart from "./Utilities/ShoppingCart";
 import Cart from "./Utilities/Cart";
 import ThemeToggle from "./Utilities/ThemeToggle";
+import { useSelector } from "react-redux";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(true);
@@ -21,7 +22,12 @@ const Navbar = () => {
   useEffect(() => {
     setShop(false);
   }, [location.pathname]);
+  
+  const cartItems = useSelector(state =>
+    Array.isArray(state.cartList?.product) ? state.cartList.product : []
+  );
 
+  const totalItems = cartItems.length;
   // === Menus with subcategories ===
   const menuItems = [
     { title: "Headphone", path: "headphone", sub: ["Wireless Headphones", "Noise Cancelling", "Over-Ear", "On-Ear"] },
@@ -93,10 +99,13 @@ const Navbar = () => {
 
               <div onClick={() => setShop(true)} className="relative inline-block">
                 <PiShoppingCartSimpleLight className="sm:text-2xl text-xl cursor-pointer" />
-                <span className="bg-brand text-white text-[8px] rounded-full w-3 h-3 absolute -top-1 -left-1 flex items-center justify-center">
-                  0
-                </span>
+                {totalItems > 0 && (
+                  <span className="bg-brand text-white text-[8px] rounded-full w-3 h-3 absolute -top-1 -left-1 flex items-center justify-center">
+                    {totalItems}
+                  </span>
+                )}
               </div>
+
               {/* <Link to="/login">
                 <FaRegUserCircle className="sm:text-2xl text-xl cursor-pointer" />
               </Link> */}
