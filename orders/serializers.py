@@ -5,10 +5,8 @@ from products.models import ProductVariation, Product
 class AddressSerializer(serializers.ModelSerializer):
     class Meta:
         model = Address
-        fields = [
-            'id', 'full_name', 'line1', 'line2', 'city', 'state', 
-            'postal_code', 'country', 'email', 'phone', 'note'
-        ]
+        fields = [ "full_name","phone","line1","line2","city","postal_code","email","note",]
+
 
 class OrderItemSerializer(serializers.ModelSerializer):
     product_title = serializers.CharField(source='product.title', read_only=True)

@@ -49,7 +49,8 @@ INSTALLED_APPS = [
     'corsheaders',
     'rest_framework',
     'django_extensions',
-    'django_ckeditor_5',
+    'ckeditor',
+    'ckeditor_uploader',
     # local apps
     'accounts',
     'products',
@@ -109,14 +110,13 @@ DATABASES = {
     }
 }
 
-# CKEditor 5
-CKEDITOR_5_UPLOAD_PATH = "uploads/"
-CKEDITOR_5_CONFIGS = {
+CKEDITOR_UPLOAD_PATH = "uploads/"
+CKEDITOR_CONFIGS = {
     'default': {
         'toolbar': 'full',
         'height': 300,
         'width': '100%',
-    }
+    },
 }
 
 # Static & Media

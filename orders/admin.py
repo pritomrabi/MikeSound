@@ -19,4 +19,4 @@ class PaymentNumberAdmin(admin.ModelAdmin):
 
 @admin.register(Address)
 class AddressAdmin(admin.ModelAdmin):
-    list_display = ['full_name', 'city', 'state', 'country', 'phone']
+    list_display = ['full_name', 'phone', 'line1', 'line2', 'city', 'postal_code']
