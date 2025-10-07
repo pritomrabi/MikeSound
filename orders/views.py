@@ -1,104 +1,131 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from .models import Cart, Address, Order, OrderItem
-from django.db import transaction
-from customers.models import Coupon
-# Helper to get cart for both guest and logged-in user
-def get_cart(request):
-    if request.user.is_authenticated:
-        cart, _ = Cart.objects.get_or_create(user=request.user)
-    else:
-        session_key = request.session.session_key
-        if not session_key:
-            request.session.create()
-            session_key = request.session.session_key
-        cart, _ = Cart.objects.get_or_create(session_key=session_key, user=None)
-    return cart
+from django.http import JsonResponse
+from .models import Order, OrderItem, Address, Transaction, PaymentNumber
+from products.models import Product, ProductVariation
 
-# ------------------- CHECKOUT / COUPON -------------------
+# Checkout: create order
+def place_order(request):
+    if request.method != 'POST':
+        return JsonResponse({'error': 'POST required'}, status=400)
 
-def checkout_view(request):
-    cart = get_cart(request)
-    addresses = Address.objects.filter(user=request.user) if request.user.is_authenticated else []
-    subtotal = sum([item.line_total for item in cart.items.all()])
-    shipping_fee = sum([item.quantity * 50 for item in cart.items.all()])
+    data = request.POST
+    items = data.get('items')  # [{"product_id":1,"variation_id":2,"quantity":3}, ...]
+    address_data = data.get('address')  # full_name, line1, line2, city, state, postal_code, country, email, phone, note
 
-    coupon_id = request.session.get('coupon_id')
+    # Create Address
+    addr = Address.objects.create(
+        user=request.user if request.user.is_authenticated else None,
+        full_name=address_data['full_name'],
+        line1=address_data['line1'],
+        line2=address_data.get('line2',''),
+        city=address_data['city'],
+        state=address_data['state'],
+        postal_code=address_data.get('postal_code',''),
+        country=address_data['country'],
+        email=address_data.get('email',''),
+        phone=address_data['phone'],
+        note=address_data.get('note','')
+    )
+
+    # Calculate totals
+    subtotal = 0
+    for i in items:
+        prod = Product.objects.get(id=i['product_id'])
+        price = prod.get_discounted_price(
+            ProductVariation.objects.filter(id=i.get('variation_id')).first()
+        )
+        subtotal += price * i['quantity']
+
+    shipping_fee = 0
     discount = 0
-    coupon = None
-    if coupon_id:
-        try:
-            coupon = Coupon.objects.get(id=coupon_id)
-            if coupon.is_valid():
-                discount = coupon.discount_percent / 100 * subtotal
-        except Coupon.DoesNotExist:
-            pass
-
     grand_total = subtotal + shipping_fee - discount
-    return render(request, 'orders/checkout.html', {
-        'cart': cart,
-        'items': cart.items.all(),
-        'addresses': addresses,
-        'subtotal': subtotal,
-        'shipping_fee': shipping_fee,
-        'discount': discount,
-        'grand_total': grand_total,
-        'coupon': coupon
+
+    # Create Order
+    order = Order.objects.create(
+        user=request.user if request.user.is_authenticated else None,
+        address=addr,
+        subtotal=subtotal,
+        shipping_fee=shipping_fee,
+        discount=discount,
+        grand_total=grand_total,
+        status='pending',
+        payment_status='pending'
+    )
+
+    # Create Order Items
+    for i in items:
+        prod = Product.objects.get(id=i['product_id'])
+        var = ProductVariation.objects.filter(id=i.get('variation_id')).first()
+        price = prod.get_discounted_price(var)
+        OrderItem.objects.create(
+            order=order,
+            product=prod,
+            variation=var,
+            quantity=i['quantity'],
+            unit_price=price
+        )
+
+    # Create Transaction (manual)
+    txn = Transaction.objects.create(
+        order=order,
+        amount=grand_total,
+        gateway='manual',
+        status='pending'
+    )
+
+    return JsonResponse({'success': True, 'order_id': order.id, 'txn_id': txn.id})
+
+# Manual Payment submission by user
+def manual_payment_submit(request, txn_id):
+    txn = get_object_or_404(Transaction, id=txn_id)
+    reference = request.POST.get('reference','').strip()
+    if not reference:
+        return JsonResponse({'error':'Reference required'}, status=400)
+    txn.reference = reference
+    txn.status = 'pending'
+    txn.save()
+    return JsonResponse({'success': True, 'txn_id': txn.id})
+
+
+def cancel_order(request, order_id):
+    # User authenticated না হলেও session key দিয়ে order lookup
+    if request.user.is_authenticated:
+        order = get_object_or_404(Order, id=order_id, user=request.user)
+    else:
+        session_key = request.session.session_key or request.session.create()
+        order = get_object_or_404(Order, id=order_id, session_key=session_key)
+
+    if order.status in ['canceled', 'delivered']:
+        return JsonResponse({'error': 'Cannot cancel this order'}, status=400)
+
+    order.status = 'canceled'
+    order.save()  # Signal automatically handles inventory & sold count
+
+    return JsonResponse({
+        'success': True,
+        'order_id': order.id,
+        'new_status': order.status
     })
 
-def apply_coupon(request):
-    if request.method == 'POST':
-        code = request.POST.get('code').strip()
-        cart = get_cart(request)
-        try:
-            coupon = Coupon.objects.get(code=code, active=True)
-            subtotal = sum([item.line_total for item in cart.items.all()])
-            discount = subtotal * coupon.amount / 100 if coupon.discount_type != 'fixed' else coupon.amount
+def order_history(request):
+    if not request.user.is_authenticated:
+        return JsonResponse({'error': 'Authentication required'}, status=401)
 
-            request.session['coupon_code'] = coupon.code
-            request.session['coupon_discount'] = float(discount)
-        except Coupon.DoesNotExist:
-            request.session['coupon_code'] = None
-            request.session['coupon_discount'] = 0
-
-    return redirect('checkout_view')
-
-# ------------------- PLACE ORDER -------------------
-
-def place_order(request):
-    cart = get_cart(request)
-    if not cart.items.exists():
-        return redirect('checkout_view')
-
-    if request.method == 'POST':
-        user = request.user if request.user.is_authenticated else None
-
-        subtotal = sum([item.line_total for item in cart.items.all()])
-        shipping_fee = sum([item.quantity * 50 for item in cart.items.all()])
-        discount = request.session.get('coupon_discount', 0)
-        grand_total = subtotal + shipping_fee - discount
-
-        with transaction.atomic():
-            order = Order.objects.create(
-                user=user,
-                subtotal=subtotal,
-                shipping_fee=shipping_fee,
-                discount=discount,
-                grand_total=grand_total,
-                status='confirmed',
-                payment_status='pending'
-            )
-
-            for item in cart.items.all():
-                OrderItem.objects.create(
-                    order=order,
-                    product=item.product,
-                    variation=item.variation,
-                    quantity=item.quantity,
-                    unit_price=item.unit_price
-                )
-
-            cart.items.all().delete()
-            request.session['coupon_discount'] = 0
-            request.session['coupon_code'] = None
-
-        return redirect('order_detail', order_id=order.id)
+    orders = Order.objects.filter(user=request.user).order_by('-created_at')
+    data = []
+    for order in orders:
+        items = [{
+            'product': item.product.title,
+            'variation': item.variation.color.name if item.variation and item.variation.color else None,
+            'quantity': item.quantity,
+            'line_total': item.line_total
+        } for item in order.items.all()]
+        data.append({
+            'id': order.id,
+            'status': order.status,
+            'payment_status': order.payment_status,
+            'grand_total': float(order.grand_total),
+            'items': items,
+            'created_at': order.created_at.strftime('%Y-%m-%d %H:%M:%S')
+        })
+    return JsonResponse({'orders': data})

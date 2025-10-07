@@ -3,73 +3,56 @@ from django.dispatch import receiver
 from .models import Order, OrderItem
 from inventory.models import Inventory
 
-# Adjust inventory when order confirmed
-@receiver(post_save, sender=Order)
-def adjust_inventory(sender, instance, created, **kwargs):
-    if created and instance.status == 'confirmed':
-        for item in instance.items.all():
-            try:
-                inventory = Inventory.objects.get(product=item.product)
-                inventory.current_stock -= item.quantity
-                if inventory.current_stock < 0:
-                    inventory.current_stock = 0
-                inventory.save()
-            except Inventory.DoesNotExist:
-                pass
-
-# Restore inventory on order deletion
-@receiver(pre_delete, sender=Order)
-def restore_inventory(sender, instance, **kwargs):
-    for item in instance.items.all():
-        try:
+def adjust_inventory_item(item, increase=False):
+    try:
+        if item.variation:
+            inventory = Inventory.objects.get(product=item.product, variation=item.variation)
+        else:
             inventory = Inventory.objects.get(product=item.product)
-            inventory.current_stock += item.quantity
-            inventory.save()
-        except Inventory.DoesNotExist:
-            pass
+        qty_change = item.quantity if not increase else -item.quantity
+        inventory.current_stock -= qty_change
+        if inventory.current_stock < 0:
+            inventory.current_stock = 0
+        inventory.save()
+    except Inventory.DoesNotExist:
+        pass
 
-# Sold count
-@receiver(post_save, sender=OrderItem)
-def increase_sold_count(sender, instance, created, **kwargs):
-    if created and instance.product:
-        instance.product.sold_count += instance.quantity
-        instance.product.save(update_fields=['sold_count'])
+def adjust_sold_count(item, increase=True):
+    if item.product:
+        change = item.quantity if increase else -item.quantity
+        item.product.sold_count += change
+        if item.product.sold_count < 0:
+            item.product.sold_count = 0
+        item.product.save(update_fields=['sold_count'])
 
-@receiver(pre_delete, sender=OrderItem)
-def decrease_sold_count(sender, instance, **kwargs):
-    if instance.product and instance.product.sold_count >= instance.quantity:
-        instance.product.sold_count -= instance.quantity
-        instance.product.save(update_fields=['sold_count'])
+# Order confirmed with paid status
+@receiver(post_save, sender=Order)
+def handle_order_confirmation(sender, instance, **kwargs):
+    if instance.status == 'confirmed' and instance.payment_status == 'paid':
+        for item in instance.items.all():
+            adjust_inventory_item(item)
+            adjust_sold_count(item, increase=True)
+        # Clear user's cart or guest session cart
+        cart = None
+        if instance.user:
+            cart = getattr(instance.user, 'cart', None)
+        else:
+            from .models import Cart
+            cart = Cart.objects.filter(session_key=getattr(instance, 'session_key', None)).first()
+        if cart:
+            cart.items.all().delete()
 
-
+# Order canceled
 @receiver(post_save, sender=Order)
 def handle_order_cancellation(sender, instance, **kwargs):
     if instance.status == 'canceled':
         for item in instance.items.all():
-            if item.product and item.product.sold_count >= item.quantity:
-                item.product.sold_count -= item.quantity
-                item.product.save(update_fields=['sold_count'])
+            adjust_inventory_item(item, increase=True)
+            adjust_sold_count(item, increase=False)
 
-@receiver(post_save, sender=Order)
-def handle_order_confirmation(sender, instance, **kwargs):
-    if instance.status == 'confirmed' and instance.payment_status == 'paid':
-        # Inventory adjust
-        for item in instance.items.all():
-            try:
-                inventory = Inventory.objects.get(product=item.product)
-                inventory.current_stock -= item.quantity
-                if inventory.current_stock < 0:
-                    inventory.current_stock = 0
-                inventory.save()
-            except Inventory.DoesNotExist:
-                pass
-
-            # Product sold count
-            if item.product:
-                item.product.sold_count += item.quantity
-                item.product.save(update_fields=['sold_count'])
-
-        # Clear user's cart
-        cart = getattr(instance.user, 'cart', None)
-        if cart:
-            cart.items.all().delete()
+# Restore inventory if order deleted
+@receiver(pre_delete, sender=Order)
+def restore_inventory_on_delete(sender, instance, **kwargs):
+    for item in instance.items.all():
+        adjust_inventory_item(item, increase=True)
+        adjust_sold_count(item, increase=False)

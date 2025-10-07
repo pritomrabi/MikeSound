@@ -1,28 +1,19 @@
-<h2>Manual Payment Instructions</h2>
-<p>Order ID: {{ txn.order.id }}</p>
-<p>Amount: {{ txn.amount }}</p>
-<p>Payment Method: {{ txn.gateway }}</p>
-<p><strong>Important:</strong> While sending money via {{ txn.gateway }}, include this Transaction ID as reference:</p>
-<p style="font-size:16px; font-weight:bold; color:green;">Txn#{{ txn.id }}</p>
+<h3>Manual Payment</h3>
 
-{% if payment_numbers %}
-<h3>Available Payment Numbers</h3>
+<p>Send payment to one of these accounts:</p>
 <ul>
-{% for pay in payment_numbers %}
-<li>{{ pay.gateway }} Number: {{ pay.account_number }}</li>
-{% endfor %}
+  {% for num in payment_numbers %}
+  <li>{{ num.gateway }}: {{ num.account_number }}</li>
+  {% endfor %}
 </ul>
-{% else %}
-<p>No manual payment numbers available.</p>
-{% endif %}
 
-<form method="post" action="{% url 'payment_manual_submit' txn.id %}">
-    {% csrf_token %}
-    <label>Enter Reference Number received after payment</label>
-    <input type="text" name="reference" placeholder="e.g. bKash Txn ID" required>
-    <button type="submit">Submit</button>
+<form method="POST" action="{% url 'payment_manual_submit' txn.id %}">
+  {% csrf_token %}
+  <label>Enter your transaction reference:</label>
+  <input type="text" name="reference" required>
+  <button type="submit">Submit</button>
 </form>
 
-<p style="color:red; font-weight:bold;">
-Make sure you enter Txn#{{ txn.id }} in your payment reference to help admin verify your payment.
-</p>
+{% if error %}
+<p style="color:red">{{ error }}</p>
+{% endif %}

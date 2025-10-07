@@ -1,104 +1,104 @@
 from rest_framework.decorators import api_view, permission_classes
-from rest_framework.permissions import AllowAny
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.response import Response
-from rest_framework import status
 from django.shortcuts import get_object_or_404
-from ..models import *
-from ..serializers import *
-from customers.models import Coupon
-# ------------------- HELPERS -------------------
+from ..models import Order, OrderItem, Address, Transaction
+from ..serializers import OrderSerializer, TransactionSerializer, AddressSerializer
+from products.models import Product, ProductVariation
+from decimal import Decimal
 
-def get_cart_for_user(request):
-    if request.user.is_authenticated:
-        cart, _ = Cart.objects.get_or_create(user=request.user)
-    else:
-        session_key = request.session.session_key
-        if not session_key:
-            request.session.create()
-            session_key = request.session.session_key
-        cart, _ = Cart.objects.get_or_create(session_key=session_key, user=None)
-    return cart
-
-# ------------------- CART API -------------------
-
-@api_view(['GET'])
-@permission_classes([AllowAny])
-def cart_detail_api(request):
-    cart = get_cart_for_user(request)
-    serializer = CartSerializer(cart)
-    return Response(serializer.data)
-
-# ------------------- ORDER API -------------------
-
-@api_view(['GET'])
-@permission_classes([AllowAny])
-def order_list_api(request):
-    if request.user.is_staff:
-        orders = Order.objects.all().order_by('-created_at')
-    else:
-        orders = Order.objects.filter(user=request.user).order_by('-created_at')
-    serializer = OrderSerializer(orders, many=True)
-    return Response(serializer.data)
-
-
-@api_view(['GET'])
-@permission_classes([AllowAny])
-def order_detail_api(request, order_id):
-    order = get_object_or_404(Order, id=order_id)
-    serializer = OrderSerializer(order)
-    return Response(serializer.data)
-
-
+# ---------------------------
+# Cart / Checkout API
+# ---------------------------
 @api_view(['POST'])
 @permission_classes([AllowAny])
 def place_order_api(request):
-    cart = get_cart_for_user(request)
-    if not cart.items.exists():
-        return Response({"error": "Cart is empty"}, status=status.HTTP_400_BAD_REQUEST)
+    data = request.data
+    items = data.get('items', [])
+    address_data = data.get('address', {})
 
-    subtotal = sum([item.quantity * item.unit_price for item in cart.items.all()])
-    shipping_fee = sum([item.quantity * 50 for item in cart.items.all()])
-    discount = request.session.get('coupon_discount', 0)
-    grand_total = subtotal + shipping_fee - discount
+    if not items or not address_data:
+        return Response({'error': 'Items and address required'}, status=400)
+
+    addr_serializer = AddressSerializer(data=address_data)
+    if addr_serializer.is_valid():
+        addr = addr_serializer.save(user=request.user if request.user.is_authenticated else None)
+    else:
+        return Response(addr_serializer.errors, status=400)
+
+    subtotal = Decimal(0)
+    for i in items:
+        prod = get_object_or_404(Product, id=i['product_id'])
+        var = ProductVariation.objects.filter(id=i.get('variation_id')).first()
+        price = prod.get_discounted_price(var)
+        subtotal += price * i['quantity']
+
+    grand_total = subtotal  # shipping, discount can be added if needed
 
     order = Order.objects.create(
         user=request.user if request.user.is_authenticated else None,
+        address=addr,
         subtotal=subtotal,
-        shipping_fee=shipping_fee,
-        discount=discount,
+        shipping_fee=0,
+        discount=0,
         grand_total=grand_total,
-        status='confirmed',
+        status='pending',
         payment_status='pending'
     )
 
-    for item in cart.items.all():
-        order.items.create(
-            product=item.product,
-            variation=item.variation,
-            quantity=item.quantity,
-            unit_price=item.unit_price
-        )
+    for i in items:
+        prod = get_object_or_404(Product, id=i['product_id'])
+        var = ProductVariation.objects.filter(id=i.get('variation_id')).first()
+        price = prod.get_discounted_price(var)
+        OrderItem.objects.create(order=order, product=prod, variation=var, quantity=i['quantity'], unit_price=price)
 
-    cart.items.all().delete()
-    request.session['coupon_discount'] = 0
-    request.session['coupon_code'] = None
+    txn = Transaction.objects.create(order=order, amount=grand_total, gateway='manual', status='pending')
 
-    serializer = OrderSerializer(order)
-    return Response(serializer.data, status=status.HTTP_201_CREATED)
+    return Response({'success': True, 'order_id': order.id, 'txn_id': txn.id})
 
 
+# ---------------------------
+# Order History API
+# ---------------------------
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def order_history_api(request):
+    orders = Order.objects.filter(user=request.user).order_by('-created_at')
+    serializer = OrderSerializer(orders, many=True)
+    return Response({'orders': serializer.data})
+
+
+# ---------------------------
+# Cancel Order API
+# ---------------------------
 @api_view(['POST'])
 @permission_classes([AllowAny])
-def apply_coupon_api(request):
-    code = request.data.get("code", "").strip().upper()
-    try:
-        coupon = Coupon.objects.get(code=code, active=True)
-        return Response({
-            "valid": True,
-            "discount_percent": coupon.discount_percent
-        })
-    except Coupon.DoesNotExist:
-        return Response({
-            "valid": False,
-            "error": "Coupon not match"
-        }, status=400)
+def cancel_order_api(request, order_id):
+    if request.user.is_authenticated:
+        order = get_object_or_404(Order, id=order_id, user=request.user)
+    else:
+        session_key = request.session.session_key or request.session.create()
+        order = get_object_or_404(Order, id=order_id, session_key=session_key)
+
+    if order.status in ['canceled', 'delivered']:
+        return Response({'error': 'Cannot cancel this order'}, status=400)
+
+    order.status = 'canceled'
+    order.save()
+    return Response({'success': True, 'order_id': order.id, 'new_status': order.status})
+
+
+# ---------------------------
+# Manual Payment Submit API
+# ---------------------------
+@api_view(['POST'])
+@permission_classes([AllowAny])
+def manual_payment_submit_api(request, txn_id):
+    txn = get_object_or_404(Transaction, id=txn_id)
+    reference = request.data.get('reference', '').strip()
+    if not reference:
+        return Response({'error': 'Reference required'}, status=400)
+    txn.reference = reference
+    txn.status = 'pending'
+    txn.save()
+    return Response({'success': True, 'txn_id': txn.id})
