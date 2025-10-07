@@ -6,7 +6,8 @@ from ..models import Order, OrderItem, Address, Transaction
 from ..serializers import OrderSerializer, TransactionSerializer, AddressSerializer
 from products.models import Product, ProductVariation
 from decimal import Decimal
-
+from ..models import PaymentNumber
+from ..serializers import PaymentNumberSerializer
 # ---------------------------
 # Cart / Checkout API
 # ---------------------------
@@ -102,3 +103,13 @@ def manual_payment_submit_api(request, txn_id):
     txn.status = 'pending'
     txn.save()
     return Response({'success': True, 'txn_id': txn.id})
+
+@api_view(['GET'])
+@permission_classes([AllowAny])
+def payment_numbers_api(request):
+    """
+    Return all payment numbers for bkash, nagad, rocket.
+    """
+    numbers = PaymentNumber.objects.all()
+    serializer = PaymentNumberSerializer(numbers, many=True)
+    return Response({'payment_numbers': serializer.data})
