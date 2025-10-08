@@ -21,24 +21,25 @@ def place_order_api(request):
     if not items or not address_data:
         return Response({'error': 'Items and address required'}, status=400)
 
-    # Save address
     addr_serializer = AddressSerializer(data=address_data)
     if addr_serializer.is_valid():
         addr = addr_serializer.save(user=request.user if request.user.is_authenticated else None)
     else:
         return Response(addr_serializer.errors, status=400)
 
-    # Calculate subtotal from DB prices
     subtotal = Decimal(0)
     for i in items:
         prod = get_object_or_404(Product, id=i['product_id'])
-        var = ProductVariation.objects.filter(id=i.get('variation_id')).first() if i.get('variation_id') else None
-        unit_price = prod.get_discounted_price(var)
-        subtotal += unit_price * i['quantity']
+        var = None
+        var_id = i.get('variation_id')
+        if var_id is not None:
+            var = ProductVariation.objects.filter(id=var_id).first()
+        # price frontend theke pathano hocche na, backend calculate korbe
+        price = prod.get_discounted_price(var)
+        subtotal += price * i['quantity']
 
-    grand_total = subtotal
+    grand_total = subtotal  # add shipping_fee, discount if needed
 
-    # Create order
     order = Order.objects.create(
         user=request.user if request.user.is_authenticated else None,
         address=addr,
@@ -50,26 +51,22 @@ def place_order_api(request):
         payment_status='pending'
     )
 
-    # Create order items
     for i in items:
         prod = get_object_or_404(Product, id=i['product_id'])
-        var = ProductVariation.objects.filter(id=i.get('variation_id')).first() if i.get('variation_id') else None
-        unit_price = prod.get_discounted_price(var)
+        var = None
+        var_id = i.get('variation_id')
+        if var_id is not None:
+            var = ProductVariation.objects.filter(id=var_id).first()
+        price = prod.get_discounted_price(var)
         OrderItem.objects.create(
             order=order,
             product=prod,
             variation=var,
             quantity=i['quantity'],
-            unit_price=unit_price
+            unit_price=price
         )
 
-    # Create transaction (manual)
-    txn = Transaction.objects.create(
-        order=order,
-        amount=grand_total,
-        gateway='manual',
-        status='pending'
-    )
+    txn = Transaction.objects.create(order=order, amount=grand_total, gateway='manual', status='pending')
 
     return Response({'success': True, 'order_id': order.id, 'txn_id': txn.id})
 

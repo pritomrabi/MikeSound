@@ -93,6 +93,7 @@ class Product(models.Model):
     subcategory = models.ForeignKey(SubCategory, on_delete=models.CASCADE)
     brand = models.ForeignKey(Brand, on_delete=models.CASCADE)
     title = models.CharField(max_length=255)
+    price = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     description = RichTextField()
     slug = models.SlugField(max_length=100, unique=True, blank=True)
     meta_title = models.CharField(max_length=255, blank=True)
