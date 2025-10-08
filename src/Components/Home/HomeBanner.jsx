@@ -36,7 +36,7 @@ const HomeBanner = () => {
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center h-[40vh]">
+      <div className="flex font-Nunito-font font-semibold sm:text-2xl text-xl justify-center items-center h-[40vh]">
         Loading...
       </div>
     );
@@ -44,7 +44,7 @@ const HomeBanner = () => {
 
   if (!slides.length) {
     return (
-      <div className="flex justify-center items-center h-[40vh]">
+      <div className="flex font-Nunito-font font-semibold sm:text-2xl text-xl justify-center items-center h-[40vh]">
         No products available
       </div>
     );

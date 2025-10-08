@@ -13,7 +13,7 @@ const Collection = () => {
     const fetchProducts = async () => {
       setLoading(true);
       const res = await getProducts();
-      console.log("Raw API response:", res); // raw response check
+      console.log("Raw API response:", res);
 
       if (!res.error && res.products) {
         console.log("All products:", res.products); // all products check
@@ -32,9 +32,9 @@ const Collection = () => {
         <Heading Head="Collections" />
 
         {loading ? (
-          <p className="text-center py-10">Loading products...</p>
+          <p className="text-center font-Nunito-font font-semibold sm:text-2xl text-xl  py-10">Loading products...</p>
         ) : products.length === 0 ? (
-          <p className="text-center py-10">No products available.</p>
+          <p className="text-center font-Nunito-font font-semibold sm:text-2xl text-xl py-10">No products available.</p>
         ) : (
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2.5 sm:gap-4 mt-8">
             {products.map(product => (
@@ -56,8 +56,8 @@ const Collection = () => {
 
             {quickView && (
               <ProductQuickView
-                productId={quickView} // এখানে productId পাঠানো হচ্ছে
-                setQuickView={() => setQuickView(null)} // close করার জন্য
+                productId={quickView} 
+                setQuickView={() => setQuickView(null)} 
               />
             )}
           </div>

@@ -75,7 +75,7 @@ const ProductQuickView = ({ setQuickView, productId }) => {
   if (loading) {
     return (
       <div className="fixed inset-0 bg-[rgba(0,0,0,0.2)] z-50 flex justify-center items-center">
-        <p className="text-white text-lg">Loading...</p>
+        <p className="text-white font-Nunito-font font-semibold sm:text-2xl text-xl text-lg">Loading...</p>
       </div>
     );
   }

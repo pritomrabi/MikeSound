@@ -19,7 +19,7 @@ const HomeSubCategories = () => {
     fetchSubCategories();
   }, []);
 
-  if (loading) return <p className="text-center py-10 text-white">Loading subcategories...</p>;
+  if (loading) return <p className="text-center font-Nunito-font font-semibold sm:text-2xl text-xl py-10 text-white">Loading subcategories...</p>;
 
   return (
     <section className="py-12 dark:bg-[#212020]">

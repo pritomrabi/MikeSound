@@ -27,7 +27,6 @@ export const getProducts = (offer_type = "") => {
 };
 
 export const getProductById = (id) => apiRequest("get", `/api/products/${id}/`);
-// export const getLatestProducts = () => apiRequest("get", "/api/products/latest/");
 export const getSubCategories = () => apiRequest("get", "/api/subcategories/latest/");
 export const getProductsByCategory = (slug) =>
   apiRequest("get", `/api/products/?category=${slug}`);

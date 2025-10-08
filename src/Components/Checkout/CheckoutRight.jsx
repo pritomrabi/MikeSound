@@ -6,14 +6,12 @@ const CheckoutRight = ({
   subtotal,
   shippingFee,
   total,
-  paymentMethod,
-  setPaymentMethod,
   handlePlaceOrder,
   txnId,
-  handleManualPaymentSubmit
+  setTxnId,
+  userNumber,
+  setUserNumber
 }) => {
-  const [userNumber, setUserNumber] = useState("");
-  const [trxId, setTrxId] = useState("");
   const [paymentNumbers, setPaymentNumbers] = useState({});
 
   useEffect(() => {
@@ -66,69 +64,41 @@ const CheckoutRight = ({
           <span>৳ {total.toFixed(2)}</span>
         </div>
 
-        <h3 className="mt-6 mb-3 font-semibold">Select Payment Method</h3>
-        <div className="flex flex-col gap-3">
+        <h3 className="mt-6 mb-3 font-semibold">Manual Payment</h3>
+
+        <div className="flex flex-col gap-2 mb-4">
           {["bkash", "nagad", "rocket"].map(method => (
-            <label
-              key={method}
-              className="flex items-center gap-3 p-3 shadow-sm rounded-lg cursor-pointer hover:bg-gray-50"
-            >
-              <input
-                type="radio"
-                name="payment"
-                value={method}
-                checked={paymentMethod === method}
-                onChange={() => setPaymentMethod(method)}
-              />
-              <span className="flex-1 font-Nunito-font">
-                {method.toUpperCase()} - {paymentNumbers[method] || "Loading..."}
-              </span>
-            </label>
+            <div key={method} className="p-2 bg-gray-100 rounded">
+              <span className="font-medium">{method.toUpperCase()}</span> : {paymentNumbers[method] || "Loading..."}
+            </div>
           ))}
         </div>
 
-        <div className="my-6">
-          {["bkash", "nagad", "rocket", "upay"].map((method) => (
-            paymentMethod === method && (
-              <div key={method} className="payment-box">
-                <div className="mt-3">
-                  <label className="block text-sm font-Nunito-font">Your Number</label>
-                  <input
-                    type="text"
-                    value={userNumber}
-                    onChange={e => setUserNumber(e.target.value)}
-                    className="w-full border rounded-lg px-3 py-2 mt-1"
-                  />
-                </div>
-                <div className="mt-3">
-                  <label className="block text-sm font-Nunito-font">Transaction ID</label>
-                  <input
-                    type="text"
-                    value={trxId}
-                    onChange={e => setTrxId(e.target.value)}
-                    className="w-full border rounded-lg px-3 py-2 mt-1"
-                  />
-                </div>
-              </div>
-            )
-          ))}
+        <div className="mt-3">
+          <label className="block text-sm font-Nunito-font">Your Number</label>
+          <input
+            type="text"
+            value={userNumber}
+            onChange={e => setUserNumber(e.target.value)}
+            className="w-full border rounded-lg px-3 py-2 mt-1"
+          />
+        </div>
+        <div className="mt-3">
+          <label className="block text-sm font-Nunito-font">Transaction ID</label>
+          <input
+            type="text"
+            value={txnId}
+            onChange={e => setTxnId(e.target.value)}
+            className="w-full border rounded-lg px-3 py-2 mt-1"
+          />
         </div>
 
-        {!txnId ? (
-          <button
-            onClick={handlePlaceOrder}
-            className="mt-6 w-full bg-blue-600 text-white p-3 rounded"
-          >
-            Place Order
-          </button>
-        ) : (
-          <button
-            onClick={() => handleManualPaymentSubmit(txnId, userNumber, trxId)}
-            className="mt-6 w-full bg-green-600 text-white p-3 rounded"
-          >
-            Submit Payment
-          </button>
-        )}
+        <button
+          className="mt-6 w-full bg-blue-600 text-white p-3 rounded"
+          onClick={handlePlaceOrder}
+        >
+          Place Order
+        </button>
       </div>
     </div>
   );
