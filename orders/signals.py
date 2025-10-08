@@ -67,13 +67,16 @@ def restore_inventory_on_delete(sender, instance, **kwargs):
 
 @receiver(post_save, sender=Order)
 def send_order_confirmation_email(sender, instance, created, **kwargs):
-    if not created and instance.status == 'confirmed':
-        email = instance.address.email
-        if not email:
-            return
+    if not created and instance.status == 'confirmed' and instance.payment_status == 'paid':
         subject = f"Order #{instance.id} Confirmed"
         items_text = ""
         for item in instance.items.all():
             items_text += f"{item.product.title} x {item.quantity} ({item.color}) - ${item.line_total}\n"
         message = f"Hello {instance.address.full_name},\n\nYour order has been confirmed.\n\nProducts:\n{items_text}\nSubtotal: ${instance.subtotal}\nShipping: ${instance.shipping_fee}\nGrand Total: ${instance.grand_total}\n\nThank you for shopping!"
-        send_mail(subject, message, None, [email], fail_silently=False)
+        send_mail(
+            subject,
+            message,
+            None,  # Uses DEFAULT_FROM_EMAIL
+            [instance.address.email],
+            fail_silently=False
+        )
