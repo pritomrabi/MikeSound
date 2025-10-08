@@ -8,7 +8,7 @@ const CheckoutLeft = ({ addressData, setAddressData }) => {
   };
 
   return (
-    <div className="lg:w-[50%] w-full font-Lato font-normal text-primary text-sm">
+    <div className="lg:w-[50%] w-full font-Lato font-normal text-primaryd dark:text-white text-sm">
       <div className="space-y-4">
         {[
           { label: "Full Name", name: "full_name", placeholder: "Full Name" },

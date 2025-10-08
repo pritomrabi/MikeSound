@@ -6,35 +6,35 @@ import { Link } from "react-router-dom";
 
 const Footer = () => {
   return (
-    <footer className=" bg-[#f2f6fce3] dark:bg-[#1a1a1a] text-sm pt-12 pb-6 font-Lato">
+    <footer className=" bg-brand text-sm pt-12 pb-6 font-Lato">
       <div className="container mx-auto justify-center px-10 ">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
           <div>
             <Link to="/">
-              <h4 className="text-2xl font-bold text-brand font-Monrope">
+              <h4 className="text-2xl font-bold text-white font-Monrope">
                 Mike Sound
               </h4>
             </Link>
-            <p className="text-secandari font-normal font-Nunito-font w-[95%] text-sm mt-2">
+            <p className="text-white/90 font-normal font-Nunito-font w-[95%] text-base mt-2">
               We provide the best wellness services to help you relax and rejuvenate. Our team is dedicated to offering a soothing experience tailored to your needs.
             </p>
           </div>
           {/* Quick Links */}
           <div>
-            <h4 className="text-2xl font-semibold font-Nunito-font mb-4">Quick Links</h4>
-            <ul className="text-secandari text-sm font-Monrope space-y-2 flex flex-col">
-              <Link className="hover:text-brand" to="/shop">Shop</Link>
-              <Link className="hover:text-brand" to="/headphone">Headphone</Link>
-              <Link className="hover:text-brand" to="/speakers">Speakers</Link>
-              <Link className="hover:text-brand" to="/earbud">Earbud</Link>
-              <Link className="hover:text-brand" to="/Gaming">Gaming</Link>
-              <Link className="hover:text-brand" to="/support">Support</Link>
+            <h4 className="text-2xl text-white font-bold font-Nunito-font mb-4">Quick Links</h4>
+            <ul className="text-white/90 text-base font-medium font-Monrope space-y-2 flex flex-col">
+              <Link className="" to="/shop">Shop</Link>
+              <Link className="" to="/headphone">Headphone</Link>
+              <Link className="" to="/speakers">Speakers</Link>
+              <Link className="" to="/earbud">Earbud</Link>
+              <Link className="" to="/Gaming">Gaming</Link>
+              <Link className="" to="/support">Support</Link>
             </ul>
           </div>
           {/* Contact */}
           <div>
-            <h4 className="text-2xl font-semibold font-Nunito-font mb-4">Contact</h4>
-            <ul className="text-secandari text-sm font-Monrope space-y-2">
+            <h4 className="text-2xl text-white font-bold  font-Nunito-font mb-4">Contact</h4>
+            <ul className="text-white/90 text-base font-medium font-Monrope space-y-2">
               <li>Email: <Link className="hover:text-brand" to="mailto:eurosespabd@gmail.com"></Link></li>
               <li>Phone: <Link className="hover:text-brand" to="tel:+8801911552077"></Link></li>
               <li>Location:</li>
@@ -42,8 +42,8 @@ const Footer = () => {
           </div>
           {/* Social Links */}
           <div>
-            <h4 className="text-2xl font-semibold font-Nunito-font mb-4">Follow Us</h4>
-            <div className="flex space-x-4 text-secandari">
+            <h4 className="text-2xl text-white font-bold font-Nunito-font mb-4">Follow Us</h4>
+            <div className="flex space-x-4 text-white">
               <Link
                 to="https://www.facebook.com"
                 aria-label="Facebook"
@@ -79,8 +79,8 @@ const Footer = () => {
 
           </div>
         </div>
-        <div className="mt-8 border-t border-secandari pt-6 text-center">
-          <p className="text-secandari font-Nunito-font text-xs sm:text-sm">
+        <div className="mt-8 border-t border-white/20 pt-6 text-center">
+          <p className="text-white/90 font-Nunito-font text-xs sm:text-sm">
             © 2025 Mike Sound. All Rights Reserved.
           </p>
         </div>

@@ -1,5 +1,4 @@
 import { Link, useLocation } from "react-router-dom";
-// import { FaRegUserCircle } from "react-icons/fa";
 import { PiShoppingCartSimpleLight } from "react-icons/pi";
 import { IoSearchOutline } from "react-icons/io5";
 import { useEffect, useState } from "react";
@@ -28,60 +27,33 @@ const Navbar = () => {
   );
 
   const totalItems = cartItems.length;
-  // === Menus with subcategories ===
+
   const menuItems = [
-    { title: "Headphone", path: "headphone", sub: ["Wireless Headphones", "Noise Cancelling", "Over-Ear", "On-Ear"] },
-    { title: "Speakers", path: "speakers", sub: ["Bluetooth Speakers", "Home Theater", "Portable", "Smart Speakers"] },
-    { title: "Earbud", path: "earbud", sub: ["Wireless Earbuds", "Gaming Earbuds", "Noise Cancelling"] },
-    { title: "Gaming", path: "gaming", sub: ["Gaming Headset", "Gaming Chair", "Accessories"] },
+    { title: "Headphone", path: "headphone" },
+    { title: "Speakers", path: "speakers" },
+    { title: "Earbud", path: "earbud" },
+    { title: "Gaming", path: "gaming" },
     { title: "Shop", path: "shop" },
-    // { title: "Support", path: "support" },
   ];
 
   return (
     <section className="shadow w-full fixed top-0 z-50 bg-[#fdfeff] dark:bg-[#1a1a1a]">
-      {/* <Header /> */}
       <div className="p-6">
         <div className="container mx-auto flex overflow-visible">
           <div className="flex items-center justify-between w-full">
 
-            {/* Logo */}
             <Link to="/" className="sm:text-2xl text-xl font-bold text-brand font-Lato">
               Mike Sound
             </Link>
 
-            {/* ===== Main Menu ===== */}
             <div className="hidden md:flex items-center md:space-x-3 lg:space-x-6 md:text-sm lg:text-lg font-Lato text-primary-default dark:text-primary-dark font-medium">
-              {menuItems.map((menu, i) =>
-                menu.sub ? (
-                  <div key={i} className="relative group">
-                    <Link to={`/${menu.path}`} className="hover:text-brand duration-100">
-                      {menu.title}
-                    </Link>
-                    <div className="absolute top-full left-1/2 -translate-x-1/2 hidden group-hover:block bg-white dark:bg-gray-900 shadow-lg rounded-lg mt-2 p-3 w-48">
-                      <ul className="space-y-2 text-sm">
-                        {menu.sub.map((item, idx) => (
-                          <li key={idx}>
-                            <Link
-                              to={`/${menu.path}/${item.toLowerCase().replace(/\s+/g, "-")}`}
-                              className="block hover:text-brand duration-100"
-                            >
-                              {item}
-                            </Link>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  </div>
-                ) : (
-                  <Link key={i} to={`/${menu.path}`} className="hover:text-brand duration-100">
-                    {menu.title}
-                  </Link>
-                )
-              )}
+              {menuItems.map((menu, i) => (
+                <Link key={i} to={`/${menu.path}`} className="hover:text-brand duration-100">
+                  {menu.title}
+                </Link>
+              ))}
             </div>
 
-            {/* ===== Right Section ===== */}
             <div className="flex items-center space-x-2 sm:space-x-4">
               <ThemeToggle />
 
@@ -106,9 +78,6 @@ const Navbar = () => {
                 )}
               </div>
 
-              {/* <Link to="/login">
-                <FaRegUserCircle className="sm:text-2xl text-xl cursor-pointer" />
-              </Link> */}
               {isOpen ? (
                 <FiAlignRight
                   onClick={() => setIsOpen(false)}

@@ -34,9 +34,9 @@ const Speakers = () => {
         <Heading Head="Speakers" />
 
         {loading ? (
-          <p className="text-center py-10 text-black">Loading products...</p>
+          <p className="flex font-Nunito-font font-semibold sm:text-2xl text-xl justify-center items-center h-[40vh]">Loading products...</p>
         ) : products.length === 0 ? (
-          <p className="text-center py-10 text-black">No products found in this subcategory.</p>
+          <p className="flex font-Nunito-font font-semibold sm:text-2xl text-xl justify-center items-center h-[40vh]">No products found in this subcategory.</p>
         ) : (
           <div className="w-full sm:px-6 px-0">
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2.5 sm:gap-4">

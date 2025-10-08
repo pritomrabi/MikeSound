@@ -1,3 +1,4 @@
+import AnimatedCursor from "react-animated-cursor";
 import {
   createBrowserRouter,
   createRoutesFromElements,
@@ -87,6 +88,27 @@ function App() {
 
   return (
     <div className="bg-white text-primary dark:bg-black dark:text-white min-h-screen transition-colors duration-300">
+      <AnimatedCursor
+        innerSize={10}
+        outerSize={10}
+        color="220, 20, 60"
+        outerAlpha={0.2}
+        innerScale={0.7}
+        outerScale={5}
+        clickables={[
+          'a',
+          'input[type="text"]',
+          'input[type="email"]',
+          'input[type="number"]',
+          'input[type="submit"]',
+          'input[type="image"]',
+          'label[for]',
+          'select',
+          'textarea',
+          'button',
+          '.link'
+        ]}
+      />
       <RouterProvider router={router} />
     </div>
   );

@@ -98,9 +98,9 @@ const ShopPage = () => {
 
         {/* Products Grid */}
         {loading ? (
-          <p className="text-center py-10 text-white">Loading products...</p>
+          <p className="flex font-Nunito-font font-semibold sm:text-2xl text-xl justify-center items-center h-[40vh]">Loading products...</p>
         ) : filteredProducts.length === 0 ? (
-          <p className="text-center py-10 text-white">No products found for this filter</p>
+          <p className="flex font-Nunito-font font-semibold sm:text-2xl text-xl justify-center items-center h-[40vh]">No products found for this filter</p>
         ) : (
           <div className="flex">
             <div className="flex-1">

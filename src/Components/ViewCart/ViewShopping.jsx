@@ -51,12 +51,12 @@ const ViewShopping = () => {
   const total = subtotal - discount;
 
   return (
-    <section className="bg-[#fdfeff] py-10">
+    <section className="bg-[#fdfeff] dark:bg-[#212020] dark:text-white py-10">
       <div className="container mx-auto flex flex-col lg:flex-row gap-10 px-4">
         {/* Cart Items */}
         <div className="w-full lg:w-2/3">
-          <div className="bg-white rounded-2xl shadow p-4 max-h-[400px] overflow-y-auto">
-            <div className="flex items-center border-b pb-3 font-Nunito-font text-[10px] sm:text-sm md:text-lg font-semibold text-gray-600">
+          <div className="bg-white dark:bg-[#212020] dark:text-white rounded-2xl shadow p-4 max-h-[400px] overflow-y-auto">
+            <div className="flex items-center border-b pb-3 font-Nunito-font text-[10px] sm:text-sm md:text-lg font-semibold text-gray-600 dark:text-white">
               <div className="w-1/12 hidden sm:block text-center">Remove</div>
               <div className="w-2/12 text-center">Thumbnail</div>
               <div className="w-4/12">Product</div>
@@ -64,15 +64,14 @@ const ViewShopping = () => {
               <div className="w-2/12 text-center">Quantity</div>
               <div className="w-2/12 text-center">Subtotal</div>
             </div>
-
             {cartItems.length === 0 && (
-              <p className="text-center py-4 text-gray-500">Cart is empty</p>
+              <p className="text-center py-4 text-gray-500 dark:text-white">Cart is empty</p>
             )}
 
             {cartItems.map((item) => (
               <div
                 key={item.id}
-                className="flex flex-row md:flex-row items-center py-4 border-b last:border-b-0 gap-4 text-[10px] sm:text-xs md:text-base font-Nunito-font"
+                className="flex dark:text-white flex-row md:flex-row items-center py-4 border-b last:border-b-0 gap-4 text-[10px] sm:text-xs md:text-base font-Nunito-font"
               >
                 <div
                   onClick={() => handleRemove(item.id)}
@@ -90,7 +89,7 @@ const ViewShopping = () => {
                 </div>
 
                 <div className="md:w-4/12">
-                  <p className="font-medium text-gray-800 text-[9px] sm:text-xs md:text-base">
+                  <p className="font-medium text-gray-800 dark:text-white text-[9px] sm:text-xs md:text-base">
                     {(item.title || "").substring(0, 30)}...
                   </p>
                   {item.color_name && (
@@ -98,7 +97,7 @@ const ViewShopping = () => {
                   )}
                 </div>
 
-                <div className="md:w-2/12 text-gray-700 md:text-center">
+                <div className="md:w-2/12 text-gray-700 dark:text-white md:text-center">
                   ৳ {(item.price || 0).toFixed(2)}
                 </div>
 
@@ -155,11 +154,11 @@ const ViewShopping = () => {
 
         {/* Cart Totals */}
         <div className="w-full lg:w-1/3">
-          <div className="bg-white rounded-2xl shadow p-6">
+          <div className="bg-white dark:bg-[#212020] rounded-2xl shadow p-6">
             <h2 className="text-xl font-semibold mb-4">Cart Totals</h2>
             <div className="flex justify-between py-2 border-b">
-              <span className="text-gray-600">Subtotal</span>
-              <span className="text-gray-800">৳ {subtotal.toFixed(2)}</span>
+              <span className="text-gray-600 dark:text-white">Subtotal</span>
+              <span className="text-gray-800 dark:text-white">৳ {subtotal.toFixed(2)}</span>
             </div>
             {discount > 0 && (
               <div className="flex justify-between py-2 border-b text-red-600">

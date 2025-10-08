@@ -35,8 +35,8 @@ const CheckoutRight = ({
   }, []);
 
   return (
-    <div className="lg:w-[50%] w-full sm:px-4 px-0 font-Lato">
-      <div className="bg-white shadow rounded-xl p-6 mt-6">
+    <div className="lg:w-[50%] w-full sm:px-4 px-0 font-Lato dark:text-white">
+      <div className="bg-white dark:bg-black shadow rounded-xl p-6 mt-6">
         <h3 className="text-lg font-semibold mb-4 text-center">Your Order</h3>
 
         {cartItems.map(item => (
@@ -94,7 +94,7 @@ const CheckoutRight = ({
         </div>
 
         <button
-          className="mt-6 w-full bg-blue-600 text-white p-3 rounded"
+          className="mt-6 w-full bg-brand text-white p-3 rounded"
           onClick={handlePlaceOrder}
         >
           Place Order

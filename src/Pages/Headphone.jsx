@@ -33,9 +33,9 @@ const Headphone = () => {
       <div className="container mx-auto md:px-4 px-2">
         <Heading Head="Headphone" />
         {loading ? (
-          <p className="text-center py-10 text-black">Loading products...</p>
+          <p className="flex font-Nunito-font font-semibold sm:text-2xl text-xl justify-center items-center h-[40vh]">Loading products...</p>
         ) : products.length === 0 ? (
-          <p className="text-center py-10 text-black">
+          <p className="flex font-Nunito-font font-semibold sm:text-2xl text-xl justify-center items-center h-[40vh]">
             No products found in this subcategory.
           </p>
         ) : (
