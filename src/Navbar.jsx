@@ -60,17 +60,17 @@ const Navbar = () => {
               {search ? (
                 <RxCross2
                   onClick={() => setSearch(false)}
-                  className="sm:text-2xl text-xl cursor-pointer md:block hidden"
+                  className=" text-2xl cursor-pointer md:block hidden"
                 />
               ) : (
                 <IoSearchOutline
                   onClick={() => setSearch(true)}
-                  className="sm:text-3xl text-xl cursor-pointer md:block hidden"
+                  className="sm:text-3xl  cursor-pointer md:block hidden"
                 />
               )}
 
               <div onClick={() => setShop(true)} className="relative inline-block">
-                <PiShoppingCartSimpleLight className="sm:text-2xl text-xl cursor-pointer" />
+                <PiShoppingCartSimpleLight className="text-2xl  cursor-pointer" />
                 {totalItems > 0 && (
                   <span className="bg-brand text-white text-[8px] rounded-full w-3 h-3 absolute -top-1 -left-1 flex items-center justify-center">
                     {totalItems}
@@ -81,7 +81,7 @@ const Navbar = () => {
               {isOpen ? (
                 <FiAlignRight
                   onClick={() => setIsOpen(false)}
-                  className="sm:text-xl text-lg cursor-pointer block md:hidden"
+                  className="text-xl  cursor-pointer block md:hidden"
                 />
               ) : (
                 <Cart setIsOpen={setIsOpen} />

@@ -20,7 +20,7 @@ const ThemeToggle = () => {
   return (
     <button
       onClick={() => setDarkMode(!darkMode)}
-      className=" text-white text-xl  hover:opacity-90 flex items-center justify-center cursor-pointer"
+      className=" text-white text-xl hidden md:block hover:opacity-90 flex items-center justify-center cursor-pointer"
       aria-label="Toggle Dark Mode"
     >
       {darkMode ? <FiSun className="sm:text-2xl text-xl" /> : <FiMoon className="sm:text-2xl text-xl text-brand" />}

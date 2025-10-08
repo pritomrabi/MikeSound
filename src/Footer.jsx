@@ -3,8 +3,24 @@ import { FaWhatsapp } from "react-icons/fa";
 import { FaFacebookMessenger } from "react-icons/fa";
 import { FaPhoneAlt } from "react-icons/fa";
 import { Link } from "react-router-dom";
-
+import { BiChevronUp } from "react-icons/bi";
+import { useEffect, useState } from "react";
 const Footer = () => {
+  const [isVisible, setIsVisible] = useState(false);
+
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth"
+    });
+  };
+
+  useEffect(() => {
+    const toggleVisibility = () => setIsVisible(window.scrollY > 300);
+    window.addEventListener("scroll", toggleVisibility);
+    return () => window.removeEventListener("scroll", toggleVisibility);
+  }, []);
+
   return (
     <footer className=" bg-brand text-sm pt-12 pb-6 font-Lato">
       <div className="container mx-auto justify-center px-10 ">
@@ -83,9 +99,17 @@ const Footer = () => {
           <p className="text-white/90 font-Nunito-font text-xs sm:text-sm">
             © 2025 Mike Sound. All Rights Reserved.
           </p>
+          <button
+            onClick={scrollToTop}
+            className={`fixed bottom-20 right-2 sm:right-4 md:right-8 z-10 p-2 rounded-md text-white transition-transform duration-200 shadow-md cursor-pointer ${isVisible ? "scale-100 bg-red-600" : "scale-0"} hover:bg-red-700`}
+            title="Go to top"
+            aria-label="Scroll to top"
+          >
+            <BiChevronUp className="w-6 h-6" />
+          </button>
         </div>
       </div>
-    </footer>
+    </footer >
   );
 };
 
