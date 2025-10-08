@@ -3,6 +3,7 @@ from django.http import JsonResponse
 from .models import Order, OrderItem, Address, Transaction, PaymentNumber
 from products.models import Product, ProductVariation
 from decimal import Decimal
+from django.core.exceptions import ValidationError
 
 # -------------------------
 # Checkout: create order

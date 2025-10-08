@@ -7,6 +7,8 @@ from decimal import Decimal
 from ..models import Order, OrderItem, Address, Transaction, PaymentNumber
 from ..serializers import OrderSerializer, TransactionSerializer, AddressSerializer, PaymentNumberSerializer
 from products.models import Product, ProductVariation
+from django.core.validators import validate_email
+from django.core.exceptions import ValidationError
 
 # ---------------------------
 # Shipping Fee API
