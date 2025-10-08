@@ -3,7 +3,10 @@ from django.dispatch import receiver
 from django.core.mail import send_mail
 from .models import Order, OrderItem
 from inventory.models import Inventory
+from django.core.mail import send_mail, BadHeaderError
+import logging
 
+logger = logging.getLogger(__name__)
 
 def adjust_inventory_item(item, increase=False):
     try:
@@ -56,12 +59,14 @@ def restore_inventory_on_delete(sender, instance, **kwargs):
 @receiver(post_save, sender=Order)
 def send_order_confirmation_email(sender, instance, created, **kwargs):
     if not created and instance.status == 'confirmed' and instance.payment_status == 'paid':
-        subject = f"Mikesound - Order #{instance.id} Confirmed"
-        items_text = ""
-        for item in instance.items.all():
-            color_text = f" ({item.color})" if getattr(item, 'color', None) else ""
-            items_text += f"{item.product.title} x {item.quantity}{color_text} - ${item.line_total}\n"
-        message = f"""
+        try:
+            subject = f"Mikesound - Order #{instance.id} Confirmed"
+            items_text = ""
+            for item in instance.items.all():
+                color_text = f" ({item.color})" if getattr(item, 'color', None) else ""
+                items_text += f"{item.product.title} x {item.quantity}{color_text} - ${item.line_total}\n"
+
+            message = f"""
 Hello {instance.address.full_name},
 
 Thank you for shopping with Mikesound. Your order has been confirmed.
@@ -72,14 +77,18 @@ Subtotal: ${instance.subtotal}
 Shipping: ${instance.shipping_fee}
 Grand Total: ${instance.grand_total}
 
-You can visit Mikesound for more products: https://mikesound.com
+Visit Mikesound for more products: https://mikesound.com
 
 Thank you for choosing Mikesound!
 """
-        send_mail(
-            subject,
-            message,
-            None,
-            [instance.address.email],
-            fail_silently=False
-        )
+            send_mail(
+                subject,
+                message,
+                "pritomrabidas102@gmail.com",
+                [instance.address.email],
+                fail_silently=False
+            )
+        except BadHeaderError:
+            logger.error("Invalid header found while sending order confirmation email.")
+        except Exception as e:
+            logger.error(f"Email sending failed: {e}")
