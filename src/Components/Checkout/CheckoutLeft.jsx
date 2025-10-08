@@ -14,7 +14,6 @@ const CheckoutLeft = ({ addressData, setAddressData }) => {
           { label: "Full Name", name: "full_name", placeholder: "Full Name" },
           { label: "Street address *", name: "line1", placeholder: "House number and street name" },
           { label: "Town / City", name: "city", placeholder: "City" },
-          { label: "District", name: "state", placeholder: "Select an option" },
           { label: "Postcode / ZIP (optional)", name: "postal_code", placeholder: "ZIP" },
           { label: "Email address", name: "email", placeholder: "Enter your email" },
           { label: "Phone", name: "phone", placeholder: "01XXXXXXXXX" },

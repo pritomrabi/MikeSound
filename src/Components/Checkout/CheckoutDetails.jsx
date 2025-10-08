@@ -21,6 +21,7 @@ const CheckoutDetails = () => {
       : [];
     setCartItems(safeCart);
 
+    // subtotal calculate without sending price to backend
     const st = safeCart.reduce(
       (acc, item) => acc + (item.price || 0) * (item.quantity || 1),
       0
@@ -30,8 +31,8 @@ const CheckoutDetails = () => {
   }, [shippingFee]);
 
   const handlePlaceOrder = async () => {
-    if (!addressData.full_name || !addressData.phone || !addressData.line1) {
-      alert("Please fill required address fields");
+    if (!addressData.full_name || !addressData.phone || !addressData.line1 || !addressData.city) {
+      alert("Please fill all required address fields");
       return;
     }
 
@@ -40,28 +41,26 @@ const CheckoutDetails = () => {
       return;
     }
 
-    const items = cartItems.map((item) => ({
+    // only send ids and quantity, no price
+    const items = cartItems.map(item => ({
       product_id: item.id,
       variation_id: item.variation || null,
       quantity: item.quantity
     }));
 
+
     const payload = {
-      items: items,
+      items,
       address: {
         full_name: addressData.full_name,
         phone: addressData.phone,
         line1: addressData.line1,
         line2: addressData.line2 || "",
-        city: addressData.city || "",
-        state: addressData.state || "",
+        city: addressData.city,
         postal_code: addressData.postal_code || "",
-        country: addressData.country || "",
         email: addressData.email || "",
-        note: addressData.note || "",
-      },
-      payment_method: paymentMethod,
-      shipping_fee: shippingFee
+        note: addressData.note || ""
+      }
     };
 
     try {
@@ -70,20 +69,16 @@ const CheckoutDetails = () => {
         payload,
         { headers: { "Content-Type": "application/json" } }
       );
-      console.log("Order API response:", res);
-      console.log("Order API response:", res.data);
 
-      if (res.data && res.data.success && res.data.order_id) {
+      if (res.data.success && res.data.order_id) {
         alert("Order placed successfully. Order ID: " + res.data.order_id);
         localStorage.removeItem("cart");
         setCartItems([]);
-        console.error("Backend response:", err.response.data);
-        console.error("Status code:", err.response.status);
       } else {
         alert(res.data.error || "Order failed. Check backend response.");
       }
     } catch (err) {
-      console.error("Order error:", err);
+      console.error("Order error:", err.response?.data || err);
       alert("Order request failed. Check console for details.");
     }
   };

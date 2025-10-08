@@ -48,7 +48,9 @@ const ProductPage = ({ product }) => {
       price: selectedVariation?.final_price || product.price,
       quantity,
       image: product.images[0]?.image || "https://via.placeholder.com/150",
+      variation: selectedVariation?.id || null, // add this line
     }));
+
     toast.success("Product added to cart successfully!");
   };
   const navigate = useNavigate();
