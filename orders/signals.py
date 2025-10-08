@@ -4,6 +4,7 @@ from django.core.mail import send_mail
 from .models import Order, OrderItem
 from inventory.models import Inventory
 
+
 def adjust_inventory_item(item, increase=False):
     try:
         if item.variation:
@@ -18,6 +19,7 @@ def adjust_inventory_item(item, increase=False):
     except Inventory.DoesNotExist:
         pass
 
+
 def adjust_sold_count(item, increase=True):
     if item.product:
         change = item.quantity if increase else -item.quantity
@@ -26,21 +28,15 @@ def adjust_sold_count(item, increase=True):
             item.product.sold_count = 0
         item.product.save(update_fields=['sold_count'])
 
+
 @receiver(post_save, sender=Order)
 def handle_order_confirmation(sender, instance, **kwargs):
     if instance.status == 'confirmed' and instance.payment_status == 'paid':
         for item in instance.items.all():
             adjust_inventory_item(item)
             adjust_sold_count(item, increase=True)
-        # Clear user's cart or guest session cart
-        cart = None
-        if instance.user:
-            cart = getattr(instance.user, 'cart', None)
-        else:
-            from .models import Cart
-            cart = Cart.objects.filter(session_key=getattr(instance, 'session_key', None)).first()
-        if cart:
-            cart.items.all().delete()
+        # cart remove করা হয়েছে, কারণ cart app নাই
+
 
 @receiver(post_save, sender=Order)
 def handle_order_cancellation(sender, instance, **kwargs):
@@ -49,22 +45,22 @@ def handle_order_cancellation(sender, instance, **kwargs):
             adjust_inventory_item(item, increase=True)
             adjust_sold_count(item, increase=False)
 
+
 @receiver(pre_delete, sender=Order)
 def restore_inventory_on_delete(sender, instance, **kwargs):
     for item in instance.items.all():
         adjust_inventory_item(item, increase=True)
         adjust_sold_count(item, increase=False)
 
-# -----------------------------
-# Send Mikesound-branded email
-# -----------------------------
+
 @receiver(post_save, sender=Order)
 def send_order_confirmation_email(sender, instance, created, **kwargs):
     if not created and instance.status == 'confirmed' and instance.payment_status == 'paid':
         subject = f"Mikesound - Order #{instance.id} Confirmed"
         items_text = ""
         for item in instance.items.all():
-            items_text += f"{item.product.title} x {item.quantity} ({item.color}) - ${item.line_total}\n"
+            color_text = f" ({item.color})" if getattr(item, 'color', None) else ""
+            items_text += f"{item.product.title} x {item.quantity}{color_text} - ${item.line_total}\n"
         message = f"""
 Hello {instance.address.full_name},
 
@@ -83,7 +79,7 @@ Thank you for choosing Mikesound!
         send_mail(
             subject,
             message,
-            None,  # DEFAULT_FROM_EMAIL will be used
+            None,
             [instance.address.email],
             fail_silently=False
         )
