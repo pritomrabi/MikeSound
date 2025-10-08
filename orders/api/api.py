@@ -16,9 +16,7 @@ from products.models import Product, ProductVariation
 def get_shipping_fee_api(request):
     return Response({"shipping_fee": 50})
 
-# ---------------------------
-# Place Order API
-# ---------------------------
+# Place Order with Email Validation
 @api_view(['POST'])
 @permission_classes([AllowAny])
 def place_order_api(request):
@@ -28,14 +26,23 @@ def place_order_api(request):
     shipping_fee = Decimal(str(data.get('shipping_fee', 0)))
 
     if not address_data or not items:
-        return Response({'error': 'Address and items required'}, status=status.HTTP_400_BAD_REQUEST)
+        return Response({'error': 'Address and items required'}, status=400)
+
+    # Email validation
+    email = address_data.get('email','').strip()
+    if not email:
+        return Response({'error':'Email is required'}, status=400)
+    try:
+        validate_email(email)
+    except ValidationError:
+        return Response({'error':'Invalid email address'}, status=400)
 
     # Create Address
     addr_serializer = AddressSerializer(data=address_data)
     if addr_serializer.is_valid():
         address = addr_serializer.save()
     else:
-        return Response(addr_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        return Response(addr_serializer.errors, status=400)
 
     # Create Order
     order = Order.objects.create(
@@ -56,7 +63,7 @@ def place_order_api(request):
         var = ProductVariation.objects.filter(id=i.get('variation_id')).first() if i.get('variation_id') else None
         unit_price = Decimal(str(i.get('price', prod.get_discounted_price(var))))
         quantity = int(i.get('quantity', 1))
-        line_total = Decimal(str(i.get('total_price', unit_price * quantity)))
+        line_total = Decimal(str(i.get('total_price', unit_price*quantity)))
 
         OrderItem.objects.create(
             order=order,
@@ -64,18 +71,16 @@ def place_order_api(request):
             variation=var,
             quantity=quantity,
             unit_price=unit_price,
-            color=i.get('color', ''),
+            color=i.get('color',''),
             line_total=line_total,
-            image=i.get('image', '')
+            image=i.get('image','')
         )
         total += line_total
 
-    # Update order totals
     order.subtotal = total
     order.grand_total = total + shipping_fee
     order.save()
 
-    # Create Transaction
     Transaction.objects.create(
         order=order,
         amount=order.grand_total,
@@ -86,9 +91,9 @@ def place_order_api(request):
     return Response({
         "success": True,
         "order_id": order.id,
-        "shipping_fee": float(shipping_fee),
-        "grand_total": float(order.grand_total)
-    }, status=status.HTTP_201_CREATED)
+        "shipping_fee": shipping_fee,
+        "total_amount": order.grand_total
+    }, status=201)
 
 # ---------------------------
 # Order History API

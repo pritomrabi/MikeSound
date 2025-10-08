@@ -21,16 +21,17 @@ class Address(models.Model):
 
 class Order(models.Model):
     STATUS_CHOICES = [
-        ('pending', 'Pending'),
-        ('confirmed', 'Confirmed'),
-        ('canceled', 'Canceled'),
-        ('shipped', 'Shipped'),
-        ('delivered', 'Delivered'),
+        ('pending','Pending'),
+        ('confirmed','Confirmed'),
+        ('canceled','Canceled'),
+        ('shipped','Shipped'),
+        ('delivered','Delivered'),
     ]
     PAYMENT_STATUS = [
-        ('pending', 'Pending'),
-        ('paid', 'Paid'),
+        ('pending','Pending'),
+        ('paid','Paid'),
     ]
+
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, blank=True)
     address = models.ForeignKey(Address, null=True, blank=True, on_delete=models.SET_NULL)
     subtotal = models.DecimalField(max_digits=12, decimal_places=2, default=0)
@@ -39,11 +40,11 @@ class Order(models.Model):
     grand_total = models.DecimalField(max_digits=12, decimal_places=2, default=0)
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending')
     payment_status = models.CharField(max_length=20, choices=PAYMENT_STATUS, default='pending')
+    payment_method = models.CharField(max_length=50, default='manual')  # add this
+    user_number = models.CharField(max_length=50, blank=True, null=True)  # add this
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
-    def __str__(self):
-        return f"Order #{self.id} ({self.status})"
 
 class OrderItem(models.Model):
     order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='items')
