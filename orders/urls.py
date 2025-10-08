@@ -2,6 +2,7 @@ from django.urls import path
 from .api.api import *
 
 urlpatterns = [
+     path('api/shipping-fee/', get_shipping_fee_api, name='api_shipping_fee'),
     path('api/orders/place/', place_order_api, name='api_place_order'),
     path('api/payment-numbers/', payment_numbers_api, name='payment-numbers-api'),
     path('api/orders/manual-payment/<int:txn_id>/', manual_payment_submit_api, name='api_manual_payment_submit'),

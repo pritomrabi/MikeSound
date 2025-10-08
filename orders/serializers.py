@@ -1,12 +1,10 @@
 from rest_framework import serializers
 from .models import Order, OrderItem, Address, Transaction, PaymentNumber
-from products.models import ProductVariation, Product
 
 class AddressSerializer(serializers.ModelSerializer):
     class Meta:
         model = Address
-        fields = [ "full_name","phone","line1","line2","city","postal_code","email","note",]
-
+        fields = ["full_name","phone","line1","line2","city","postal_code","email","note"]
 
 class OrderItemSerializer(serializers.ModelSerializer):
     product_title = serializers.CharField(source='product.title', read_only=True)
@@ -14,7 +12,7 @@ class OrderItemSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = OrderItem
-        fields = ['id', 'product', 'product_title', 'variation', 'variation_color', 'quantity', 'unit_price', 'line_total']
+        fields = ['id', 'product', 'product_title', 'variation', 'variation_color', 'quantity', 'unit_price', 'line_total', 'color', 'image']
 
 class OrderSerializer(serializers.ModelSerializer):
     items = OrderItemSerializer(many=True, read_only=True)

@@ -1,74 +1,91 @@
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.response import Response
+from rest_framework import status
 from django.shortcuts import get_object_or_404
-from ..models import Order, OrderItem, Address, Transaction
-from ..serializers import OrderSerializer, TransactionSerializer, AddressSerializer
-from products.models import Product, ProductVariation
 from decimal import Decimal
-from ..models import PaymentNumber
-from ..serializers import PaymentNumberSerializer
+from ..models import Order, OrderItem, Address, Transaction, PaymentNumber
+from ..serializers import OrderSerializer, TransactionSerializer, AddressSerializer, PaymentNumberSerializer
+from products.models import Product, ProductVariation
+
 # ---------------------------
-# Cart / Checkout API
+# Shipping Fee API
+# ---------------------------
+@api_view(['GET'])
+@permission_classes([AllowAny])
+def get_shipping_fee_api(request):
+    # Backend controlled delivery fee
+    return Response({"shipping_fee": 50})
+
+# ---------------------------
+# Place Order API
 # ---------------------------
 @api_view(['POST'])
 @permission_classes([AllowAny])
 def place_order_api(request):
     data = request.data
+    address_data = data.get('address')
     items = data.get('items', [])
-    address_data = data.get('address', {})
+    user_number = data.get('user_number')
+    txn_id = data.get('transaction_id')
+    shipping_fee = Decimal(str(data.get('shipping_fee', 0)))  # frontend theke pathano
 
-    if not items or not address_data:
-        return Response({'error': 'Items and address required'}, status=400)
+    if not address_data or not items:
+        return Response({'error': 'Address and items required'}, status=status.HTTP_400_BAD_REQUEST)
 
+    # Create Address
     addr_serializer = AddressSerializer(data=address_data)
     if addr_serializer.is_valid():
-        addr = addr_serializer.save(user=request.user if request.user.is_authenticated else None)
+        address = addr_serializer.save()
     else:
-        return Response(addr_serializer.errors, status=400)
+        return Response(addr_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    subtotal = Decimal(0)
-    for i in items:
-        prod = get_object_or_404(Product, id=i['product_id'])
-        var = None
-        var_id = i.get('variation_id')
-        if var_id is not None:
-            var = ProductVariation.objects.filter(id=var_id).first()
-        # price frontend theke pathano hocche na, backend calculate korbe
-        price = prod.get_discounted_price(var)
-        subtotal += price * i['quantity']
-
-    grand_total = subtotal  # add shipping_fee, discount if needed
-
+    # Create Order
     order = Order.objects.create(
-        user=request.user if request.user.is_authenticated else None,
-        address=addr,
-        subtotal=subtotal,
-        shipping_fee=0,
-        discount=0,
-        grand_total=grand_total,
+        address=address,
+        payment_method=data.get('payment_method', 'manual'),
+        user_number=user_number,
+        transaction_id=txn_id,
+        shipping_fee=shipping_fee,
+        total_amount=0,
         status='pending',
         payment_status='pending'
     )
 
+    total = Decimal(0)
     for i in items:
-        prod = get_object_or_404(Product, id=i['product_id'])
-        var = None
-        var_id = i.get('variation_id')
-        if var_id is not None:
-            var = ProductVariation.objects.filter(id=var_id).first()
-        price = prod.get_discounted_price(var)
+        prod = Product.objects.filter(id=i['product_id']).first()
+        if not prod:
+            continue
+        var = ProductVariation.objects.filter(id=i.get('variation_id')).first() if i.get('variation_id') else None
+        unit_price = Decimal(str(i.get('price', prod.get_discounted_price(var))))
+        quantity = int(i.get('quantity', 1))
+        line_total = Decimal(str(i.get('total_price', unit_price * quantity)))
+
         OrderItem.objects.create(
             order=order,
             product=prod,
             variation=var,
-            quantity=i['quantity'],
-            unit_price=price
+            quantity=quantity,
+            unit_price=unit_price,
+            color=i.get('color', ''),
+            line_total=line_total,
+            image=i.get('image', '')
         )
+        total += line_total
 
-    txn = Transaction.objects.create(order=order, amount=grand_total, gateway='manual', status='pending')
+    order.total_amount = total + shipping_fee
+    order.save()
 
-    return Response({'success': True, 'order_id': order.id, 'txn_id': txn.id})
+    # Create Transaction
+    Transaction.objects.create(
+        order=order,
+        amount=order.total_amount,
+        gateway='manual',
+        status='pending'
+    )
+
+    return Response({"success": True, "order_id": order.id, "shipping_fee": shipping_fee, "total_amount": order.total_amount}, status=status.HTTP_201_CREATED)
 
 # ---------------------------
 # Order History API
@@ -79,7 +96,6 @@ def order_history_api(request):
     orders = Order.objects.filter(user=request.user).order_by('-created_at')
     serializer = OrderSerializer(orders, many=True)
     return Response({'orders': serializer.data})
-
 
 # ---------------------------
 # Cancel Order API
@@ -100,7 +116,6 @@ def cancel_order_api(request, order_id):
     order.save()
     return Response({'success': True, 'order_id': order.id, 'new_status': order.status})
 
-
 # ---------------------------
 # Manual Payment Submit API
 # ---------------------------
@@ -116,12 +131,12 @@ def manual_payment_submit_api(request, txn_id):
     txn.save()
     return Response({'success': True, 'txn_id': txn.id})
 
+# ---------------------------
+# Payment Numbers API
+# ---------------------------
 @api_view(['GET'])
 @permission_classes([AllowAny])
 def payment_numbers_api(request):
-    """
-    Return all payment numbers for bkash, nagad, rocket.
-    """
     numbers = PaymentNumber.objects.all()
     serializer = PaymentNumberSerializer(numbers, many=True)
     return Response({'payment_numbers': serializer.data})

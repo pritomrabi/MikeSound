@@ -3,17 +3,8 @@ from django.conf import settings
 from django.utils import timezone
 from products.models import Product, ProductVariation
 
-# -------------------------
-# Address
-# -------------------------
 class Address(models.Model):
-    user = models.ForeignKey(
-        settings.AUTH_USER_MODEL,
-        on_delete=models.CASCADE,
-        null=True,
-        blank=True,
-        related_name='addresses'
-    )
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True, blank=True, related_name='addresses')
     full_name = models.CharField(max_length=255)
     phone = models.CharField(max_length=20)
     line1 = models.CharField(max_length=255)
@@ -28,9 +19,6 @@ class Address(models.Model):
     def __str__(self):
         return f"{self.full_name}, {self.city}"
 
-# -------------------------
-# Order
-# -------------------------
 class Order(models.Model):
     STATUS_CHOICES = [
         ('pending', 'Pending'),
@@ -43,18 +31,12 @@ class Order(models.Model):
         ('pending', 'Pending'),
         ('paid', 'Paid'),
     ]
-
-    user = models.ForeignKey(
-        settings.AUTH_USER_MODEL,
-        on_delete=models.SET_NULL,
-        null=True,
-        blank=True
-    )
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, blank=True)
     address = models.ForeignKey(Address, null=True, blank=True, on_delete=models.SET_NULL)
-    subtotal = models.DecimalField(max_digits=12, decimal_places=2)
+    subtotal = models.DecimalField(max_digits=12, decimal_places=2, default=0)
     shipping_fee = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     discount = models.DecimalField(max_digits=10, decimal_places=2, default=0)
-    grand_total = models.DecimalField(max_digits=12, decimal_places=2)
+    grand_total = models.DecimalField(max_digits=12, decimal_places=2, default=0)
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending')
     payment_status = models.CharField(max_length=20, choices=PAYMENT_STATUS, default='pending')
     created_at = models.DateTimeField(auto_now_add=True)
@@ -63,29 +45,27 @@ class Order(models.Model):
     def __str__(self):
         return f"Order #{self.id} ({self.status})"
 
-# -------------------------
-# Order Items
-# -------------------------
 class OrderItem(models.Model):
     order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='items')
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     variation = models.ForeignKey(ProductVariation, null=True, blank=True, on_delete=models.SET_NULL)
     quantity = models.PositiveIntegerField()
     unit_price = models.DecimalField(max_digits=10, decimal_places=2)
+    color = models.CharField(max_length=50, blank=True, null=True)
+    line_total = models.DecimalField(max_digits=12, decimal_places=2, default=0)
+    image = models.CharField(max_length=255, blank=True, null=True)
 
-    @property
-    def line_total(self):
-        price = self.unit_price
-        if self.product.discount > 0:
-            price -= price * self.product.discount / 100
-        return round(self.quantity * price, 2)
+    def save(self, *args, **kwargs):
+        if not self.line_total:
+            price = self.unit_price
+            if self.product.discount > 0:
+                price -= price * self.product.discount / 100
+            self.line_total = round(self.quantity * price, 2)
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return f"{self.product.title} x {self.quantity}"
 
-# -------------------------
-# Transaction (Manual Payment)
-# -------------------------
 class Transaction(models.Model):
     STATUS_CHOICES = [
         ('pending', 'Pending'),
@@ -103,14 +83,8 @@ class Transaction(models.Model):
     def __str__(self):
         return f"Txn#{self.id} - {self.gateway} - {self.status}"
 
-# -------------------------
-# Payment Numbers (Admin Set)
-# -------------------------
 class PaymentNumber(models.Model):
-    gateway = models.CharField(
-        max_length=20,
-        choices=[('bkash', 'Bkash'), ('nogod', 'Nagad'), ('rocket', 'Rocket')]
-    )
+    gateway = models.CharField(max_length=20, choices=[('bkash', 'Bkash'), ('nogod', 'Nagad'), ('rocket', 'Rocket')])
     account_number = models.CharField(max_length=50)
 
     def __str__(self):
