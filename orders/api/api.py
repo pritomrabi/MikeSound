@@ -14,7 +14,6 @@ from products.models import Product, ProductVariation
 @api_view(['GET'])
 @permission_classes([AllowAny])
 def get_shipping_fee_api(request):
-    # Backend controlled delivery fee
     return Response({"shipping_fee": 50})
 
 # ---------------------------
@@ -26,9 +25,7 @@ def place_order_api(request):
     data = request.data
     address_data = data.get('address')
     items = data.get('items', [])
-    user_number = data.get('user_number')
-    txn_id = data.get('transaction_id')
-    shipping_fee = Decimal(str(data.get('shipping_fee', 0)))  # frontend theke pathano
+    shipping_fee = Decimal(str(data.get('shipping_fee', 0)))
 
     if not address_data or not items:
         return Response({'error': 'Address and items required'}, status=status.HTTP_400_BAD_REQUEST)
@@ -43,11 +40,10 @@ def place_order_api(request):
     # Create Order
     order = Order.objects.create(
         address=address,
-        payment_method=data.get('payment_method', 'manual'),
-        user_number=user_number,
-        transaction_id=txn_id,
         shipping_fee=shipping_fee,
-        total_amount=0,
+        subtotal=0,
+        discount=0,
+        grand_total=0,
         status='pending',
         payment_status='pending'
     )
@@ -74,18 +70,25 @@ def place_order_api(request):
         )
         total += line_total
 
-    order.total_amount = total + shipping_fee
+    # Update order totals
+    order.subtotal = total
+    order.grand_total = total + shipping_fee
     order.save()
 
     # Create Transaction
     Transaction.objects.create(
         order=order,
-        amount=order.total_amount,
+        amount=order.grand_total,
         gateway='manual',
         status='pending'
     )
 
-    return Response({"success": True, "order_id": order.id, "shipping_fee": shipping_fee, "total_amount": order.total_amount}, status=status.HTTP_201_CREATED)
+    return Response({
+        "success": True,
+        "order_id": order.id,
+        "shipping_fee": float(shipping_fee),
+        "grand_total": float(order.grand_total)
+    }, status=status.HTTP_201_CREATED)
 
 # ---------------------------
 # Order History API
