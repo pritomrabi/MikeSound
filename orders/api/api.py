@@ -1,13 +1,12 @@
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.response import Response
-from rest_framework import status
 from django.shortcuts import get_object_or_404
 from decimal import Decimal
 from ..models import Order, OrderItem, Address, Transaction, PaymentNumber
 from ..serializers import OrderSerializer, TransactionSerializer, AddressSerializer, PaymentNumberSerializer
 from products.models import Product, ProductVariation
-from django.core.validators import validate_email
+from django.core.validators import EmailValidator
 from django.core.exceptions import ValidationError
 
 # ---------------------------
@@ -18,7 +17,9 @@ from django.core.exceptions import ValidationError
 def get_shipping_fee_api(request):
     return Response({"shipping_fee": 50})
 
+# ---------------------------
 # Place Order with Email Validation
+# ---------------------------
 @api_view(['POST'])
 @permission_classes([AllowAny])
 def place_order_api(request):
@@ -31,13 +32,14 @@ def place_order_api(request):
         return Response({'error': 'Address and items required'}, status=400)
 
     # Email validation
-    email = address_data.get('email','').strip()
+    email = address_data.get('email', '').strip()
     if not email:
-        return Response({'error':'Email is required'}, status=400)
+        return Response({'error': 'Email is required'}, status=400)
+    email_validator = EmailValidator(message="Invalid email address")
     try:
-        validate_email(email)
+        email_validator(email)
     except ValidationError:
-        return Response({'error':'Invalid email address'}, status=400)
+        return Response({'error': 'Invalid email address'}, status=400)
 
     # Create Address
     addr_serializer = AddressSerializer(data=address_data)
@@ -83,6 +85,7 @@ def place_order_api(request):
     order.grand_total = total + shipping_fee
     order.save()
 
+    # Create Transaction
     Transaction.objects.create(
         order=order,
         amount=order.grand_total,
