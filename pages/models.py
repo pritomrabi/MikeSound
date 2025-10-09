@@ -1,12 +1,5 @@
 from django.db import models
 
-class AboutUs(models.Model):
-    content = models.TextField()
-    updated_at = models.DateTimeField(auto_now=True)
-
-    def __str__(self):
-        return "About Us"
-
 # Contact Messages
 class ContactMessage(models.Model):
     name = models.CharField(max_length=100)
@@ -19,22 +12,6 @@ class ContactMessage(models.Model):
     def __str__(self):
         return f"{self.name} - {self.subject}"
 
-# Terms & Conditions
-class TermsConditions(models.Model):
-    content = models.TextField()
-    updated_at = models.DateTimeField(auto_now=True)
-
-    def __str__(self):
-        return "Terms & Conditions"
-
-# Help Center
-class HelpCenter(models.Model):
-    content = models.TextField()
-    updated_at = models.DateTimeField(auto_now=True)
-
-    def __str__(self):
-        return "Help Center"
-
 # FAQs
 class FAQ(models.Model):
     question = models.CharField(max_length=255)
@@ -44,28 +21,17 @@ class FAQ(models.Model):
     def __str__(self):
         return self.question
 
-# Site Settings
-class SiteSetting(models.Model):
-    key = models.CharField(max_length=50, unique=True)
-    value = models.CharField(max_length=255)
-
-    def __str__(self):
-        return f"{self.key}: {self.value}"
-
-
+# Footer
 class Footer(models.Model):
     brand_logo = models.ImageField(upload_to="footer/", blank=True, null=True)
     description = models.TextField(blank=True)
-
     email = models.EmailField(default="eurosespabd@gmail.com")
     phone = models.CharField(max_length=20, default="+8801911552077")
     location = models.CharField(max_length=255, default="Dhaka, Bangladesh")
-
     facebook = models.URLField(blank=True, null=True)
     whatsapp = models.URLField(blank=True, null=True)
     messenger = models.URLField(blank=True, null=True)
     phone_link = models.CharField(max_length=20, blank=True, null=True)
-
     copyright = models.CharField(
         max_length=255,
         default="© 2025 Mike Sound Vai. All Rights Reserved."

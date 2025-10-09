@@ -1,28 +1,35 @@
-from rest_framework.decorators import api_view
-from rest_framework.response import Response
+from django.shortcuts import render
 from django.core.mail import send_mail
 from django.conf import settings
-from .models import AboutUs, TermsConditions, HelpCenter, FAQ, ContactMessage, Footer
-from .serializers import *
+from .models import ContactMessage, FAQ, Footer
+from .forms import ContactForm
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from .serializers import ContactMessageSerializer, FAQSerializer, FooterSerializer
 
-@api_view(['GET'])
-def about_us_api(request):
-    page = AboutUs.objects.first()
-    serializer = AboutUsSerializer(page)
-    return Response(serializer.data)
+# Web Views
+def faqs(request):
+    faqs_list = FAQ.objects.all()
+    return render(request, 'pages/faqs.html', {'faqs': faqs_list})
 
-@api_view(['GET'])
-def terms_conditions_api(request):
-    page = TermsConditions.objects.first()
-    serializer = TermsConditionsSerializer(page)
-    return Response(serializer.data)
+def contact_us(request):
+    if request.method == 'POST':
+        form = ContactForm(request.POST)
+        if form.is_valid():
+            ContactMessage.objects.create(**form.cleaned_data)
+            send_mail(
+                subject=form.cleaned_data['subject'],
+                message=f"Name: {form.cleaned_data['name']}\nEmail: {form.cleaned_data['email']}\nPhone: {form.cleaned_data.get('phone','')}\n\nMessage:\n{form.cleaned_data['message']}",
+                from_email=settings.EMAIL_HOST_USER,
+                recipient_list=[settings.EMAIL_HOST_USER],
+                fail_silently=False,
+            )
+            return render(request, 'pages/contact_form_success.html')
+    else:
+        form = ContactForm()
+    return render(request, 'pages/contact_us.html', {'form': form})
 
-@api_view(['GET'])
-def help_center_api(request):
-    page = HelpCenter.objects.first()
-    serializer = HelpCenterSerializer(page)
-    return Response(serializer.data)
-
+# API Views
 @api_view(['GET'])
 def faqs_api(request):
     faqs_list = FAQ.objects.all()
@@ -44,7 +51,6 @@ def contact_us_api(request):
         return Response({'detail': 'Message sent successfully'})
     return Response(serializer.errors, status=400)
 
-# Footer API
 @api_view(['GET'])
 def get_footer(request):
     footer = Footer.objects.first()

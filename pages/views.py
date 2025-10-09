@@ -1,20 +1,10 @@
 from django.shortcuts import render
 from django.core.mail import send_mail
 from django.conf import settings
-from .models import AboutUs, TermsConditions, HelpCenter, FAQ, ContactMessage
+from .models import *
 from .forms import ContactForm
 
-def about_us(request):
-    page = AboutUs.objects.first()
-    return render(request, 'pages/about_us.html', {'page': page})
 
-def terms_conditions(request):
-    page = TermsConditions.objects.first()
-    return render(request, 'pages/terms_conditions.html', {'page': page})
-
-def help_center(request):
-    page = HelpCenter.objects.first()
-    return render(request, 'pages/help_center.html', {'page': page})
 
 def faqs(request):
     faqs_list = FAQ.objects.all()
