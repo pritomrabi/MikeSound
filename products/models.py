@@ -5,7 +5,6 @@ from django.db import models
 from django.conf import settings
 from django.utils.text import slugify
 from django.utils.html import strip_tags
-from ckeditor.fields import RichTextField
 from django.db.models.signals import post_delete
 from django.dispatch import receiver
 
@@ -94,7 +93,7 @@ class Product(models.Model):
     brand = models.ForeignKey(Brand, on_delete=models.CASCADE)
     title = models.CharField(max_length=255)
     price = models.DecimalField(max_digits=10, decimal_places=2, default=0)
-    description = RichTextField()
+    description = models.TextField(max_length=1000, blank=True, default="")
     slug = models.SlugField(max_length=100, unique=True, blank=True)
     meta_title = models.CharField(max_length=255, blank=True)
     meta_description = models.TextField(blank=True)

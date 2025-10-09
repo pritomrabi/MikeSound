@@ -58,8 +58,16 @@ class TransactionAdmin(admin.ModelAdmin):
 # ---------------------------
 @admin.register(PaymentNumber)
 class PaymentNumberAdmin(admin.ModelAdmin):
-    list_display = ['gateway', 'account_number']
-    readonly_fields = list_display
+    list_display = ['gateway', 'account_number', 'latest_transaction_id']
+    readonly_fields = ['gateway', 'account_number', 'latest_transaction_id']
+
+    def latest_transaction_id(self, obj):
+        txn = Transaction.objects.filter(gateway=obj.gateway).order_by('-id').first()
+        if txn:
+            return txn.id
+        return "-"
+    latest_transaction_id.short_description = "Transaction ID"
+
 
 # ---------------------------
 # Address Admin
