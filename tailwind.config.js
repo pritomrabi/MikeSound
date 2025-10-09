@@ -1,0 +1,34 @@
+/** @type {import('tailwindcss').Config} */
+export default {
+  darkMode: "class",
+  content: [
+    "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
+    "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
+    "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
+  ],
+  theme: {
+    container: {
+      center: true,
+    },
+    extend: {
+      colors: {
+        primary: {
+          DEFAULT: "#242424",
+          dark: "#f5f5f5", // Light text in dark mode
+        },
+        secandari: {
+          DEFAULT: "#aaaaaa",
+          dark: "#bab5b5", // Light gray for dark mode
+        },
+        brand: "#FF0000",
+        Green: "#FF0000",
+      },
+      fontFamily: {
+        NunitoFont: ["Nunito", "sans-serif"],
+        Monrope: ["Manrope", "serif"],
+        Lato: ["Lato", "sans-serif"],
+      },
+    },
+  },
+  plugins: [],
+};
