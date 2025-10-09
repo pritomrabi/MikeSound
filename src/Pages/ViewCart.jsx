@@ -1,5 +1,4 @@
-import React, { useEffect } from "react";
-import ViewBanner from "../Components/ViewCart/ViewBanner";
+import  { useEffect } from "react";
 import ViewShopping from "../Components/ViewCart/ViewShopping";
 
 const ViewCart = () => {
@@ -8,7 +7,6 @@ const ViewCart = () => {
   }, []);
   return (
     <div className="md:pt-20 pt-16">
-      <ViewBanner />
       <ViewShopping />
     </div>
   );

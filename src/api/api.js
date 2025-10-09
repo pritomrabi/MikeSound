@@ -32,9 +32,7 @@ export const getProductsByCategory = (slug) =>
   apiRequest("get", `/api/products/?category=${slug}`);
 
 // Page APIs
-export const getAbout = () => apiRequest("get", "/api/about/");
-export const getTerms = () => apiRequest("get", "/api/terms/");
-export const getHelpCenter = () => apiRequest("get", "/api/help/");
+
 export const getFAQs = () => apiRequest("get", "/api/faqs/");
 export const sendContactMessage = (data) => apiRequest("post", "/api/contact/", data);
 export const getFooter = () => apiRequest("get", "/api/footer/");

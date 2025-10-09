@@ -7,7 +7,7 @@ const FAQ = () => {
 
     useEffect(() => {
         const fetchFaqs = async () => {
-            const res = await getFaqs(); // fetch FAQs from your Django API
+            const res = await getFAQs(); // fetch FAQs from your Django API
             if (res.error) setFaqs([]);
             else setFaqs(res);
         };
@@ -19,7 +19,7 @@ const FAQ = () => {
     if (faqs.length === 0) {
         return (
             <div className="text-center py-10 text-primary dark:text-secandari-dark font-Lato">
-                
+
             </div>
         );
     }

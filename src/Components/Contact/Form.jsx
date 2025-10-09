@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import { sendContactMessage } from "../../api/api";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
-const Form = () => {
+const ContactForm = () => {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -9,6 +11,7 @@ const Form = () => {
     subject: "",
     message: "",
   });
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -16,10 +19,22 @@ const Form = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const res = await sendContactMessage(formData);
-    if (!res.error) alert("Message sent successfully");
-    else alert("Error sending message");
-    setFormData({ name: "", email: "", phone: "", subject: "", message: "" });
+    setLoading(true);
+
+    try {
+      const res = await sendContactMessage(formData);
+
+      if (!res.error) {
+        toast.success("Message sent successfully");
+        setFormData({ name: "", email: "", phone: "", subject: "", message: "" });
+      } else {
+        toast.error(res.error || "Error sending message");
+      }
+    } catch (err) {
+      toast.error("Server not reachable");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -37,10 +52,9 @@ const Form = () => {
             Send us a message
           </h2>
           <p className="mt-4 text-secandari-default dark:text-secandari-dark text-sm font-Lato font-normal">
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
-            <br />
-            eiusmod tempor incididunt.
+            Fill the form below and we will get back to you shortly.
           </p>
+
           <form className="mt-6 space-y-4" onSubmit={handleSubmit}>
             <input
               type="text"
@@ -50,6 +64,7 @@ const Form = () => {
               placeholder="Your name*"
               className="w-full p-3 border border-gray-300 outline-none rounded text-sm text-primary-default dark:text-primary-dark font-normal font-Monrope"
               required
+              disabled={loading}
             />
             <input
               type="email"
@@ -59,15 +74,16 @@ const Form = () => {
               placeholder="Your email*"
               className="w-full p-3 border border-gray-300 outline-none rounded text-sm text-primary-default dark:text-primary-dark font-normal font-Monrope"
               required
+              disabled={loading}
             />
             <input
-              type="number"
+              type="tel"
               name="phone"
               value={formData.phone}
               onChange={handleChange}
-              placeholder="Your phone*"
+              placeholder="Your phone (optional)"
               className="w-full p-3 border border-gray-300 outline-none rounded text-sm text-primary-default dark:text-primary-dark font-normal font-Monrope"
-              required
+              disabled={loading}
             />
             <input
               type="text"
@@ -77,27 +93,35 @@ const Form = () => {
               placeholder="Your subject*"
               className="w-full p-3 border border-gray-300 outline-none rounded text-sm text-primary-default dark:text-primary-dark font-normal font-Monrope"
               required
+              disabled={loading}
             />
             <textarea
               name="message"
               value={formData.message}
               onChange={handleChange}
-              placeholder="Message"
+              placeholder="Message*"
               rows="5"
               className="w-full p-3 border border-gray-300 outline-none rounded text-sm text-primary-default dark:text-primary-dark font-normal font-Monrope"
               required
+              disabled={loading}
             ></textarea>
+
             <button
               type="submit"
-              className="w-fit bg-brand text-white py-3 px-6 rounded-lg text-sm cursor-pointer font-Popins font-normal"
+              className={`w-fit bg-brand text-white py-3 px-6 rounded-lg text-sm font-Popins font-normal transition-opacity ${
+                loading ? "opacity-60 cursor-not-allowed" : "cursor-pointer"
+              }`}
+              disabled={loading}
             >
-              Submit
+              {loading ? "Sending..." : "Submit"}
             </button>
           </form>
         </div>
       </div>
+
+      <ToastContainer position="top-center" autoClose={3000} />
     </section>
   );
 };
 
-export default Form;
+export default ContactForm;
