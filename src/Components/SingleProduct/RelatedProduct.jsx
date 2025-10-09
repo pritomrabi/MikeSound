@@ -95,7 +95,7 @@ const RelatedProduct = ({ currentProduct }) => {
             })}
           </Slider>
         ) : (
-          <p className="text-center text-gray-500 font-medium py-10">
+          <p className="flex font-Nunito-font font-semibold sm:text-2xl text-xl justify-center items-center h-[40vh]">
             Related products not available
           </p>
         )}

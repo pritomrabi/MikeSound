@@ -21,7 +21,7 @@ const Description = ({ product }) => {
 
         {/* Tabs */}
         <div className="flex flex-wrap justify-center gap-2 sm:gap-4 mb-6 font-Nunito-font text-sm">
-          {["specs", "desc", "review"].map((tab) => (
+          {["specs", "desc"].map((tab) => (
             <button
               key={tab}
               onClick={() => setActiveTab(tab)}
@@ -30,7 +30,7 @@ const Description = ({ product }) => {
                 : "bg-gray-50 dark:bg-gray-800 text-gray-800 dark:text-gray-200"
               }`}
             >
-              {tab === "specs" ? "Specification" : tab === "desc" ? "Description" : "Review"}
+              {tab === "specs" ? "Specification" : tab === "desc" ? "Description" : ""}
             </button>
           ))}
         </div>
@@ -80,7 +80,7 @@ const Description = ({ product }) => {
           </div>
         )}
 
-        {activeTab === "review" && (
+        {/* {activeTab === "review" && (
           <div className="mt-4 sm:mt-6 font-Nunito-font">
             <h2 className="text-lg sm:text-xl font-bold mb-4 border-b border-gray-200 dark:border-gray-700 pb-2">Customer Reviews</h2>
             <div className="space-y-4 h-56 sm:h-60 overflow-y-auto px-2 sm:px-5 mb-4">
@@ -115,7 +115,7 @@ const Description = ({ product }) => {
               </button>
             </form>
           </div>
-        )}
+        )} */}
       </div>
     </div>
   );

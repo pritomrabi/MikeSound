@@ -45,7 +45,7 @@ const SingleProduct = () => {
     fetchProduct();
   }, [id]);
 
-  if (!product) return <p className="text-center mt-20">Loading...</p>;
+  if (!product) return <p className="flex font-Nunito-font font-semibold sm:text-2xl text-xl justify-center items-center h-[40vh]">Loading...</p>;
 
   return (
     <div className="md:pt-20 pt-16">
@@ -54,7 +54,7 @@ const SingleProduct = () => {
       {relatedProducts.length > 0 ? (
         <RelatedProduct currentProduct={product} allProducts={relatedProducts} />
       ) : (
-        <p className="text-center mt-10">Related products not available</p>
+        <p className="flex font-Nunito-font font-semibold sm:text-2xl text-xl justify-center items-center h-[40vh]">Related products not available</p>
       )}
     </div>
   );

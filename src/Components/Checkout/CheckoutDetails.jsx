@@ -34,7 +34,6 @@ const CheckoutDetails = () => {
     fetchShippingFee();
   }, []);
 
-  // Load cart and calculate total
   useEffect(() => {
     const storedCart = JSON.parse(localStorage.getItem("cart"));
     const safeCart = storedCart
@@ -60,7 +59,6 @@ const CheckoutDetails = () => {
   }, [navigate, shippingFee]);
 
   const handlePlaceOrder = async () => {
-    // Validate address
     if (!addressData.full_name || !addressData.phone || !addressData.line1 || !addressData.city) {
       toast.error("Please fill all required address fields");
       return;

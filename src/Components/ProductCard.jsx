@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { AiFillStar } from "react-icons/ai";
 import { LuSearch } from "react-icons/lu";
 import { IoCartOutline } from "react-icons/io5";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useDispatch } from "react-redux";
 import { addtoCart } from "../redux/reducer/ProductSlice";
@@ -27,7 +27,7 @@ const ProductCard = ({ product, onQuickView }) => {
 
   return (
     <div className="relative group bg-white dark:bg-[#2a2a2a] rounded-md shadow-md overflow-hidden">
-      <ToastContainer position="top-center" autoClose={2000} theme="colored" />
+      {/* <ToastContainer position="top-center" autoClose={2000} theme="colored" /> */}
       {/* Image */}
       <Link to={`/singleproduct/${product.id}`}>
         <div className="relative overflow-hidden rounded-t-md">

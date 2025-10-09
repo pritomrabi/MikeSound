@@ -11,12 +11,12 @@ const CheckoutLeft = ({ addressData, setAddressData }) => {
     <div className="lg:w-[50%] w-full font-Lato font-normal text-primaryd dark:text-white text-sm">
       <div className="space-y-4">
         {[
-          { label: "Full Name", name: "full_name", placeholder: "Full Name" },
+          { label: "Full Name *", name: "full_name", placeholder: "Full Name" },
+          { label: "Email address ***", name: "email", placeholder: "Enter your correct email" },
+          { label: "Phone **", name: "phone", placeholder: "01XXXXXXXXX" },
           { label: "Street address *", name: "line1", placeholder: "House number and street name" },
           { label: "Town / City", name: "city", placeholder: "City" },
           { label: "Postcode / ZIP (optional)", name: "postal_code", placeholder: "ZIP" },
-          { label: "Email address", name: "email", placeholder: "Enter your email" },
-          { label: "Phone", name: "phone", placeholder: "01XXXXXXXXX" },
         ].map((field, idx) => (
           <div key={idx}>
             <CheckoutName name={field.label} />

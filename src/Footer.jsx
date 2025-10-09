@@ -7,6 +7,8 @@ import { BsShop } from "react-icons/bs";
 import { PiShoppingCartSimpleLight } from "react-icons/pi";
 import { useSelector } from "react-redux";
 import ShoppingCart from "./Utilities/ShoppingCart";
+import ThemeToggle from "./Utilities/ThemeToggle";
+import FloatingChat from "./Utilities/FloatingChat";
 
 const Footer = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -37,7 +39,7 @@ const Footer = () => {
   return (
     <>
       {/* Desktop Footer */}
-      <footer className="hidden md:block bg-brand text-sm pt-12 pb-6 font-Lato">
+      <footer className=" bg-brand text-sm pt-12 pb-6 font-Lato">
         <div className="container mx-auto justify-center px-10">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
             <div>
@@ -69,13 +71,13 @@ const Footer = () => {
               <ul className="text-white/90 text-base font-medium font-Monrope space-y-2">
                 <li>
                   Email:{" "}
-                  <Link to="mailto:eurosespabd@gmail.com" className="hover:text-brand">
+                  <Link to="mailto:eurosespabd@gmail.com" className="">
                     eurosespabd@gmail.com
                   </Link>
                 </li>
                 <li>
                   Phone:{" "}
-                  <Link to="tel:+8801911552077" className="hover:text-brand">
+                  <Link to="tel:+8801911552077" className="">
                     +8801911552077
                   </Link>
                 </li>
@@ -102,19 +104,20 @@ const Footer = () => {
             </div>
           </div>
 
-          <div className="mt-8 border-t border-white/20 pt-6 text-center">
-            <p className="text-white/90 font-Nunito-font text-xs sm:text-sm">
+          <div className="mt-8 border-t border-white/20 pt-6 pb-14 md:pb-0 text-center">
+            <p className="text-white/90 font-Nunito-font text-sm">
               © 2025 Mike Sound. All Rights Reserved.
             </p>
             <button
               onClick={scrollToTop}
-              className={`fixed bottom-20 right-2 sm:right-4 md:right-8 z-10 p-2 rounded-md text-white transition-transform duration-200 shadow-md cursor-pointer ${isVisible ? "scale-100 bg-red-600" : "scale-0"
+              className={`fixed bottom-16 right-2 sm:right-4 md:right-8 z-10 p-2 rounded-md text-white transition-transform duration-200 shadow-md cursor-pointer ${isVisible ? "scale-100 bg-red-600" : "scale-0"
                 } hover:bg-red-700`}
               title="Go to top"
               aria-label="Scroll to top"
             >
               <BiChevronUp className="w-6 h-6" />
             </button>
+            <FloatingChat />
           </div>
         </div>
       </footer>
@@ -131,16 +134,7 @@ const Footer = () => {
             <BsShop size={22} />
             <span className="text-xs mt-1 font-medium">Shop</span>
           </Link>
-
-          <div onClick={() => setShop(true)} className="relative flex flex-col items-center text-sm cursor-pointer dark:text-white hover:text-red-600">
-            <PiShoppingCartSimpleLight size={22} />
-            <span className="text-xs mt-1 font-medium">Cart</span>
-            {totalItems > 0 && (
-              <span className="bg-red-600 text-white text-[9px] rounded-full w-4 h-4 absolute -top-1 -right-2 flex items-center justify-center">
-                {totalItems}
-              </span>
-            )}
-          </div>
+          <ThemeToggle />
         </div>
         {shop && !disableCartPopup && <ShoppingCart setShop={setShop} />}
       </footer>
