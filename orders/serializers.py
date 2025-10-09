@@ -20,7 +20,12 @@ class OrderSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Order
-        fields = ['id', 'user', 'address', 'subtotal', 'shipping_fee', 'discount', 'grand_total', 'status', 'payment_status', 'created_at', 'updated_at', 'items']
+        fields = [
+            'id', 'user', 'address', 'subtotal', 'shipping_fee', 'discount',
+            'grand_total', 'status', 'payment_status', 'created_at', 'updated_at',
+            'items', 'user_number' 
+        ]
+
 
 class TransactionSerializer(serializers.ModelSerializer):
     order_id = serializers.IntegerField(source='order.id', read_only=True)

@@ -26,8 +26,8 @@ class TransactionInline(admin.TabularInline):
 # ---------------------------
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):
-    list_display = ['id', 'user', 'grand_total', 'status', 'payment_status', 'created_at', 'get_address']
-    readonly_fields = ['subtotal', 'grand_total', 'shipping_fee', 'discount', 'get_address']
+    list_display = ['id', 'user', 'user_number', 'grand_total', 'status', 'payment_status', 'get_transaction_id', 'created_at', 'get_address']
+    readonly_fields = ['subtotal', 'grand_total', 'shipping_fee', 'discount', 'get_address', 'user_number']
     inlines = [OrderItemInline, TransactionInline]
 
     def get_address(self, obj):
@@ -36,6 +36,13 @@ class OrderAdmin(admin.ModelAdmin):
             return f"{addr.full_name}, {addr.line1}, {addr.line2 or ''}, {addr.city}, {addr.postal_code or ''}, {addr.phone}, {addr.email}"
         return "-"
     get_address.short_description = "Address"
+
+    def get_transaction_id(self, obj):
+        txn = obj.transactions.order_by('-id').first()
+        if txn:
+            return txn.id
+        return "-"
+    get_transaction_id.short_description = "Transaction ID"
 
 # ---------------------------
 # OrderItem Admin
@@ -67,7 +74,6 @@ class PaymentNumberAdmin(admin.ModelAdmin):
             return txn.id
         return "-"
     latest_transaction_id.short_description = "Transaction ID"
-
 
 # ---------------------------
 # Address Admin

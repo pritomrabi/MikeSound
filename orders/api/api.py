@@ -27,6 +27,8 @@ def place_order_api(request):
     address_data = data.get('address')
     items = data.get('items', [])
     shipping_fee = Decimal(str(data.get('shipping_fee', 0)))
+    user_number = data.get('user_number', '').strip()
+    txn_id = data.get('transaction_id', None)
 
     if not address_data or not items:
         return Response({'error': 'Address and items required'}, status=400)
@@ -56,7 +58,9 @@ def place_order_api(request):
         discount=0,
         grand_total=0,
         status='pending',
-        payment_status='pending'
+        payment_status='pending',
+        user_number=user_number,
+        payment_method='manual'
     )
 
     total = Decimal(0)
@@ -85,17 +89,33 @@ def place_order_api(request):
     order.grand_total = total + shipping_fee
     order.save()
 
-    # Create Transaction
-    Transaction.objects.create(
-        order=order,
-        amount=order.grand_total,
-        gateway='manual',
-        status='pending'
-    )
+    # Handle Transaction
+    if txn_id:
+        txn = Transaction.objects.filter(id=txn_id).first()
+        if txn:
+            txn.order = order
+            txn.amount = order.grand_total
+            txn.status = 'pending'
+            txn.save()
+        else:
+            txn = Transaction.objects.create(
+                order=order,
+                amount=order.grand_total,
+                gateway='manual',
+                status='pending'
+            )
+    else:
+        txn = Transaction.objects.create(
+            order=order,
+            amount=order.grand_total,
+            gateway='manual',
+            status='pending'
+        )
 
     return Response({
         "success": True,
         "order_id": order.id,
+        "txn_id": txn.id,
         "shipping_fee": shipping_fee,
         "total_amount": order.grand_total
     }, status=201)
