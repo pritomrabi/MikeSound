@@ -3,9 +3,9 @@ import React, { useState } from 'react';
 const Description = ({ product }) => {
   const [activeTab, setActiveTab] = useState("specs");
 
-  if (!product) return null; // যদি product না থাকে, render হবে না
+  if (!product) return null; 
 
-  // HTML remove করে description substring
+  
   const textDescription = product.description
     ? product.description.replace(/<[^>]+>/g, "").substring(0, 500)
     : "";

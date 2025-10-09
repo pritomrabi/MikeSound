@@ -65,7 +65,7 @@ const Navbar = () => {
 
             {/* Right: Cart */}
             <div onClick={() => setShop(true)} className="relative cursor-pointer">
-              <PiShoppingCartSimpleLight className="text-2xl" />
+              <PiShoppingCartSimpleLight className="text-3xl" />
               {totalItems > 0 && (
                 <span className="absolute -top-1 -right-2 bg-brand text-white text-[10px] rounded-full w-4 h-4 flex items-center justify-center">
                   {totalItems}
@@ -101,7 +101,7 @@ const Navbar = () => {
               ) : (
                 <IoSearchOutline
                   onClick={() => setSearch(true)}
-                  className="text-2xl cursor-pointer"
+                  className="text-3xl cursor-pointer"
                 />
               )}
               <div onClick={() => setShop(true)} className="relative cursor-pointer">

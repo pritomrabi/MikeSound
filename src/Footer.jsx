@@ -124,7 +124,7 @@ const Footer = () => {
 
       {/* Mobile Bottom Navigation */}
       <footer className="md:hidden fixed bottom-0 left-0 w-full bg-white  dark:bg-black border-t border-gray-200 dark:border-none z-50">
-        <div className="flex justify-around items-center py-2 text-gray-700 dark:text-white">
+        <div className="flex justify-around items-center py-2.5 text-gray-700 dark:text-white">
           <Link to="/" className="flex flex-col items-center text-sm hover:text-red-600">
             <AiOutlineHome size={22} />
             <span className="text-xs mt-1 font-medium">Home</span>
@@ -134,7 +134,10 @@ const Footer = () => {
             <BsShop size={22} />
             <span className="text-xs mt-1 font-medium">Shop</span>
           </Link>
-          <ThemeToggle />
+          <p className="flex flex-col items-center text-sm hover:text-red-600 dark:text-white">
+            <ThemeToggle />
+            <span className="text-xs mt-1 font-medium">Dark</span>
+          </p>
         </div>
         {shop && !disableCartPopup && <ShoppingCart setShop={setShop} />}
       </footer>
