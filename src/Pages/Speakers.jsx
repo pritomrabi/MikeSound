@@ -14,10 +14,8 @@ const Speakers = () => {
     const fetchProducts = async () => {
       setLoading(true);
       const res = await getProducts();
-      console.log(res);
 
       if (!res.error && res.products) {
-        // filter for Speakers subcategory
         const speakerProducts = res.products.filter(
           (p) => p.subcategory_name?.toLowerCase() === "speakers"
         );

@@ -31,27 +31,11 @@ export const getSubCategories = () => apiRequest("get", "/api/subcategories/late
 export const getProductsByCategory = (slug) =>
   apiRequest("get", `/api/products/?category=${slug}`);
 
-// Cart APIs
+// Page APIs
+export const getAbout = () => apiRequest("get", "/api/about/");
+export const getTerms = () => apiRequest("get", "/api/terms/");
+export const getHelpCenter = () => apiRequest("get", "/api/help/");
+export const getFAQs = () => apiRequest("get", "/api/faqs/");
+export const sendContactMessage = (data) => apiRequest("post", "/api/contact/", data);
+export const getFooter = () => apiRequest("get", "/api/footer/");
 
-
-// User APIs
-export const registerUser = (name, email, phone, password, confirm_password) =>
-  apiRequest("post", "/accounts/api/register/", { name, email, phone, password, confirm_password });
-
-export const verifyOtp = (otp, user_id) =>
-  apiRequest("post", "/accounts/api/verify-otp/", { otp, user_id });
-
-export const loginUser = (email, password) =>
-  apiRequest("post", "/accounts/api/login/", { email, password });
-
-export const logoutUser = () =>
-  apiRequest("post", "/accounts/api/logout/");
-
-export const forgotPassword = (email) =>
-  apiRequest("post", "/accounts/api/forgot-password/", { email });
-
-export const verifyForgotOtp = (otp, user_id) =>
-  apiRequest("post", "/accounts/api/forgot-verify-otp/", { otp, user_id });
-
-export const resetPassword = (user_id, new_password, confirm_password) =>
-  apiRequest("post", "/accounts/api/reset-password/", { user_id, new_password, confirm_password });

@@ -11,7 +11,6 @@ const ViewShopping = () => {
   const [discount, setDiscount] = useState(0);
   const [message, setMessage] = useState("");
 
-  // Update localStorage whenever cartItems change
   useEffect(() => {
     localStorage.setItem("cart", JSON.stringify(cartItems));
   }, [cartItems]);

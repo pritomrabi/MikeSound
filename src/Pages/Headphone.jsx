@@ -14,10 +14,8 @@ const Headphone = () => {
     const fetchProducts = async () => {
       setLoading(true);
       const res = await getProducts();
-      console.log("API Response:", res);
 
       if (!res.error && res.products) {
-        // filter for subcategory "Headphone"
         const headphoneProducts = res.products.filter(
           (p) => p.subcategory_name?.toLowerCase() === "headphone"
         );

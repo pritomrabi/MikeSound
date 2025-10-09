@@ -1,34 +1,32 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { getFAQs } from "../../api/api";
 
 const FAQ = () => {
-    const faqs = [
-        {
-            question: "How can I place an order?",
-            answer: "Visit the shop page and add products to your cart.",
-        },
-        {
-            question: "What payment methods are accepted?",
-            answer: "We accept credit cards, debit cards, and PayPal.",
-        },
-        {
-            question: "Can I return a product?",
-            answer: "Returns accepted within 30 days in original condition.",
-        },
-        {
-            question: "Do you ship internationally?",
-            answer: "Yes, worldwide shipping is available.",
-        },
-    ];
-
+    const [faqs, setFaqs] = useState([]);
     const [openIndex, setOpenIndex] = useState(null);
 
-    const toggle = (index) => {
-        setOpenIndex(openIndex === index ? null : index);
-    };
+    useEffect(() => {
+        const fetchFaqs = async () => {
+            const res = await getFaqs(); // fetch FAQs from your Django API
+            if (res.error) setFaqs([]);
+            else setFaqs(res);
+        };
+        fetchFaqs();
+    }, []);
+
+    const toggle = (index) => setOpenIndex(openIndex === index ? null : index);
+
+    if (faqs.length === 0) {
+        return (
+            <div className="text-center py-10 text-primary dark:text-secandari-dark font-Lato">
+                
+            </div>
+        );
+    }
 
     return (
-        <div className="dark:bg-[#2c2b2b] py-16 px-4 sm:px-6 lg:px-8 ">
-            <div className="max-w-2xl mx-auto ">
+        <div className="dark:bg-[#2c2b2b] py-16 px-4 sm:px-6 lg:px-8">
+            <div className="max-w-2xl mx-auto">
                 <h2 className="text-3xl sm:text-4xl text-primary dark:text-secandari-dark font-Roboto font-bold mb-8">
                     Frequently Asked Questions
                 </h2>
@@ -56,7 +54,6 @@ const FAQ = () => {
                     ))}
                 </div>
             </div>
-
         </div>
     );
 };

@@ -14,7 +14,6 @@ const Earbud = () => {
     const fetchProducts = async () => {
       setLoading(true);
       const res = await getProducts();
-      console.log(res);
 
       if (!res.error && res.products) {
         // filter for Earbud subcategory

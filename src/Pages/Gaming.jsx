@@ -14,10 +14,8 @@ const Gaming = () => {
     const fetchProducts = async () => {
       setLoading(true);
       const res = await getProducts();
-      console.log(res);
 
       if (!res.error && res.products) {
-        // filter for Gaming subcategory
         const gamingProducts = res.products.filter(
           (p) => p.subcategory_name?.toLowerCase() === "gaming"
         );

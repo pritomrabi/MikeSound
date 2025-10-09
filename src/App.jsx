@@ -16,19 +16,12 @@ import ViewCart from "./Pages/ViewCart";
 import Checkout from "./Pages/Checkout";
 import Categories from "./Pages/Categories";
 import Support from "./Pages/Support";
-import OrderHistory from "./Pages/OrderHistory";
-import SpecialOffers from "./Pages/SpecialOffers";
-import Registration from "./Auth/Registration";
-import Login from "./Auth/Login";
-import Forgot from "./Auth/Forgot";
-import OTP from "./Auth/OTP";
-import Wishlist from "./Pages/Wishlist";
 import Discount from "./Pages/Discount";
 import Headphone from "./Pages/Headphone";
 import Speakers from "./Pages/Speakers";
 import Gaming from "./Pages/Gaming";
 import Earbud from "./Pages/Earbud";
-import ResetPassword from "./Auth/ResetPassword";
+import Preloader from "./Components/Preloader";
 
 function App() {
   const [darkMode, setDarkMode] = useState(
@@ -46,7 +39,11 @@ function App() {
       localStorage.setItem("theme", "light");
     }
   }, [darkMode]);
-
+  const [loading, setLoading] = useState(true);
+  useEffect(() => {
+    const timer = setTimeout(() => setLoading(false), 2500); // 1.5 sec or adjust
+    return () => clearTimeout(timer);
+  }, []);
   const router = createBrowserRouter(
     createRoutesFromElements(
       <Route>
@@ -68,26 +65,19 @@ function App() {
           <Route path="/support" element={<Support />} />
           <Route path="/shop" element={<Shop />} />
           <Route path="/singleproduct/:id" element={<SingleProduct />} />
-          <Route path="/SpecialOffers" element={<SpecialOffers />} />
           <Route path="/discount/:type" element={<Discount />} />
-          <Route path="/orderhistory" element={<OrderHistory />} />
-          <Route path="/wishlist" element={<Wishlist />} />
           <Route path="/viewcart" element={<ViewCart />} />
           <Route path="/checkout" element={<Checkout />} />
           <Route path="/categories/:slug" element={<Categories />} />
           <Route path="*" element={<ErrorPage />} />
         </Route>
-        <Route path="/registration" element={<Registration />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/forgot" element={<Forgot />} />
-        <Route path="/otp" element={<OTP />} />
-        <Route path="//reset-password" element={<ResetPassword />} />
       </Route>
     )
   );
 
   return (
     <div className="bg-white text-primary dark:bg-black dark:text-white min-h-screen transition-colors duration-300">
+      {loading && <Preloader />}
       <AnimatedCursor
         innerSize={10}
         outerSize={10}

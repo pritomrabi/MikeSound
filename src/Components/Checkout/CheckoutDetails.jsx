@@ -139,7 +139,7 @@ const CheckoutDetails = () => {
       }
     } catch (err) {
       console.error("Order error:", err.response?.data || err);
-      toast.error("Order request failed. Check console for details.");
+      toast.error("Order request failed.");
     }
   };
 

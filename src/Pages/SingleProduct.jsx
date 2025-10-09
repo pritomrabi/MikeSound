@@ -20,7 +20,6 @@ const SingleProduct = () => {
         if (!data.error && data.product) {
           setProduct(data.product);
 
-          // Related products fetch
           const allProducts = await getProducts();
           if (!allProducts.error && allProducts.products) {
             const subCategoryProducts = allProducts.products.filter(
@@ -30,7 +29,6 @@ const SingleProduct = () => {
             if (subCategoryProducts.length > 0) {
               setRelatedProducts(subCategoryProducts);
             } else {
-              // Subcategory নেই, category দিয়ে দেখাও
               const categoryProducts = allProducts.products.filter(
                 (p) => p.category_name === data.product.category_name && p.id !== data.product.id
               );
@@ -39,7 +37,8 @@ const SingleProduct = () => {
           }
         }
       } catch (error) {
-        console.error("Error fetching product:", error);
+        // console.error("Error fetching product:", error);
+        return error
       }
     };
 

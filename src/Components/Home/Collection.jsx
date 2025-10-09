@@ -13,13 +13,12 @@ const Collection = () => {
     const fetchProducts = async () => {
       setLoading(true);
       const res = await getProducts();
-      console.log("Raw API response:", res);
 
       if (!res.error && res.products) {
-        console.log("All products:", res.products); // all products check
         setProducts(res.products); // set all products
       } else {
-        console.log("Error fetching products:", res.error);
+        // console.log("Error fetching products:", res.error);
+        return res.error
       }
       setLoading(false);
     };
