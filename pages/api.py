@@ -42,12 +42,13 @@ def contact_us_api(request):
     if serializer.is_valid():
         serializer.save()
         send_mail(
-            subject=serializer.validated_data['subject'],
-            message=f"Name: {serializer.validated_data['name']}\nEmail: {serializer.validated_data['email']}\nPhone: {serializer.validated_data.get('phone','')}\n\nMessage:\n{serializer.validated_data['message']}",
-            from_email=settings.EMAIL_HOST_USER,
-            recipient_list=[settings.EMAIL_HOST_USER],
-            fail_silently=True,
+        subject=serializer.validated_data['subject'],
+        message=f"Name: {serializer.validated_data['name']}\nEmail: {serializer.validated_data['email']}\nPhone: {serializer.validated_data.get('phone','')}\n\nMessage:\n{serializer.validated_data['message']}",
+        from_email=settings.EMAIL_HOST_USER,
+        recipient_list=[settings.EMAIL_HOST_USER],
+        fail_silently=False,  # error dekhabe
         )
+
         return Response({'detail': 'Message sent successfully'})
     return Response(serializer.errors, status=400)
 
