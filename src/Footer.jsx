@@ -124,7 +124,6 @@ const Footer = () => {
           </div>
         </div>
       </footer>
-
       {/* Mobile Bottom Navigation */}
       <footer className="md:hidden fixed bottom-0 left-0 w-full bg-brand shadow z-40">
         <div className="flex justify-around items-center py-2.5 text-white">

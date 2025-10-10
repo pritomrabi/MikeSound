@@ -17,7 +17,7 @@ const DynamicPage = ({ keyName, title }) => {
     const fetchContent = async () => {
       const res = await apiRequest("get", `/api/content/${keyName}/`);
       if (res.error) {
-        setError("Content load hoini");
+        setError("Info Upload Processing");
       } else {
         setContent(res.body); // backend e HTML string thakbe
       }
