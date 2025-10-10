@@ -34,7 +34,7 @@ const Headphone = () => {
           <p className="flex font-Nunito-font font-semibold sm:text-2xl text-xl justify-center items-center h-[40vh]">Loading products...</p>
         ) : products.length === 0 ? (
           <p className="flex font-Nunito-font font-semibold sm:text-2xl text-xl justify-center items-center h-[40vh]">
-            No products found in this subcategory.
+            No products found in this Headphone.
           </p>
         ) : (
           <div className="w-full sm:px-6 px-0">

@@ -23,7 +23,7 @@ const CheckoutDetails = () => {
   useEffect(() => {
     const fetchShippingFee = async () => {
       try {
-        const res = await axios.get("https://dj-completed-project.onrender.com/api/shipping-fee/");
+        const res = await axios.get("https://mikesound.onrender.com/api/shipping-fee/");
         const fee = res.data?.shipping_fee || 0;
         setShippingFee(fee);
       } catch (err) {
@@ -118,7 +118,7 @@ const CheckoutDetails = () => {
     
     try {
       const res = await axios.post(
-        "https://dj-completed-project.onrender.com/api/orders/place/",
+        "https://mikesound.onrender.com/api/orders/place/",
         payload,
         { headers: { "Content-Type": "application/json" } }
       );

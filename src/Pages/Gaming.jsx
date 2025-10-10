@@ -34,7 +34,7 @@ const Gaming = () => {
         {loading ? (
           <p className="flex font-Nunito-font font-semibold sm:text-2xl text-xl justify-center items-center h-[40vh]">Loading products...</p>
         ) : products.length === 0 ? (
-          <p className="flex font-Nunito-font font-semibold sm:text-2xl text-xl justify-center items-center h-[40vh]">No products found in this subcategory.</p>
+          <p className="flex font-Nunito-font font-semibold sm:text-2xl text-xl justify-center items-center h-[40vh]">No products found in this Gaming.</p>
         ) : (
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2.5 sm:gap-4">
             {products.map((product) => (
