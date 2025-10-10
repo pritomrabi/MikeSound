@@ -54,10 +54,11 @@ const Footer = () => {
         <div className="container mx-auto px-10">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
             <div>
-              <Link to="/">
-                <h4 className="text-2xl font-bold text-white font-Monrope">
-                  Mike Sound
-                </h4>
+              <Link
+                to="/"
+                className="text-2xl font-bold text-brand font-Lato bg-transparent"
+              >
+                <img src="/logo.jpg" alt="logo" className="w-36 bg-transparent" />
               </Link>
               <p className="text-white/90 font-normal font-NunitoFont w-[95%] text-base mt-2">
                 {footer.description}
