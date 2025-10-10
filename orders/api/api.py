@@ -28,12 +28,16 @@ def place_order_api(request):
     items = data.get('items', [])
     shipping_fee = Decimal(str(data.get('shipping_fee', 0)))
     user_number = data.get('user_number', '').strip()
-    txn_id = data.get('transaction_id', None)
+    txn_ref = data.get('transaction_id', '').strip() 
 
+    # Validate required fields
     if not address_data or not items:
         return Response({'error': 'Address and items required'}, status=400)
 
-    # Email validation
+    if not user_number:
+        return Response({'error': 'User number is required'}, status=400)
+
+    # Validate email
     email = address_data.get('email', '').strip()
     if not email:
         return Response({'error': 'Email is required'}, status=400)
@@ -63,6 +67,7 @@ def place_order_api(request):
         payment_method='manual'
     )
 
+    # Add items
     total = Decimal(0)
     for i in items:
         prod = Product.objects.filter(id=i['product_id']).first()
@@ -71,7 +76,7 @@ def place_order_api(request):
         var = ProductVariation.objects.filter(id=i.get('variation_id')).first() if i.get('variation_id') else None
         unit_price = Decimal(str(i.get('price', prod.get_discounted_price(var))))
         quantity = int(i.get('quantity', 1))
-        line_total = Decimal(str(i.get('total_price', unit_price*quantity)))
+        line_total = Decimal(str(i.get('total_price', unit_price * quantity)))
 
         OrderItem.objects.create(
             order=order,
@@ -79,9 +84,9 @@ def place_order_api(request):
             variation=var,
             quantity=quantity,
             unit_price=unit_price,
-            color=i.get('color',''),
+            color=i.get('color', ''),
             line_total=line_total,
-            image=i.get('image','')
+            image=i.get('image', '')
         )
         total += line_total
 
@@ -89,37 +94,23 @@ def place_order_api(request):
     order.grand_total = total + shipping_fee
     order.save()
 
-    # Handle Transaction
-    if txn_id:
-        txn = Transaction.objects.filter(id=txn_id).first()
-        if txn:
-            txn.order = order
-            txn.amount = order.grand_total
-            txn.status = 'pending'
-            txn.save()
-        else:
-            txn = Transaction.objects.create(
-                order=order,
-                amount=order.grand_total,
-                gateway='manual',
-                status='pending'
-            )
-    else:
-        txn = Transaction.objects.create(
-            order=order,
-            amount=order.grand_total,
-            gateway='manual',
-            status='pending'
-        )
+    # Create Transaction (save frontend txn ID as reference)
+    Transaction.objects.create(
+        order=order,
+        amount=order.grand_total,
+        gateway='manual',
+        reference=txn_ref,
+        status='pending'
+    )
 
     return Response({
         "success": True,
         "order_id": order.id,
-        "txn_id": txn.id,
+        "user_number": user_number,
+        "transaction_reference": txn_ref,
         "shipping_fee": shipping_fee,
         "total_amount": order.grand_total
     }, status=201)
-
 # ---------------------------
 # Order History API
 # ---------------------------

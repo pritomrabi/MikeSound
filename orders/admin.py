@@ -1,6 +1,7 @@
 from django.contrib import admin
 from .models import Order, OrderItem, Transaction, Address, PaymentNumber
 
+
 # ---------------------------
 # OrderItem Inline
 # ---------------------------
@@ -10,6 +11,7 @@ class OrderItemInline(admin.TabularInline):
     readonly_fields = ['product', 'variation', 'quantity', 'unit_price', 'line_total', 'color', 'image']
     can_delete = False
     show_change_link = True
+
 
 # ---------------------------
 # Transaction Inline
@@ -21,13 +23,15 @@ class TransactionInline(admin.TabularInline):
     can_delete = False
     show_change_link = True
 
+
 # ---------------------------
 # Order Admin
 # ---------------------------
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):
-    list_display = ['id', 'user', 'user_number', 'grand_total', 'status', 'payment_status', 'get_transaction_id', 'created_at', 'get_address']
+    list_display = ['id', 'user', 'user_number', 'status', 'payment_status', 'grand_total', 'get_transaction_id', 'created_at', 'get_address']
     readonly_fields = ['subtotal', 'grand_total', 'shipping_fee', 'discount', 'get_address', 'user_number']
+
     inlines = [OrderItemInline, TransactionInline]
 
     def get_address(self, obj):
@@ -40,9 +44,10 @@ class OrderAdmin(admin.ModelAdmin):
     def get_transaction_id(self, obj):
         txn = obj.transactions.order_by('-id').first()
         if txn:
-            return txn.id
+            return txn.reference or txn.id
         return "-"
-    get_transaction_id.short_description = "Transaction ID"
+    get_transaction_id.short_description = "Transaction Reference"
+
 
 # ---------------------------
 # OrderItem Admin
@@ -52,13 +57,15 @@ class OrderItemAdmin(admin.ModelAdmin):
     list_display = ['order', 'product', 'variation', 'quantity', 'unit_price', 'line_total', 'color', 'image']
     readonly_fields = list_display
 
+
 # ---------------------------
 # Transaction Admin
 # ---------------------------
 @admin.register(Transaction)
 class TransactionAdmin(admin.ModelAdmin):
-    list_display = ['id', 'order', 'amount', 'status', 'reference', 'verified_at']
+    list_display = ['id', 'order', 'gateway', 'amount', 'status', 'reference', 'verified_at']
     readonly_fields = list_display
+
 
 # ---------------------------
 # PaymentNumber Admin
@@ -74,6 +81,7 @@ class PaymentNumberAdmin(admin.ModelAdmin):
             return txn.id
         return "-"
     latest_transaction_id.short_description = "Transaction ID"
+
 
 # ---------------------------
 # Address Admin
