@@ -26,7 +26,7 @@ const Search = ({ setSearch }) => {
     debounceRef.current = setTimeout(async () => {
       try {
         const res = await fetch(
-          `https://dj-completed-project.onrender.com/api/products/?q=${query}`
+          `https://mikesound-backend.onrender.com/api/products/?q=${query}`
         );
         const data = await res.json();
         setResults(data.products || []);
@@ -88,7 +88,7 @@ const Search = ({ setSearch }) => {
     <div className="fixed top-0 left-0 w-full h-screen bg-black/30 z-50 flex justify-center items-start pt-10">
       <div
         ref={containerRef}
-        className="bg-white dark:bg-[#1a1a1a] w-[80%] p-6 rounded shadow-lg overflow-y-auto"
+        className="bg-brand  w-[80%] p-6 rounded shadow-lg overflow-y-auto"
       >
         <div className="flex mb-4">
           <input
@@ -98,7 +98,7 @@ const Search = ({ setSearch }) => {
             onChange={(e) => setQuery(e.target.value)}
             onKeyDown={handleKeyDown}
             placeholder="Search for products..."
-            className="flex-1 p-3 text-lg rounded-lg border border-gray-300 dark:border-gray-700 outline-none"
+            className="flex-1 p-3 text-lg rounded-lg border border-white outline-none"
           />
           <button
             type="button"

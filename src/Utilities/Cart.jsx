@@ -56,7 +56,7 @@ const Cart = ({ setIsOpen }) => {
 
     debounceRef.current = setTimeout(async () => {
       try {
-        const res = await fetch(`https://dj-completed-project.onrender.com/api/products/?q=${query}`);
+        const res = await fetch(`https://mikesound-backend.onrender.com/api/products/?q=${query}`);
         const data = await res.json();
         setResults(data.products || []);
         setActiveIndex(-1);
@@ -78,10 +78,9 @@ const Cart = ({ setIsOpen }) => {
   };
 
   return (
-    <div className="absolute w-full top-0 left-0 flex transition-all duration-500 h-screen">
+    <div className="absolute text-black w-full top-0 left-0 flex transition-all duration-500 h-screen z-50">
       <div onClick={() => setIsOpen(true)} className="lg:w-[55%] xl:w-[65%] md:w-[35%] sm:w-[40%] w-[5%] h-full cursor-pointer fixed top-0 left-0 z-50"></div>
-
-      <div className="fixed left-0 bg-[#fdfeff] dark:bg-[#1a1a1a] xl:w-[35%] lg:w-[45%] md:w-[65%] sm:w-[60%] w-[85%] h-[98%] top-1 bottom-2 shadow-md rounded-l-2xl px-4 py-4 z-50">
+      <div className="fixed left-0 bg-[#fdfeff] dark:bg-[#1a1a1a] xl:w-[35%] lg:w-[45%] md:w-[65%] sm:w-[60%] w-[85%] h-full top-0 bottom-2 shadow-md rounded-r-2xl px-4 py-4 z-50">
         <p onClick={() => setIsOpen(true)} className="absolute -right-5 border-[4px] text-white bg-brand p-2 rounded-full cursor-pointer">
           <RxCross2 className="text-lg" />
         </p>

@@ -37,10 +37,9 @@ const Navbar = () => {
   ];
 
   return (
-    <section className="shadow w-full fixed top-0 z-50 bg-brand text-white dark:bg-[#1a1a1a]">
+    <section className="shadow w-full fixed top-0 z-50 bg-brand text-white">
       <div className="px-4">
         <div className="container mx-auto flex items-center justify-between w-full">
-
           {/* MOBILE NAVBAR STRUCTURE */}
           <div className="flex items-center justify-between w-full md:hidden">
             {/* Left: Menu */}
