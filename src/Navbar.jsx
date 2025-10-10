@@ -81,7 +81,7 @@ const Navbar = () => {
 
             <div className="flex space-x-6 text-xl font-Lato font-medium text-primary-default dark:text-primary-dark">
               {menuItems.map((menu, i) => (
-                <Link key={i} to={`/${menu.path}`} className="hover:text-brand duration-100">
+                <Link key={i} to={`/${menu.path}`} className="hover:text-white duration-100">
                   {menu.title}
                 </Link>
               ))}

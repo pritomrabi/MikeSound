@@ -71,7 +71,6 @@ const Footer = () => {
                 <Link to="/terms">Terms & Conditions</Link>
                 <Link to="/returnsPolicy">Refund and Returns Policy</Link>
                 <Link to="/contact">Contact</Link>
-                <Link to="/payment">Payment</Link>
               </ul>
             </div>
             <div>
@@ -115,7 +114,7 @@ const Footer = () => {
             <p className="text-white/90 font-NunitoFont text-sm">{footer.copyright}</p>
             <button
               onClick={scrollToTop}
-              className={`fixed bottom-16 right-2 sm:right-4 md:right-8 z-10 p-2 rounded-md text-white transition-transform duration-200 shadow-md cursor-pointer ${isVisible ? "scale-100 bg-red-600" : "scale-0"} hover:bg-red-700`}
+              className={`fixed bottom-20 right-2 sm:right-4 md:right-8 z-10 p-2 rounded-md text-white transition-transform duration-200 shadow-md cursor-pointer ${isVisible ? "scale-100 bg-red-600" : "scale-0"} hover:bg-red-700`}
               title="Go to top"
               aria-label="Scroll to top"
             >
@@ -129,17 +128,17 @@ const Footer = () => {
       {/* Mobile Bottom Navigation */}
       <footer className="md:hidden fixed bottom-0 left-0 w-full bg-brand shadow z-40">
         <div className="flex justify-around items-center py-2.5 text-white">
-          <Link to="/" className="flex flex-col items-center text-sm hover:text-red-600">
+          <Link to="/" className="flex flex-col items-center text-sm ">
             <AiOutlineHome size={22} />
             <span className="text-xs mt-1 font-medium">Home</span>
           </Link>
 
-          <Link to="/shop" className="flex flex-col items-center text-sm hover:text-red-600">
+          <Link to="/shop" className="flex flex-col items-center text-sm ">
             <BsShop size={22} />
             <span className="text-xs mt-1 font-medium">Shop</span>
           </Link>
 
-          <p className="flex flex-col items-center text-sm hover:text-red-600">
+          <p className="flex flex-col items-center text-sm ">
             <ThemeToggle />
             <span className="text-xs mt-1 font-medium">Dark</span>
           </p>

@@ -20,7 +20,7 @@ const FloatingChat = () => {
   if (!footer) return null;
 
   return (
-    <div className="fixed bottom-16 left-4 flex flex-col items-end space-y-3 z-50">
+    <div className="fixed bottom-20 left-4 flex flex-col items-end space-y-3 z-50">
       {/* Contact Icons */}
       <div
         className={`flex flex-col items-center space-y-3 transition-all duration-300 ${open ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10 pointer-events-none"
