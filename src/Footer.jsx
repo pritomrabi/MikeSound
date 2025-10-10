@@ -53,19 +53,16 @@ const Footer = () => {
                 Our team is dedicated to offering a soothing experience tailored to your needs.
               </p>
             </div>
-
             <div>
               <h4 className="text-2xl text-white font-bold font-Nunito-font mb-4">Quick Links</h4>
               <ul className="text-white/90 text-base font-medium font-Monrope space-y-2 flex flex-col">
-                <Link to="/shop">Shop</Link>
-                <Link to="/headphone">Headphone</Link>
-                <Link to="/speakers">Speakers</Link>
-                <Link to="/earbud">Earbud</Link>
-                <Link to="/Gaming">Gaming</Link>
-                <Link to="/support">Support</Link>
+                <Link to="/privacy">Privacy Policy</Link>
+                <Link to="/terms">Terms & Conditions</Link>
+                <Link to="/returnsPolicy">Refund and Returns Policy</Link>
+                <Link to="/contact">Contact</Link>
+                <Link to="/payment">Payment</Link>
               </ul>
             </div>
-
             <div>
               <h4 className="text-2xl text-white font-bold font-Nunito-font mb-4">Contact</h4>
               <ul className="text-white/90 text-base font-medium font-Monrope space-y-2">
@@ -84,7 +81,6 @@ const Footer = () => {
                 <li>Location: Dhaka, Bangladesh</li>
               </ul>
             </div>
-
             <div>
               <h4 className="text-2xl text-white font-bold font-Nunito-font mb-4">Follow Us</h4>
               <div className="flex space-x-4 text-white">
@@ -103,7 +99,6 @@ const Footer = () => {
               </div>
             </div>
           </div>
-
           <div className="mt-8 border-t border-white/20 pt-6 pb-14 md:pb-0 text-center">
             <p className="text-white/90 font-Nunito-font text-sm">
               © 2025 Mike Sound. All Rights Reserved.
@@ -121,10 +116,9 @@ const Footer = () => {
           </div>
         </div>
       </footer>
-
       {/* Mobile Bottom Navigation */}
-      <footer className="md:hidden fixed bottom-0 left-0 w-full bg-white  dark:bg-black border-t border-gray-200 dark:border-none z-50">
-        <div className="flex justify-around items-center py-2.5 text-gray-700 dark:text-white">
+      <footer className="md:hidden fixed bottom-0 left-0 w-full bg-brand   shadow z-50">
+        <div className="flex justify-around items-center py-2.5 text-white dark:text-white">
           <Link to="/" className="flex flex-col items-center text-sm hover:text-red-600">
             <AiOutlineHome size={22} />
             <span className="text-xs mt-1 font-medium">Home</span>

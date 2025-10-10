@@ -20,7 +20,7 @@ export default {
           DEFAULT: "#aaaaaa",
           dark: "#bab5b5", // Light gray for dark mode
         },
-        brand: "#FF0000",
+        brand: "#ec1733",
         Green: "#FF0000",
       },
       fontFamily: {
@@ -28,7 +28,32 @@ export default {
         Monrope: ["Manrope", "serif"],
         Lato: ["Lato", "sans-serif"],
       },
+      typography: ({ theme }) => ({
+        DEFAULT: {
+          css: {
+            'h1,h2,h3,h4,h5,h6': {
+              marginTop: '0.2em',
+              marginBottom: '0.1em',
+            },
+            p: {
+              marginTop: '0.1em',
+              marginBottom: '0.1em',
+            },
+            ul: {
+              marginTop: '0.1em',
+              marginBottom: '0.1em',
+              paddingLeft: '0.5em',
+            },
+            li: {
+              marginTop: '0.2em',
+              marginBottom: '0.2em',
+            },
+          },
+        },
+      }),
     },
   },
-  plugins: [],
+  plugins: [
+    require('@tailwindcss/typography'),
+  ],
 };

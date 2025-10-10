@@ -37,8 +37,8 @@ const Navbar = () => {
   ];
 
   return (
-    <section className="shadow w-full fixed top-0 z-50 bg-[#ffffff] dark:bg-[#1a1a1a]">
-      <div className="p-6">
+    <section className="shadow w-full fixed top-0 z-50 bg-brand text-white dark:bg-[#1a1a1a]">
+      <div className="px-4">
         <div className="container mx-auto flex items-center justify-between w-full">
 
           {/* MOBILE NAVBAR STRUCTURE */}
@@ -54,33 +54,30 @@ const Navbar = () => {
                 <Cart setIsOpen={setIsOpen} />
               )}
             </div>
-
             {/* Center: Logo */}
             <Link
               to="/"
-              className="text-2xl font-bold text-brand font-Lato absolute left-1/2 transform -translate-x-1/2"
+              className="text-2xl font-bold text-brand font-Lato bg-transparent"
             >
-              Mike Sound
+              <img src="/logo.jpg" alt="logo" className="w-36 bg-transparent" />
             </Link>
-
             {/* Right: Cart */}
             <div onClick={() => setShop(true)} className="relative cursor-pointer">
               <PiShoppingCartSimpleLight className="text-3xl" />
               {totalItems > 0 && (
-                <span className="absolute -top-1 -right-2 bg-brand text-white text-[10px] rounded-full w-4 h-4 flex items-center justify-center">
+                <span className="absolute -top-1 -right-2 bg-black text-white text-[10px] rounded-full w-4 h-4 flex items-center justify-center">
                   {totalItems}
                 </span>
               )}
             </div>
           </div>
-
           {/* DESKTOP NAVBAR STRUCTURE */}
           <div className="hidden md:flex items-center justify-between w-full">
             <Link
               to="/"
-              className="text-2xl font-bold text-brand font-Lato"
+              className="text-2xl font-bold text-brand font-Lato bg-transparent"
             >
-              Mike Sound
+              <img src="/logo.jpg" alt="logo" className="w-36 bg-transparent" />
             </Link>
 
             <div className="flex space-x-6 text-xl font-Lato font-medium text-primary-default dark:text-primary-dark">
@@ -107,7 +104,7 @@ const Navbar = () => {
               <div onClick={() => setShop(true)} className="relative cursor-pointer">
                 <PiShoppingCartSimpleLight className="text-2xl" />
                 {totalItems > 0 && (
-                  <span className="absolute -top-1 -right-2 bg-brand text-white text-[10px] rounded-full w-4 h-4 flex items-center justify-center">
+                  <span className="absolute -top-1 -right-2 bg-black dark:bg-brand text-white text-[10px] rounded-full w-4 h-4 flex items-center justify-center">
                     {totalItems}
                   </span>
                 )}
@@ -115,9 +112,6 @@ const Navbar = () => {
             </div>
           </div>
         </div>
-
-        
-
         {/* Search Section */}
         {search && <Search setSearch={setSearch} />}
         {/* Shopping Cart Popup */}

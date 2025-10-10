@@ -22,6 +22,10 @@ import Speakers from "./Pages/Speakers";
 import Gaming from "./Pages/Gaming";
 import Earbud from "./Pages/Earbud";
 import Preloader from "./Components/Preloader";
+import Payment from "./Pages/Payment";
+import Privacy from "./Pages/Privacy";
+import ReturnsPolicy from "./Pages/ReturnsPolicy";
+import Terms from "./Pages/Terms";
 
 function App() {
   const [darkMode, setDarkMode] = useState(
@@ -62,13 +66,17 @@ function App() {
           <Route path="/speakers" element={<Speakers />} />
           <Route path="/gaming" element={<Gaming />} />
           <Route path="/earbud" element={<Earbud />} />
-          <Route path="/support" element={<Support />} />
+          <Route path="/contact" element={<Support />} />
           <Route path="/shop" element={<Shop />} />
           <Route path="/singleproduct/:id" element={<SingleProduct />} />
           <Route path="/discount/:type" element={<Discount />} />
           <Route path="/viewcart" element={<ViewCart />} />
           <Route path="/checkout" element={<Checkout />} />
           <Route path="/categories/:slug" element={<Categories />} />
+          <Route path="/payment" element={<Payment />} />
+          <Route path="/privacy" element={<Privacy />} />
+          <Route path="/returnsPolicy" element={<ReturnsPolicy />} />
+          <Route path="/terms" element={<Terms />} />
           <Route path="*" element={<ErrorPage />} />
         </Route>
       </Route>
