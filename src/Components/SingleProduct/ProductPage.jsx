@@ -8,10 +8,12 @@ import { addtoCart } from "../../redux/reducer/ProductSlice";
 import { useDispatch } from "react-redux";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { getFooter } from "../../api/api";
 
 const ProductPage = ({ product }) => {
   const [quantity, setQuantity] = useState(1);
+  const [footer, setFooter] = useState(null);
   const [selectedVariation, setSelectedVariation] = useState(
     product.variations ? product.variations[0] : null
   );
@@ -19,6 +21,15 @@ const ProductPage = ({ product }) => {
   const [isZooming, setIsZooming] = useState(false);
   const [zoomPosition, setZoomPosition] = useState({ x: 50, y: 50 });
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    const fetchFooter = async () => {
+      const data = await getFooter();
+      setFooter(data);
+    };
+    fetchFooter();
+  }, []);
+  
   useEffect(() => {
     setSelectedVariation(product.variations ? product.variations[0] : null);
     setSelectedIndex(0);
@@ -82,7 +93,7 @@ const ProductPage = ({ product }) => {
             onMouseLeave={() => setIsZooming(false)}
           >
             {product.discount > 0 && (
-              <span className="absolute top-2 left-2 z-20 bg-red-600 text-white text-sm px-2 py-1 rounded">
+              <span className="absolute top-2 left-2 z-20 bg-red-600 text-white text-xs px-2.5 py-[24px] rounded-full">
                 -{product.discount}%
               </span>
             )}
@@ -117,11 +128,11 @@ const ProductPage = ({ product }) => {
         </div>
 
         {/* Product Details */}
-        <div className="w-full lg:w-1/2 flex flex-col gap-3">
-          <p className="text-sm text-black">
+        <div className="w-full lg:w-1/2 flex flex-col gap-3 ">
+          <p className="text-sm text-black dark:text-white">
             {product.category_name} / {product.subcategory_name} / {product.title}
           </p>
-          <h2 className="text-xl sm:text-2xl font-medium text-primary">{product.title}</h2>
+          <h2 className="text-xl sm:text-2xl font-medium text-primary dark:text-white">{product.title}</h2>
 
           <p className="text-lg sm:text-xl font-semibold text-red-600">
             ৳{selectedVariation ? selectedVariation.price : product.price}
@@ -138,9 +149,9 @@ const ProductPage = ({ product }) => {
             Brand: <span className="text-blue-600">{product?.brand_name}</span>
           </p>
           <p className="text-secandari text-sm">
-            Description: <span className="text-primary">{textDescription}</span>
+            Description: <span className="text-primary dark:text-white">{textDescription}</span>
           </p>
-          <div className="text-gray-600 text-sm space-y-1">
+          <div className="text-gray-600 dark:text-white text-sm space-y-1">
             {product.warranty_period > 0 && (
               <p>
                 Warranty: <span className="font-medium">{product.warranty_period} months</span>
@@ -164,7 +175,7 @@ const ProductPage = ({ product }) => {
                   key={variation.id}
                   onClick={() => handleVariationSelect(variation)}
                   className={`px-3 py-1 text-xs rounded font-medium cursor-pointer ${selectedVariation?.id === variation.id
-                    ? "bg-yellow-600 text-white border-yellow-600"
+                    ? "bg-brand text-white border-brand"
                     : "border border-gray-300 text-gray-700 bg-gray-100"}`}
                 >
                   {variation.color_name}
@@ -183,7 +194,7 @@ const ProductPage = ({ product }) => {
                 <HiOutlinePlusSmall size={14} />
               </button>
             </div>
-            <p className="text-lg font-semibold text-black ml-0 sm:ml-4">
+            <p className="text-lg font-semibold text-black dark:text-white ml-0 sm:ml-4">
               Total: ৳{totalPrice}
             </p>
           </div>
@@ -201,8 +212,12 @@ const ProductPage = ({ product }) => {
             >
               Shop Now
             </button>
+            {footer?.whatsapp && (
+              <Link to={footer.whatsapp} className="hover:text-[#25D366]">
+                <button className="bg-green-500 hover:bg-green-600 text-white px-6 py-2 rounded">WhatsApp</button>
+              </Link>
+            )}
 
-            <button className="bg-green-500 hover:bg-green-600 text-white px-6 py-2 rounded">WhatsApp</button>
           </div>
 
           <div className="flex items-center gap-4 mt-4">

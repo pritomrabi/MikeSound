@@ -6,7 +6,16 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useDispatch } from "react-redux";
 import { addtoCart } from "../redux/reducer/ProductSlice";
+import { useEffect } from "react";
+import Aos from "aos";
+import 'aos/dist/aos.css';
+
 const ProductCard = ({ product, onQuickView }) => {
+
+  useEffect(() => {
+    Aos.init({ once: true });
+  }, []);
+
   if (!product || !product.title) return null;
 
   const discount = product.oldPrice
@@ -26,10 +35,11 @@ const ProductCard = ({ product, onQuickView }) => {
   };
 
   return (
-    <div className="relative group bg-white dark:bg-[#2a2a2a] rounded-md shadow-md overflow-hidden">
+    <div data-aos="fade-up"
+      data-aos-duration="2000" className="relative group bg-white dark:bg-[#2a2a2a] rounded-md shadow-md overflow-hidden">
       {/* <ToastContainer position="top-center" autoClose={2000} theme="colored" /> */}
       {/* Image */}
-      <Link to={`/singleproduct/${product.id}`}>
+      <Link  to={`/singleproduct/${product.id}`}>
         <div className="relative overflow-hidden rounded-t-md">
           <img
             src={product.img}
@@ -37,7 +47,7 @@ const ProductCard = ({ product, onQuickView }) => {
             className="w-full h-40 sm:h-68 md:h-64 lg:h-68 object-cover transform transition-transform duration-500 group-hover:scale-105"
           />
           {discount > 0 && (
-            <span className="absolute top-2 left-2 bg-red-500 text-white text-[10px] sm:text-xs font-Monrope font-bold px-2 py-1 rounded">
+            <span className="absolute top-2 left-2 bg-red-500 text-white text-[10px] sm:text-xs font-Monrope font-bold px-2 py-[15px] rounded-full">
               -{discount}%
             </span>
           )}
@@ -78,7 +88,7 @@ const ProductCard = ({ product, onQuickView }) => {
       </div>
 
       {/* Overlay Icons */}
-      <div className="absolute top-[25%] right-2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition flex flex-col gap-4 bg-white py-2.5 px-3 rounded shadow z-10">
+      <div className="absolute top-[22%] right-2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition flex flex-col gap-4 bg-white py-2.5 px-3 rounded shadow z-10">
         <div className="relative group/icon">
           <button
             onClick={() => onQuickView(product.id)}

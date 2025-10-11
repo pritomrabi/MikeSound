@@ -26,8 +26,8 @@ const DynamicPage = ({ keyName, title }) => {
     fetchContent();
   }, [keyName]);
 
-  if (loading) return <p className="text-center p-6">Loading...</p>;
-  if (error) return <p className="text-center p-6 text-red-500">{error}</p>;
+  if (loading) return <p className="flex font-Nunito-font font-semibold sm:text-2xl text-xl justify-center items-center h-[40vh]">Loading...</p>;
+  if (error) return <p className="flex font-Nunito-font font-semibold sm:text-2xl text-xl justify-center items-center h-[40vh]">{error}</p>;
 
   return (
     <div className="max-w-4xl mx-auto p-6 sm:p-10">

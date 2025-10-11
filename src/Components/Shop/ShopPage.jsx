@@ -8,6 +8,7 @@ import { Link } from "react-router-dom";
 import ProductQuickView from "../Home/ProductQuickView";
 import Filter from "../../Utilities/Filter";
 import { getProducts } from "../../api/api";
+import Aos from "aos";
 
 const ShopPage = () => {
   const categories = ["All", "Headphone", "Speakers", "Earbud", "Gaming"];
@@ -22,7 +23,9 @@ const ShopPage = () => {
   const [loading, setLoading] = useState(true);
 
   const itemsPerPage = 20;
-
+  useEffect(() => {
+    Aos.init({ once: true });
+  }, []);
   useEffect(() => {
     const fetchProducts = async () => {
       setLoading(true);
@@ -108,6 +111,8 @@ const ShopPage = () => {
                 {currentItems.map((product) => (
                   <div
                     key={product.id}
+                    data-aos="fade-up"
+                    data-aos-duration="2000"
                     className="group relative rounded-md shadow-sm bg-white dark:bg-[#2a2a2a] transition overflow-hidden"
                   >
                     {product.variations?.[0]?.discount && (
@@ -143,7 +148,6 @@ const ShopPage = () => {
                         </p>
                       </Link>
                     </div>
-
                     {/* Quick view & cart */}
                     <div className="absolute top-[25%] right-2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition flex flex-col gap-4 bg-white py-2.5 px-3 rounded shadow z-10">
                       <div className="relative group/icon">
@@ -169,7 +173,6 @@ const ShopPage = () => {
                   </div>
                 ))}
               </div>
-
               {/* Pagination */}
               <div className="flex justify-center mt-8">
                 <ReactPaginate

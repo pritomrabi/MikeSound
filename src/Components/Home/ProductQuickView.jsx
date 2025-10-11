@@ -4,9 +4,9 @@ import { HiOutlinePlusSmall } from "react-icons/hi2";
 import { AiFillStar } from "react-icons/ai";
 import { motion, AnimatePresence } from "framer-motion";
 import { IoClose } from "react-icons/io5";
-import { getProductById } from "../../api/api";
+import { getFooter, getProductById } from "../../api/api";
 import { addtoCart } from "../../redux/reducer/ProductSlice";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -22,7 +22,7 @@ const ProductQuickView = ({ setQuickView, productId }) => {
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [isZooming, setIsZooming] = useState(false);
   const [zoomPosition, setZoomPosition] = useState({ x: 50, y: 50 });
-
+  const [footer, setFooter] = useState(null);
   useEffect(() => {
     if (!productId) return;
     setLoading(true);
@@ -30,18 +30,27 @@ const ProductQuickView = ({ setQuickView, productId }) => {
       const data = await getProductById(productId);
       if (!data.error && data.product) {
         setProduct(data.product);
-        setSelectedVariation(data.product.variations?.[0] || null);
+        setSelectedVariation(data.product.variations ? data.product.variations[0] : null);
       }
       setLoading(false);
     };
     fetchProduct();
   }, [productId]);
-
+  
+  useEffect(() => {
+    const fetchFooter = async () => {
+      const data = await getFooter();
+      setFooter(data);
+    };
+    fetchFooter();
+  }, []);
+  
   const handleVariationSelect = (variation) => setSelectedVariation(variation);
 
-  const totalPrice = selectedVariation
-    ? selectedVariation.price * quantity
+  const totalPrice = selectedVariation?.final_price
+    ? selectedVariation.final_price * quantity
     : product?.price * quantity;
+
 
   const handleMouseMove = (e) => {
     const { left, top, width, height } = e.currentTarget.getBoundingClientRect();
@@ -112,7 +121,7 @@ const ProductQuickView = ({ setQuickView, productId }) => {
             onMouseLeave={() => setIsZooming(false)}
           >
             {product.discount > 0 && (
-              <span className="absolute top-2 left-2 z-20 bg-red-600 text-white text-sm px-2 py-1 rounded">
+              <span className="absolute top-2 left-2 z-20 bg-red-600 text-white text-xs px-2 py-[22px] rounded-full">
                 -{product.discount}%
               </span>
             )}
@@ -146,8 +155,8 @@ const ProductQuickView = ({ setQuickView, productId }) => {
 
         {/* Right: Details */}
         <div className="w-full md:w-1/2 p-4 md:p-10 flex flex-col">
-          <p className="text-sm text-black mb-1">{product.category_name} / {product.subcategory_name} / {product.title}</p>
-          <h2 className="text-xl sm:text-2xl text-primary font-medium mb-2">{product.title}</h2>
+          <p className="text-sm text-black mb-1 dark:text-white">{product.category_name} / {product.subcategory_name} / {product.title}</p>
+          <h2 className="text-xl sm:text-2xl text-primary dark:text-white font-medium mb-2">{product.title}</h2>
           <p className="text-lg sm:text-xl font-semibold text-red-600">৳{selectedVariation?.price || product.price}</p>
           <div className="flex items-center gap-1 mb-1 flex-wrap">
             {[...Array(product.rating || 0)].map((_, i) => <AiFillStar key={i} className="text-yellow-400" />)}
@@ -156,7 +165,7 @@ const ProductQuickView = ({ setQuickView, productId }) => {
           <p className="text-gray-600 text-sm mb-2">Brand: <span className="text-blue-600 cursor-pointer">{product.brand_name}</span></p>
           <p className="text-secandari text-sm mb-4">{textDescription}</p>
 
-          <div className="text-gray-600 text-sm mb-4 space-y-1">
+          <div className="text-gray-600 dark:text-white text-sm mb-4 space-y-1">
             {product.warranty_period > 0 && <p>Warranty: <span className="font-medium">{product.warranty_period} months</span></p>}
             {product.model_number && <p>Model Number: <span className="font-medium">{product.model_number}</span></p>}
             {product.power_type && <p>Power Type: <span className="font-medium">{product.power_type}</span></p>}
@@ -170,7 +179,7 @@ const ProductQuickView = ({ setQuickView, productId }) => {
                 <button
                   key={variation.id}
                   onClick={() => handleVariationSelect(variation)}
-                  className={`px-3 py-1 text-xs sm:text-sm rounded font-medium cursor-pointer ${selectedVariation?.id === variation.id ? "bg-yellow-600 text-white border-yellow-600" : "border border-gray-300 text-gray-700 bg-gray-100"}`}
+                  className={`px-3 py-1 text-xs sm:text-sm rounded font-medium cursor-pointer ${selectedVariation?.id === variation.id ? "bg-brand text-white border-brand" : "border border-gray-300 text-gray-700 bg-gray-100"}`}
                 >
                   {variation.color_name || variation.color}
                 </button>
@@ -184,7 +193,7 @@ const ProductQuickView = ({ setQuickView, productId }) => {
               <div className="px-3 py-2 font-medium text-sm">{quantity}</div>
               <button className="p-2 cursor-pointer" onClick={() => setQuantity(quantity + 1)}><HiOutlinePlusSmall size={14} /></button>
             </div>
-            <p className="text-lg font-semibold text-black sm:ml-4">Total: ৳{totalPrice}</p>
+            <p className="text-lg font-semibold text-black dark:text-white sm:ml-4">Total: ৳{totalPrice}</p>
           </div>
 
           <div className="flex flex-col sm:flex-row gap-3 mt-4">
@@ -200,7 +209,11 @@ const ProductQuickView = ({ setQuickView, productId }) => {
             >
               Shop Now
             </button>
-            <button className="bg-green-500 hover:bg-green-600 text-white px-6 py-2 rounded">WhatsApp</button>
+            {footer?.whatsapp && (
+              <Link to={footer.whatsapp} className="hover:text-[#25D366]">
+                <button className="bg-green-500 hover:bg-green-600 text-white px-6 py-2 rounded">WhatsApp</button>
+              </Link>
+            )}
           </div>
         </div>
       </div>

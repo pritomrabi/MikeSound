@@ -122,7 +122,7 @@ const FloatingChat = () => {
         whileHover={{ scale: 1.1 }}
         onClick={() => setOpen(!open)}
         aria-label={open ? "Close chat menu" : "Open chat menu"}
-        className="bg-[#f50827] text-white p-4 rounded-full shadow-lg transition-shadow hover:shadow-xl"
+        className="bg-[#340007d5] text-white p-4 rounded-full shadow-lg transition-shadow hover:shadow-xl"
       >
         <AnimatePresence mode="wait">
           {open ? (

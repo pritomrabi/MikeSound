@@ -85,10 +85,10 @@ const Search = ({ setSearch }) => {
   };
 
   return (
-    <div className="fixed top-0 left-0 w-full h-screen bg-black/30 z-50 flex justify-center items-start pt-10">
+    <div className="fixed top-0 left-0 w-full h-screen bg-black/30 z-50 flex justify-center items-start py-20">
       <div
         ref={containerRef}
-        className="bg-brand  w-[80%] p-6 rounded shadow-lg overflow-y-auto"
+        className="bg-brand  w-[90%] h-full p-6 rounded shadow-lg overflow-y-auto"
       >
         <div className="flex mb-4">
           <input
@@ -108,12 +108,10 @@ const Search = ({ setSearch }) => {
             <RxCross2 size={24} />
           </button>
         </div>
-
         {loading && <p className="text-center">Loading results...</p>}
         {!loading && results.length === 0 && query && (
           <p className="text-center text-gray-500">No products found</p>
         )}
-
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
           {results.map((product) => (
             <div

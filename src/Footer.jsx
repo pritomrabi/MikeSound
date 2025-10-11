@@ -114,7 +114,7 @@ const Footer = () => {
             <p className="text-white/90 font-NunitoFont text-sm">{footer.copyright}</p>
             <button
               onClick={scrollToTop}
-              className={`fixed bottom-20 right-2 sm:right-4 md:right-8 z-10 p-2 rounded-md text-white transition-transform duration-200 shadow-md cursor-pointer ${isVisible ? "scale-100 bg-red-600" : "scale-0"} hover:bg-red-700`}
+              className={`fixed bottom-20 right-2 sm:right-4 md:right-8 z-10 p-2 rounded-md text-white transition-transform duration-200 shadow-md cursor-pointer ${isVisible ? "scale-100 bg-[#340007d5]" : "scale-0"}`}
               title="Go to top"
               aria-label="Scroll to top"
             >

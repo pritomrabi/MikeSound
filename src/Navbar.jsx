@@ -29,6 +29,7 @@ const Navbar = () => {
   const totalItems = cartItems.length;
 
   const menuItems = [
+    { title: "Home", path: "" },
     { title: "Headphone", path: "headphone" },
     { title: "Speakers", path: "speakers" },
     { title: "Earbud", path: "earbud" },

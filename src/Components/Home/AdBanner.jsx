@@ -1,9 +1,14 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { getProducts } from "../../api/api";
+import Aos from "aos";
 
 const AdBanner = () => {
   const [ads, setAds] = useState([]);
+  
+  useEffect(() => {
+    Aos.init({ once: true });
+  }, []);
 
   useEffect(() => {
     const fetchAds = async () => {
@@ -23,10 +28,12 @@ const AdBanner = () => {
           const offerType = ad.offer_type?.toLowerCase();
           return (
             <Link
+              data-aos="fade-up"
+              data-aos-duration="2000"
               key={idx}
-              to={offerType ? `/discount/${offerType}` : "#"} 
+              to={offerType ? `/discount/${offerType}` : "#"}
               className="relative h-[30vh] sm:h-[35vh] md:h-[40vh] bg-cover bg-center flex items-end rounded-lg overflow-hidden"
-              style={{ backgroundImage: `url(${ad.images[0]?.image})` }} 
+              style={{ backgroundImage: `url(${ad.images[0]?.image})` }}
             >
               <div className="absolute inset-0 bg-black/30"></div>
               <div className="relative p-4 text-white w-full">

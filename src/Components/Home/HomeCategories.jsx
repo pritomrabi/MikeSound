@@ -1,12 +1,15 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Heading from "../../Utilities/Heading";
 import { Link } from "react-router-dom";
 import { getSubCategories } from "../../api/api"; // API function for subcategories
+import Aos from "aos";
 
 const HomeSubCategories = () => {
   const [subcategories, setSubcategories] = useState([]);
   const [loading, setLoading] = useState(true);
-
+  useEffect(() => {
+    Aos.init({ once: true });
+  }, []);
   useEffect(() => {
     const fetchSubCategories = async () => {
       setLoading(true);
@@ -28,6 +31,8 @@ const HomeSubCategories = () => {
         <div className="grid grid-cols-2 md:grid-cols-3 gap-4 auto-rows-[250px]">
           {subcategories.map((subcat, idx) => (
             <Link
+              data-aos="fade-up"
+              data-aos-duration="2000"
               key={idx}
               to={`/${subcat.slug}`}
               className="relative overflow-hidden rounded-md group"
