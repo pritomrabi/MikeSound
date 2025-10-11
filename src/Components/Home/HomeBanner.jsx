@@ -5,6 +5,22 @@ import "slick-carousel/slick/slick-theme.css";
 import { Link } from "react-router-dom";
 import { getProducts } from "../../api/api";
 
+const SliderContent = ({ title }) => (
+  <div className="max-w-2xl text-start mx-auto text-white py-8 sm:py-12 md:py-16">
+    <h2 className="text-primary sm:text-3xl md:text-5xl lg:text-7xl font-semibold uppercase leading-tight line-clamp-2">
+      {title}
+    </h2>
+    <div className="mt-4 sm:mt-6">
+      <Link
+        to="/shop"
+        className="md:px-6 px-4 md:py-2 py-2 rounded bg-brand text-white sm:text-sm text-xs font-medium"
+      >
+        SHOP NOW
+      </Link>
+    </div>
+  </div>
+);
+
 const HomeBanner = () => {
   const [slides, setSlides] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -55,24 +71,28 @@ const HomeBanner = () => {
       <Slider {...settings}>
         {slides.map((slide) => (
           <div key={slide.id}>
-            <div
-              className="h-[40vh] sm:h-[50vh] md:h-[70vh] flex bg-cover bg-center items-center px-4 relative"
-              style={{ backgroundImage: `url(${slide.image})` }}
-            >
-              <div className="max-w-2xl text-start mx-auto text-white py-8 sm:py-12 md:py-16">
-                <h2 className="text-primary sm:text-3xl md:text-5xl lg:text-7xl font-semibold uppercase leading-tight line-clamp-2">
-                  {slide.title}
-                </h2>
-                <div className="mt-4 sm:mt-6">
-                  <Link
-                    to='/shop'
-                    className="md:px-6 px-4 md:py-2 py-2 rounded bg-brand text-white sm:text-sm text-xs font-medium"
-                  >
-                    SHOP NOW
-                  </Link>
+            {slide.media_type === "image" && (
+              <div
+                className="h-[40vh] sm:h-[50vh] md:h-[70vh] flex bg-cover bg-center items-center px-4 relative"
+                style={{ backgroundImage: `url(${slide.media_url})` }}
+              >
+                <SliderContent title={slide.title} />
+              </div>
+            )}
+            {slide.media_type === "video" && (
+              <div className="h-[40vh] sm:h-[50vh] md:h-[70vh] flex items-center justify-center px-4 relative bg-black">
+                <video
+                  className="h-full w-full object-cover"
+                  src={slide.media_url}
+                  autoPlay
+                  loop
+                  muted
+                />
+                <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center">
+                  <SliderContent title={slide.title} />
                 </div>
               </div>
-            </div>
+            )}
           </div>
         ))}
       </Slider>
